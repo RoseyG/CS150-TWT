@@ -1,0 +1,71 @@
+DEADLINE: DEC. 10 (THURSDAY)
+
+1. Kelan available lahat: Overnight na dis
+ - Kelan, Saan
+ - Dec 1 - Dec 2 (Tue - Wed)
+ - Dec. 4 - Dec. 5 (Fri - Sat)
+2. EBNF - try ni Kelly
+3. Irewrite reserved words and all, dito nalang sa notepad
+4. Tanong kay maam, what does she mean sa, "preference something" sa parameters
+5. Kung pwedeng read as file ung code mismo ro dapat may GUI/ text editor, etc. Ano yung environment na nakalagay? env ng interpreter?
+
+Comment ( AND Delimeter ):
+	# - ;
+
+	e.g. @INT num = 4 # this is the number of times blablabla
+					  # Note: Pero since as in per line naman talaga tayo magbabasa, di naman sya necessary  talaga na may # pa
+					  # every line, more on comment sya if titignan. Tama ba? XD
+
+Begin and End:
+
+	LOGIN program_name#
+ 		#insert codesss here
+
+	LOGOUT#
+
+Assignment:
+	@DTYPE var1 = <value>#
+
+Data Type:
+	INT - integer
+	FLOAT - float
+	CHIRP - character
+	MSG - string (140 characters)
+	TRALSE - boolean (values: #True or #False)
+
+Function Declaration:
+	@INT <fn_name>(arg1, arg2){
+		<do this>#
+		and this#
+		lastly, this# oh now this is a comment all lines must always end with this
+	}
+
+Function Call:
+	<fn_name>(arg1, arg2...)
+
+Conditional statements:
+	If (condition) follow{
+		#codes
+	}
+
+Loops and Control Structure:
+  RT - LOOP
+		RT (condition){
+
+			#do this
+
+		}
+
+	UNFOLLOW - break (from the Loop/RT)
+	LIKE - conitnue (proceed to next loop)
+	BLOCK - force Exit from the Program
+
+I/O:
+
+	TWEET - print
+		TWEET 1+2 	     (result: 3)
+
+	REPLY() - ask input from the user
+		@DTYPE 	<varname> = REPLY()
+
+Reserved Words -> identifiers
