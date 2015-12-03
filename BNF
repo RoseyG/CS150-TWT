@@ -1,0 +1,13 @@
+<Program> -> <FDefns><Main>
+<FDefns> -> NULL |                  //declarations and block of text
+<Main> -> "login" <Block> "logout" 
+<Block> -> <Exp><Newline> | <Exp><Newline><Block>
+<Exp> -> <Loop> | <If> | <Declaration> | <Call>
+<If> ->"IF(" <boolean> "){" <Block> "}"
+<Loop> -> "RT(" <boolean> "){" <Block> "}"
+<Declaration> -> <DType> <Name> "=" <value> 
+				| <Dtype> <Fname> "(" <args> "){" <Block> "}"
+				| <>
+<Dtype> -> "@INT" | "@CHIRP" | "@MSG" | "@TRALSE"
+<Args> -> <Dtype> <varname> | <Dtype> <varname>  ", " <Args> 
+<Newline> -> "\n"
