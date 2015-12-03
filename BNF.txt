@@ -3,7 +3,7 @@
 <Main> -> "LOGIN" <Block> "LOGOUT"
 <Block> -> <Exp><Newline> | <Exp><Newline><Block>
 <Exp> -> <Loop> | <If> | <Assignment> | <Call> | "UNFOLLOW" | "BLOCK" | "FOLLOW" | <Return>
-<Return> ->  "REPORT" <INT> |"REPORT" <CHAR> |"REPORT" <FLOAT> |"REPORT" <STRING> |"REPORT" <BOOL> | "REPORT" <Varname>
+<Return> ->  "REPORT" <INT> |"REPORT" <CHAR> |"REPORT" <FLOAT> |"REPORT" <STRING> |"REPORT" <BOOL> | "REPORT" <Vname>
 <If> ->"IF(" <Boolean> ")follow{" <Block> "}" <Elseif><Else>
 <Elseif> -> <Elseif> "ELSEIF(" <Boolean> ")follow{" <Block> "}"| Lambda
 <Else> -> "ELSE(" <Boolean> ")follow{" <Block> "}" | Lambda
@@ -22,6 +22,6 @@
 <FLOAT>
 <STRING>
 <BOOL>
-<Declaration> -> <Dtype> <Varname> "(" <Args> "){" <Block> "}"
-<Call> -> <Varname> "(" <Args> ")"
-<Args> -> <Dtype> <varname> | <Dtype> <varname>  ", " <Args> | Lambda
+<Declaration> -> <Dtype> <Vname> "(" <Args> "){" <Block> "}"
+<Call> -> <Vname> "(" <Args> ")"
+<Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args> | Lambda
