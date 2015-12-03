@@ -2,14 +2,16 @@
 <FDefns> -> Declaration | Lambda                 //declarations and block of text
 <Main> -> "LOGIN" <Block> "LOGOUT"
 <Block> -> <Exp><Newline> | <Exp><Newline><Block>
-<Exp> -> <Loop> | <If> | <Assignment> | <Call> | <ID>
+<Exp> -> <Loop> | <If> | <Assignment> | <Call> | <ID> | <Print>
 <Return> ->  "REPORT" <INT> |"REPORT" <CHAR> |"REPORT" <FLOAT> |"REPORT" <STRING> |"REPORT" <BOOL> | "REPORT" <Vname>
 <If> ->"IF(" <Boolean> ")follow{" <Block> "}" <Elseif><Else>
 <Elseif> -> <Elseif> "ELSEIF(" <Boolean> ")follow{" <Block> "}"| Lambda
-<Else> -> "ELSE(" <Boolean> ")follow{" <Block> "}" | Lambda
-<Loop> -> "RT(" <Boolean> "){" <Block> "}"
+<Else> -> "ELSE(" <Boolean> ")FOLLOW{" <Block> "}" | Lambda
+<Loop> -> "RT(" <Boolean> "){" <Block> <Control>"}" #Check Thisss!
+<Control> -> "UNFOLLOW" | "LIKE" | "BLOCK" | Lambda
 <Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Assignment> -> <DType> <Varname> "=" <Varname>
+                |<DType> <Varname> "=" "REPLY"
                 |"@INT" <Varname> "=" <ID>
                 | "@CHIRP" <Varname> "=" <ID>
                 | "@COKE" <Varname> "=" <ID>
@@ -21,3 +23,5 @@
 <Declaration> -> <Dtype> <Vname> "(" <Args> "){" <Block> "}"
 <Call> -> <Vname> "(" <Args> ")"
 <Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args> | Lambda
+<Print> -> "TWEET" <Term> #Check this as well
+<Term> -> <Vname> "," <Term> | <ID> "," <Term> | <Vname> | <ID>
