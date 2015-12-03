@@ -6,13 +6,16 @@
 <return> ->  "REPORT" <INT> |"REPORT" <CHAR> |"REPORT" <FLOAT> |"REPORT" <STRING> |"REPORT" <BOOL>
 <If> ->"IF(" <Boolean> "){" <Block> "}"
 <Loop> -> "RT(" <Boolean> "){" <Block> "}"
+<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Assignment> -> <DType> <Varname> "=" <Varname>
                 |"@INT" <Varname> "=" <INT>
                 | "@CHIRP" <Varname> "=" <CHAR>
                 | "@COKE" <Varname> "=" <FLOAT>
                 | "@MSG" <Varname> "=" <STRING>
                 | "@TRALSE" <Varname> "=" <BOOL>
-<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
+<Declaration> -> <Dtype> <Fname> "(" <args> "){" <Block> "}"
+<Call> -> <Fname> "(" <Args> ")"
+<Args> -> <Dtype> <varname> | <Dtype> <varname>  ", " <Args> | Lambda
 <Newline> -> "\n"<Newline> | "\n"
 <Boolean> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
 <INT>
@@ -20,6 +23,3 @@
 <FLOAT>
 <STRING>
 <BOOL>
-<Declaration> -> <Dtype> <Fname> "(" <args> "){" <Block> "}"
-<Call> -> <Fname> "(" <Args> ")"
-<Args> -> <Dtype> <varname> | <Dtype> <varname>  ", " <Args> | Lambda
