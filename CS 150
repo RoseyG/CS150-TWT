@@ -13,13 +13,13 @@ Comment ( AND Delimeter ):
 	# - ;
 
 	e.g. @INT num = 4 # this is the number of times blablabla
-					  # Note: Pero since as in per line naman talaga tayo magbabasa, di naman sya necessary  talaga na may # pa
+					  # Note: Pero since as in per line naman talaga tayo magbabasa, di naman sya necessary talaga na may # pa
 					  # every line, more on comment sya if titignan. Tama ba? XD
 
 Begin and End:
 
 	LOGIN program_name#
- 		#insert codesss here
+ 		#insert codes here
 
 	LOGOUT#
 
@@ -38,6 +38,7 @@ Function Declaration:
 		<do this>#
 		and this#
 		lastly, this# oh now this is a comment all lines must always end with this
+
 	}
 
 Function Call:
@@ -57,7 +58,7 @@ Loops and Control Structure:
 		}
 
 	UNFOLLOW - break (from the Loop/RT)
-	LIKE - conitnue (proceed to next loop)
+	LIKE - continue (proceed to next loop)
 	BLOCK - force Exit from the Program
 
 I/O:
