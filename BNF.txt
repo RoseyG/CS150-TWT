@@ -5,8 +5,16 @@
 <Exp> -> <Loop> | <If> | <Assignment> | <Call> | "UNFOLLOW" | "BLOCK" | "FOLLOW"
 <If> ->"IF(" <Boolean> "){" <Block> "}"
 <Loop> -> "RT(" <Boolean> "){" <Block> "}"
-<Assignment> -> "@INT" <Varname> "=" <INT> | "@CHIRP" <Varname> "=" <CHAR> | "@COKE" <Varname> "=" <FLOAT> | "@MSG" <Varname> "=" <STRING> | "@TRALSE" <Varname> "=" <BOOL>
-<Newline> -> "\n"
+
+
+<Assignment> -> <DType> <Varname> "=" <Varname>
+                |"@INT" <Varname> "=" <INT>
+                | "@CHIRP" <Varname> "=" <CHAR>
+                | "@COKE" <Varname> "=" <FLOAT>
+                | "@MSG" <Varname> "=" <STRING>
+                | "@TRALSE" <Varname> "=" <BOOL>
+<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE" 
+<Newline> -> "\n"<Newline> | "\n"
 <Boolean> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
 <INT>
 <CHAR>
