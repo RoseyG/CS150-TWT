@@ -1,0 +1,15 @@
+<Program> -> <FDefns><Main>
+<FDefns> -> NULL |                  //declarations and block of text
+<Main> -> "login" <Block> "logout" 
+<Block> -> <Exp><Newline> | <Exp><Newline><Block>
+<Exp> -> <Loop> | <If> | <Assignment> | <Call>
+<If> ->"IF(" <Boolean> "){" <Block> "}"
+<Loop> -> "RT(" <Boolean> "){" <Block> "}"
+<Assignment> -> "@INT" <Varname> "=" <INT> | "@CHIRP" <Varname> "=" <CHAR> | "@COKE" <Varname> "=" <FLOAT> | "@MSG" <Varname> "=" <STRING> | "@TRALSE" <Varname> "=" <BOOL>
+<Newline> -> "\n"
+<Boolean> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
+<INT>
+<CHAR>
+<FLOAT>
+<STRING>
+<BOOL>
