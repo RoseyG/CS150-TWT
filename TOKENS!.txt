@@ -17,6 +17,11 @@
                 read_statement: "REPLY", 10
                 print_statement: "TWEET", 11
                 return_statement: "REPORT", 12
+                INT: 71
+                FLOAT: 72
+                CHAR: 73
+                STRING: 74
+                BOOL: 75
                 "{", 41
                 "}", 42
                 "+", 43
