@@ -9,19 +9,14 @@
 <Else> -> "ELSE(" <Boolean> ")follow{" <Block> "}" | Lambda
 <Loop> -> "RT(" <Boolean> "){" <Block> "}"
 <Assignment> -> <DType> <Varname> "=" <Varname>
-                |"@INT" <Varname> "=" <INT>
-                | "@CHIRP" <Varname> "=" <CHAR>
-                | "@COKE" <Varname> "=" <FLOAT>
-                | "@MSG" <Varname> "=" <STRING>
-                | "@TRALSE" <Varname> "=" <BOOL>
+                |"@INT" <Varname> "=" <ID>
+                | "@CHIRP" <Varname> "=" <ID>
+                | "@COKE" <Varname> "=" <ID>
+                | "@MSG" <Varname> "=" <ID>
+                | "@TRALSE" <Varname> "=" <ID>
 <Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Newline> -> "\n"<Newline> | "\n"
 <Boolean> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
-<INT>
-<CHAR>
-<FLOAT>
-<STRING>
-<BOOL>
 <Declaration> -> <Dtype> <Vname> "(" <Args> "){" <Block> "}"
 <Call> -> <Vname> "(" <Args> ")"
 <Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args> | Lambda

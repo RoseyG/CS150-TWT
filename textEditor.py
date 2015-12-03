@@ -1,5 +1,5 @@
-from Tkinter import *
-from tkFileDialog import *
+from tkinter import *
+from tkinter.filedialog import *
 
 filename = None
 
@@ -49,4 +49,3 @@ menubar.add_cascade(label="File", menu=filemenu)
 
 root.config(menu=menubar)
 root.mainloop()
-
