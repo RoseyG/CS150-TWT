@@ -7,6 +7,7 @@
                 bool: "@TRALSE", 7
                 login: "@LOGIN", 1
                 logout: "@LOGOUT", 0
+                vname: "ANY ALPHANUMERIC" 
                 if: "IF", 20
                 elseif: "ELSEIF", 21
                 loop: "RT", 30
