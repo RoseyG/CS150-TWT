@@ -83,11 +83,12 @@ def Exp():
         Printing()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
+    elif (nextToken == return_state):
+        Return()
     else:
         print("Error: Unidentified expression")
         
 def Return():
-    lex()
     if (nextToken == return_state):
         lex()
         if (nextToken == INT or nextToken == CHAR or nextToken = FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
@@ -96,7 +97,6 @@ def Return():
             print("Error: Expected a variable literal")
 
 def If():
-    lex()
     if (nextToken == if_state):
         lex()
         if (nextToken == openParen):
@@ -105,7 +105,12 @@ def If():
             if (nextToken == closeParen):
                 lex()
                 if (nextToken == exec_state):
-                
+                    lex()
+                    if (nextToken == openBrace):
+                        Block()
+                        lex()
+                        if (nextToken == closeBrace):
+                            lex()
 
 ##MIKA
 def Print():
