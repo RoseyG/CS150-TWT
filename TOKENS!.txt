@@ -11,13 +11,15 @@
                 if: "IF", 20
                 elseif: "ELSEIF", 21
                 loop: "RT", 30
-                break: "UNFOLLOW", 31 
+                break: "UNFOLLOW", 31
                 continue: "LIKE", 32
                 exit: "BLOCK", 33
                 exec: "FOLLOW", 34
                 read: "REPLY", 10
                 print: "TWEET", 11
                 return: "REPORT", 12
+                true: "YES", 13
+                no: "NO", 14
                 INT: 71
                 FLOAT: 72
                 CHAR: 73
@@ -40,7 +42,3 @@
                 ">", 55
                 "<", 56
 		"EOF", -1
-                
-        
-                
-                
