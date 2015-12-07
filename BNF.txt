@@ -18,7 +18,7 @@
                 | "@MSG" <Varname> "=" <STRING>
                 | "@TRALSE" <Varname> "=" <BOOL>
 <Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
-<Newline> -> "\n"<Newline> | "\n"
+#<Newline> -> "\n"<Newline> | "\n"
 <Boolean> -> <BooleanCond> | "~" <BooleanCond>
 <BooleanCond> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
 <Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"

@@ -113,7 +113,121 @@ def If():
                             lex()
 
 ##MIKA
-def Decalaration():
+#<Assignment> -> <DType> <Varname> "=" <Varname>
+#                |<DType> <Varname> "=" "REPLY"
+#                |"@INT" <Varname> "=" <INT>
+#                | "@CHIRP" <Varname> "=" <CHAR>
+#                | "@COKE" <Varname> "=" <FLOAT>
+#                | "@MSG" <Varname> "=" <STRING>
+#                | "@TRALSE" <Varname> "=" <BOOL>
+def Assignment():
+    if(nextToken == int_dec):
+        if(nextToken == varname):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == INT or nextToken == varname or nextToken == read_state):
+                    lex()
+                    return
+    elif(nextToken == float_dec):
+        if(nextToken == varname):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == FLOAT or nextToken == varname or nextToken == read_state):
+                    lex()
+                    return
+    elif(nextToken == char_dec):
+        if(nextToken == varname):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == CHAR or nextToken == varname or nextToken == read_state):
+                    lex()
+                    return
+
+    elif(nextToken == string_dec):
+        if(nextToken == varname):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == STRING or nextToken == varname or nextToken == read_state):
+                    lex()
+                    return
+    elif(nextToken == bool_dec):
+        if(nextToken == varname):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == BOOL or nextToken == varname or nextToken == read_state):
+                    lex()
+                    return
+    print("ERROR. NOT THE RIGHT ASSIGNMENT")
+    exit()
+
+    def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
+    if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
+        lex()
+        return;
+    print("Expected: Data type poeszh")
+    exit()
+
+def Boolean(): #<Boolean> -> <BooleanCond> | "~" <BooleanCond>
+    if(nextToken == NOT):
+        lex()
+        BooleanCond()
+    elif(nextToken == vname):
+        BooleanCond()
+    else:
+        print("Expected is a ~ or a variable name -- basta bool expression")
+        exit()
+    return
+
+def BooleanCond(): #<BooleanCond> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
+    if (nextToken == vname):
+        lex()
+        if(nextToken == greatEqSign):
+            lex()
+            if(nextToken == vname):
+                lex()
+                return
+            else:
+                print("Expected nextToken is  a variable name")
+        elif (nextToken == lessEqSign):
+                lex()
+                if(nextToken == vname):
+                    lex()
+                    return
+                else:
+                    print("Expected nextToken is  a variable name")
+        elif (nextToken == eqSign):
+                lex()
+                if(nextToken == vname):
+                    lex()
+                    return
+                else:
+                    print("Expected nextToken is  a variable name")
+        elif (nextToken == lesserSign):
+                lex()
+                if(nextToken == vname):
+                    lex()
+                    return
+                else:
+                    print("Expected nextToken is  a variable name")
+        elif (nextToken == greaterSign):
+                lex()
+                #LAGAY EXPECTED
+                if(nextToken == vname):
+                    lex()
+                    return
+                else:
+                    print("Expected nextToken is  a variable name")
+        else:
+            print("Expected nextToken is a Logical Operation/tor")
+    print("Expected token is a variable name")
+    exit()
+
+def Declaration(): #<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
     Dtype()
     if(nextToken == vname):
         if (nextToken == openParen):
