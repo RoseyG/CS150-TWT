@@ -23,23 +23,23 @@ INT = 71
 FLOAT = 72
 CHAR = 73
 STRING = 74
-"{", 41
-"}", 42
-"+", 43
-"-", 44
-"/", 45
-"*", 46
-"=", 47
-"(", 48
-")", 49
-"#", 50
-",", 51
-">=", 52
-"<=", 53
-"==", 54
-">", 55
-"<", 56
-varname = 100
+openBrace = 41
+closeBrace = 42
+plusSign = 43
+minusSign = 44
+divSign = 45
+mulSign = 46
+asSign = 47
+openParen = 48
+closeParen = 49
+hashSymbol = 50
+commaSign = 51
+lessEqSign = 52
+greatEqSign = 53
+eqSign = 54
+lesserSign = 55
+greaterSign = 56
+VARIABLE = 100
 
 
 def lex(nextToken):
@@ -87,12 +87,46 @@ def lex(nextToken):
     	nextToken = FALSE
     elif nextString == '~':
     	nextToken = NOT
-    elif (nextString[0] == '\"') and (nextString[-1] == '\"'):
-    	nextToken = STRING
+    elif nextString == '':
+    	nextToken = INT
+    elif nextString == '':
+    	nextToken = FLOAT
     elif (nextString[0] == '\'') and (nextString[-1] == '\''):
     	nextToken = CHAR
-    elif nextString == '':
-    	nextToken =
+    elif (nextString[0] == '\"') and (nextString[-1] == '\"'):
+    	nextToken = STRING
+    elif nextString == '{':
+    	nextToken = openBrace
+    elif nextString == '}':
+    	nextToken = closeBrace
+    elif nextString == '+':
+    	nextToken = plusSign
+    elif nextString == '-':
+    	nextToken = minusSign
+    elif nextString == '/':
+    	nextToken = divSign
+    elif nextString == '*':
+    	nextToken = mulSign
+    elif nextString == '=':
+    	nextToken = asSign
+    elif nextString == '(':
+    	nextToken = openParen
+    elif nextString == ')':
+    	nextToken = closeParen
+    elif nextString == '#':
+    	nextToken = hashSymbol
+    elif nextString == ',':
+    	nextToken = commaSign
+    elif nextString == '>=':
+    	nextToken = lessEqSign
+    elif nextString == '<=':
+    	nextToken = greatEqSign
+    elif nextString == '==':
+    	nextToken = eqSign
+    elif nextString == '>':
+    	nextToken = lesserSign
+    elif nextString == '<':
+    	nextToken = greaterSign
     else
-        nextToken = varname
+        nextToken = VARIABLE
     return nextToken
