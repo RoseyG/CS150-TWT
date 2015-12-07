@@ -66,6 +66,7 @@ def Main():
 def Block():
     Exp()
     if (nextToken == hashSymbol)
+        lex()
         Block()
     return
 
@@ -85,8 +86,6 @@ def Exp():
         Control()
     elif (nextToken == return_state):
         Return()
-    else:
-        print("Error: Unidentified expression")
 
 def Return():
     if (nextToken == return_state):
@@ -100,20 +99,75 @@ def If():
     if (nextToken == if_state):
         lex()
         if (nextToken == openParen):
-            Boolean()
             lex()
+            Boolean()
             if (nextToken == closeParen):
                 lex()
                 if (nextToken == exec_state):
                     lex()
                     if (nextToken == openBrace):
-                        Block()
                         lex()
+                        Block()
                         if (nextToken == closeBrace):
                             lex()
+                            Elseif()
+                            Else()
+def Elseif():
+    if (nextToken == elseif_state):
+        lex()
+        if (nextToken == openParen):
+            lex()
+            Boolean()
+            if (nextToken == closeParen):
+                lex()
+                if(nextToken == exec_state):
+                    lex()
+                    if(nextToken == openBrace):
+                        lex()
+                        Block()
+                        if (nextToken == closeBrace):
+                            lex()
+                            Elseif()
+
+def Else():
+    if (nextToken == else_state):
+        lex()
+        if (nextToken == openParen):
+            lex()
+            Boolean()
+            if (nextToken == closeParen):
+                lex()
+                if(nextToken == exec_state):
+                    lex()
+                    if(nextToken == openBrace):
+                        lex()
+                        Block()
+                        if (nextToken == closeBrace):
+                            lex()
+                            return
+        print("Invalid on else")
+                            
+def Loop():
+    if (nextToken == loop_state):
+        lex()
+        if(nextToken == openParen):
+            lex()
+            Boolean()
+            if(nextToken == closeParen):
+                lex()
+                if(nextToken == openBrace):
+                    lex()
+                    Block()
+                    if(nextToken == closeBrace):
+                        lex()
+                        return
+        print("Invalid on loop")     
+def Control():
+    if (nextToken == break_state or nextToken == continue_state or nextToken exit_state):
+        lex()
 
 ##MIKA
-def Decalaration():
+def Declaration():
     Dtype()
     if(nextToken == vname):
         if (nextToken == openParen):
