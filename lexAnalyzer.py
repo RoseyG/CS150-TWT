@@ -27,7 +27,7 @@ openBrace = 41 # '{'
 closeBrace = 42 # '}'
 plusSign = 43
 minusSign = 44
-divSign = 45
+divSign = 45 # '/'
 mulSign = 46
 asSign = 47 # =
 openParen = 48 # '('
