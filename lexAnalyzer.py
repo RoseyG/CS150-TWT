@@ -40,6 +40,7 @@ eqSign = 54 # '=='
 lesserSign = 55 # '<'
 greaterSign = 56 # '>''
 VARIABLE = 19
+nextString = " "
 
 def isfloat(str):
     try:
@@ -48,7 +49,7 @@ def isfloat(str):
         return False
     return True
 
-def lex(nextString):
+def lex():
     if nextString == 'EOF':
         nextToken = -1
     elif nextString == '@LOGIN':
@@ -140,10 +141,12 @@ def lex(nextString):
     print(nextToken)
 
 def main():
-    line = input("Enter: ")
+    global nextString
+    line = raw_input("Enter: ")
     statement = line.split()
     for lexeme in statement:
-        lex(lexeme)
+        nextString = lexeme
+        lex()
 
 if __name__ == '__main__':
 	main()
