@@ -50,6 +50,7 @@ def Program():
 def FDefns():
     Declaration()
 def Main():
+    print("Enter <Main>")
     lex()
     if (nextToken == login):
         Block()
@@ -64,13 +65,19 @@ def Main():
     exit()
 
 def Block():
+    print("Enter <Block>")
+    #if (nextToken == <some tokens that indicate a start of a new line>):
+        #return
     Exp()
+
+    #Newline()
+    #Block()
     if (nextToken == hashSymbol):
-        lex()
-        Block()
-    return
+        lex()                    
+        Block()                  
 
 def Exp():
+    print("Enter <Exp>")
     lex()
     if (nextToken == if_state):
         If()
@@ -86,8 +93,10 @@ def Exp():
         Control()
     elif (nextToken == return_state):
         Return()
+    print("Exit <Exp>")
 
 def Return():
+    print("Enter <Return>")
     if (nextToken == return_state):
         lex()
         if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
@@ -96,6 +105,7 @@ def Return():
             print("Error: Expected a variable literal")
 
 def If():
+    print("Enter <If>")
     if (nextToken == if_state):
         lex()
         if (nextToken == openParen):
@@ -112,7 +122,9 @@ def If():
                             lex()
                             Elseif()
                             Else()
+    print("Exit <If>")
 def Elseif():
+    print("Enter <Elseif>")
     if (nextToken == elseif_state):
         lex()
         if (nextToken == openParen):
@@ -128,11 +140,13 @@ def Elseif():
                         if (nextToken == closeBrace):
                             lex()
                             Elseif()
+    print("Exit <Elseif>")
 
 def Else():
+    print("Enter <Else>")
     if (nextToken == else_state):
         lex()
-        if (nextToken == openParen):
+        if (nextToken == openParen): #won't delete yet, pero ELSE na to. i think we should delete this part - Rae
             lex()
             Boolean()
             if (nextToken == closeParen):
@@ -146,8 +160,11 @@ def Else():
                             lex()
                             return
         print("Invalid on else")
+    #print("Exit <Else>")
+
                             
 def Loop():
+    print("Enter <Loop>")
     if (nextToken == loop_state):
         lex()
         if(nextToken == openParen):
@@ -159,9 +176,12 @@ def Loop():
                     lex()
                     Block()
                     if(nextToken == closeBrace):
-                        lex()
+                        #lex() <- madodoble si lex() since nabasa na yung closing brace - Rae
+                        print("Exit <Loop>")
                         return
-        print("Invalid on loop")     
+        else:
+            print("Invalid on loop")
+
 def Control():
     if (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         lex()
@@ -176,6 +196,7 @@ def Control():
 #                | "@MSG" <Varname> "=" <STRING>
 #                | "@TRALSE" <Varname> "=" <BOOL>
 def Assignment():
+    print("Enter <Assignment>")
     if(nextToken == int_dec):
         if(nextToken == varname):
             lex()
