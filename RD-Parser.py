@@ -1,5 +1,5 @@
 
-global input        
+global input
 input = raw_input()
 input = input.replace(" ", "")
 input = [input[i] for i in range(len(input))]
@@ -18,7 +18,7 @@ def lex():
         LeftP = 25
         RightP = 26
         EOF = -1
-        
+
         i = input[0]
         if( i == 'a') or (i== 'b') or (i == 'c'):
             nexttoken = Identifier
@@ -64,8 +64,8 @@ def expr():
         lex()
         term()
     print "Exit <expr> "
-    return 
-    
+    return
+
 def term():
     print "Enter <term> "
     factor()
@@ -74,7 +74,7 @@ def term():
         factor()
     print "Exit <term> "
     return
-    
+
 def factor():
     if (nexttoken == LeftP):
         print "Enter <factor> "
@@ -91,7 +91,7 @@ def factor():
         print "Error! "
         exit()
     print "Exit <factor> "
-    
+
 def id():
     if (nexttoken == Identifier):
         lex()
@@ -100,8 +100,8 @@ def id():
         print "Error!"
         exit()
     print "Exit <id> "
-    
-        
-           
+
+
+
 lex()
 A()

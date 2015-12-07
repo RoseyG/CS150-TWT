@@ -108,6 +108,24 @@ def If():
 
 
 ##MIKA
+def Decalaration():
+    Dtype()
+    if(nextToken == vname):
+        if (nextToken == openParen):
+            lex()
+            Args()
+            if (nextToken == closeParen):
+                lex()
+                if(nextToken == openBrace):
+                    lex()
+                    Block()
+                    if(nextToken == closeBrace):
+                        lex()
+                        print("Exit <Call>")
+                        return
+
+    print("Invalid")
+    exit()
 
 def Call(): #<Call> -> <Vname> "(" <Args> ")"
     if(nextToken == vname):
