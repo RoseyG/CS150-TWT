@@ -5,7 +5,7 @@
 <Exp> -> <Loop> | <If> | <Assignment> | <Call> | <Print> | Control
 <Return> ->  "REPORT" <INT> |"REPORT" <CHAR> |"REPORT" <FLOAT> |"REPORT" <STRING> |"REPORT" <BOOL> | "REPORT" <Vname>
 <If> ->"IF(" <Boolean> ")FOLLOW{" <Block> "}" <Elseif><Else>
-<Elseif> -> <Elseif> "ELSEIF(" <Boolean> ")FOLLOW{" <Block> "}"| Lambda
+<Elseif> ->  "ELSEIF(" <Boolean> ")FOLLOW{" <Block> "}" <Elseif>| Lambda
 <Else> -> "ELSE(" <Boolean> ")FOLLOW{" <Block> "}" | Lambda
 <Loop> -> "RT(" <Boolean> "){" <Block> "}"
 <Control> -> "UNFOLLOW" | "LIKE" | "BLOCK" | Lambda
