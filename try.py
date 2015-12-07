@@ -1,3 +1,5 @@
+##ROSEY
+
 ##KELLY
 def Program():
     FDefns()
@@ -22,9 +24,16 @@ def Block():
     Exp()
 
 ##MIKA
-def Print():
-    if (nextToken == printing):
+def Args():
+    Dtype()
 
+
+def Printing():
+    if (nextToken == printing):
+        lex()
+        Term()
+    else:
+        exit()
 
 def Term():
     print("Enter <Term>")
@@ -36,4 +45,4 @@ def Term():
     else:
         print "Error!"
     print "Exit Term>"
-        exit()
+    exit()
