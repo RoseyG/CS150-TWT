@@ -39,7 +39,7 @@ greatEqSign = 53
 eqSign = 54
 lesserSign = 55
 greaterSign = 56
-VARIABLE = 100
+VARIABLE = 19
 
 def isfloat(str):
     try:
