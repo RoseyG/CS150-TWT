@@ -1,22 +1,22 @@
                 =========================================DICTIONARY!!!=========================================
-                tralse_delaration: "@TRALSE", 2
-                integer_declaration: "@INT", 3
-                float_declaration: "@COKE", 4
-                char_declaration: "@CHIRP", 5
-                string_declaration: "@MSG", 6
-                bool_declaration: "@TRALSE", 7
+                tralse: "@TRALSE", 2
+                integer: "@INT", 3
+                float: "@COKE", 4
+                char: "@CHIRP", 5
+                string: "@MSG", 6
+                bool: "@TRALSE", 7
                 login: "@LOGIN", 1
                 logout: "@LOGOUT", 0
-                if_statement: "IF", 20
-                elseif_statement: "ELSEIF", 21
-                loop_statement: "RT", 30
-                break_statement: "UNFOLLOW", 31
-                continue_statement: "LIKE", 32
-                exit_statement: "BLOCK", 33
-                exec_loop_statement: "FOLLOW", 34
-                read_statement: "REPLY", 10
-                print_statement: "TWEET", 11
-                return_statement: "REPORT", 12
+                if: "IF", 20
+                elseif: "ELSEIF", 21
+                loop: "RT", 30
+                break: "UNFOLLOW", 31 
+                continue: "LIKE", 32
+                exit: "BLOCK", 33
+                exec: "FOLLOW", 34
+                read: "REPLY", 10
+                print: "TWEET", 11
+                return: "REPORT", 12
                 INT: 71
                 FLOAT: 72
                 CHAR: 73
@@ -38,6 +38,7 @@
                 "==", 54
                 ">", 55
                 "<", 56
+		"EOF", -1
                 
         
                 
