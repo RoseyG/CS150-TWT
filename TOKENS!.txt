@@ -15,7 +15,7 @@
                 exit: "BLOCK", 33
                 exec: "FOLLOW", 34
                 read: "REPLY", 10
-                print: "TWEET", 11
+                printing: "TWEET", 11
                 return: "REPORT", 12
                 true: "YES", 13
                 false: "NO", 14
