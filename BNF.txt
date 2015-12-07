@@ -21,7 +21,7 @@
 <Newline> -> "\n"<Newline> | "\n"
 <Boolean> -> <BooleanCond> | "~" <BooleanCond>
 <BooleanCond> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
-<Declaration> -> <Dtype> <Vname> "(" <Args> "){" <Block> "}"
+<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
 <Call> -> <Vname> "(" <Args> ")"
 <Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args> | Lambda
 <Printing> -> "TWEET" <Term> #Check this as well
