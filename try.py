@@ -69,25 +69,45 @@ def Block():
     if (nextToken ==
 
 ##MIKA
-def Args():
+
+def Call(): #<Call> -> <Vname> "(" <Args> ")"
+    if(nextToken == vname):
+        lex()
+        if (nextToken == openParen):
+            lex()
+            Args()
+            if (nextToken == closeParen):
+                lex()
+                print("Exit <Call>")
+                return
+    print("Invalid")
+    exit()
+
+def Args(): #<Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args> | Lambda
     Dtype()
+    if (nextToken == vname):
+        lex()
+        if (nextToken == commaSign):
+            lex()
+            Args()
+    return
 
-
-def Printing():
+def Printing(): #<Printing> -> "TWEET" <Term> #Check this as well
     if (nextToken == printing):
         lex()
         Term()
     else:
+        print("Invalid")
         exit()
 
-def Term():
+def Term(): #<Term> -> <Vname> "," <Term> | <ID> "," <Term> | <Vname> | <ID>
     print("Enter <Term>")
 	if (nextToken == vname or nextToken == string):
         lex()
-        while(nextToken == ","):
+        if (nextToken == ","):
             lex()
             Term()
-    else:
-        print "Error!"
-    print "Exit Term>"
+        return
+
+    print("Exit <Term>")
     exit()
