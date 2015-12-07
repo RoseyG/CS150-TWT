@@ -86,7 +86,26 @@ def Exp():
     else:
         print("Error: Unidentified expression")
         
-def 
+def Return():
+    lex()
+    if (nextToken == return_state):
+        lex()
+        if (nextToken == INT or nextToken == CHAR or nextToken = FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
+            return
+        else:
+            print("Error: Expected a variable literal")
+
+def If():
+    lex()
+    if (nextToken == if_state):
+        lex()
+        if (nextToken == openParen):
+            Boolean()
+            lex()
+            if (nextToken == closeParen):
+                lex()
+                if (nextToken == exec_state):
+                
 
 ##MIKA
 def Print():
