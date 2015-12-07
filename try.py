@@ -51,13 +51,13 @@ def FDefns():
     Declaration()
 def Main():
     lex()
-    if (nextToken == login)
+    if (nextToken == login):
         Block()
         lex()
-        if (nextToken == logout)
+        if (nextToken == logout):
             print("Exit Main")
             return
-        else
+        else:
             print("Error: Expected LOGOUT ")
             exit()
     print("Error: Expected LOGIN")
@@ -65,7 +65,7 @@ def Main():
 
 def Block():
     Exp()
-    if (nextToken == hashSymbol)
+    if (nextToken == hashSymbol):
         lex()
         Block()
     return
@@ -90,7 +90,7 @@ def Exp():
 def Return():
     if (nextToken == return_state):
         lex()
-        if (nextToken == INT or nextToken == CHAR or nextToken = FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
+        if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
             return
         else:
             print("Error: Expected a variable literal")
@@ -163,7 +163,7 @@ def Loop():
                         return
         print("Invalid on loop")     
 def Control():
-    if (nextToken == break_state or nextToken == continue_state or nextToken exit_state):
+    if (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         lex()
 
 ##MIKA
@@ -220,7 +220,7 @@ def Assignment():
     print("ERROR. NOT THE RIGHT ASSIGNMENT")
     exit()
 
-    def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
+def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
     if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
         lex()
         return;
@@ -333,7 +333,7 @@ def Printing(): #<Printing> -> "TWEET" <Term> #Check this as well
 
 def Term(): #<Term> -> <Vname> "," <Term> | <ID> "," <Term> | <Vname> | <ID>
     print("Enter <Term>")
-	if (nextToken == vname or nextToken == string):
+    if (nextToken == vname or nextToken == string):
         lex()
         if (nextToken == ","):
             lex()
