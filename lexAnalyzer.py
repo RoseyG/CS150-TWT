@@ -18,7 +18,7 @@ print_state = 11
 return_state = 12
 TRUE = 13
 FALSE = 14
-not_val = 15
+NOT = 15
 INT = 71
 FLOAT = 72
 CHAR = 73
@@ -46,9 +46,9 @@ def lex(nextToken):
     if nextString == 'EOF':
 		 = -1
     elif nextString == '@LOGIN':
-    		nextToken = login
+    	nextToken = login
     elif nextString == '@LOGOUT':
-    		nextToken = logout
+    	nextToken = logout
 	elif nextString == '@INT':
 		nextToken = int_dec
 	elif nextString == '@COKE':
@@ -62,37 +62,37 @@ def lex(nextToken):
 	elif nextString == 'IF':
 		nextToken = if_state
     elif nextString == 'ELSEIF':
-    		nextToken = elseif_state
+    	nextToken = elseif_state
     elif nextString == 'ELSE':
-    		nextToken = else_state
+    	nextToken = else_state
     elif nextString == 'RT':
-    		nextToken = loop_state
+    	nextToken = loop_state
     elif nextString == 'UNFOLLOW':
-    		nextToken = brake_state
+    	nextToken = brake_state
     elif nextString == 'LIKE':
-    		nextToken = continue_state
+    	nextToken = continue_state
     elif nextString == 'BLOCK':
-    		nextToken = exit_state
+    	nextToken = exit_state
     elif nextString == 'FOLLOW':
-    		nextToken = exec_state
+    	nextToken = exec_state
     elif nextString == 'REPLY':
-    		nextToken = read_state
+    	nextToken = read_state
     elif nextString == 'TWEET':
-    		nextToken = print_state
+    	nextToken = print_state
     elif nextString == 'REPORT':
-    		nextToken = return_state
+    	nextToken = return_state
     elif nextString == 'YES':
-    		nextToken = true_val
+    	nextToken = TRUE
     elif nextString == 'NO':
-    		nextToken = false_val
+    	nextToken = FALSE
     elif nextString == '~':
-    		nextToken = not_val
+    	nextToken = NOT
     elif (nextString[0] == '\"') and (nextString[-1] == '\"'):
-    		nextToken = string_val
+    	nextToken = STRING
     elif (nextString[0] == '\'') and (nextString[-1] == '\''):
-    		nextToken = char_val
+    	nextToken = CHAR
     elif nextString == '':
-    		nextToken =
+    	nextToken =
     else
-            nextToken = varname
-        return nextToken
+        nextToken = varname
+    return nextToken
