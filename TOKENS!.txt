@@ -1,5 +1,6 @@
                 =========================================DICTIONARY!!!=========================================
-                tralse: "@TRALSE", 2
+                Vname: ANY LETTER COMBINATION, 19
+		tralse: "@TRALSE", 2
                 integer: "@INT", 3
                 float: "@COKE", 4
                 char: "@CHIRP", 5
