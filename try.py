@@ -2,7 +2,7 @@
 def Program():
     FDefns()
     Main()
-    
+
 def FDefns():
     Declaration()
 def Main():
@@ -20,7 +20,20 @@ def Main():
     exit()
 def Block():
     Exp()
-    
-##MIKA
-lets seeee
 
+##MIKA
+def Print():
+    if (nextToken == printing):
+
+
+def Term():
+    print("Enter <Term>")
+	if (nextToken == vname or nextToken == string):
+        lex()
+        while(nextToken == ","):
+            lex()
+            Term()
+    else:
+        print "Error!"
+    print "Exit Term>"
+        exit()
