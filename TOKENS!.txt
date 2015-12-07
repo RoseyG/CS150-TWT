@@ -7,6 +7,7 @@
                 bool: "@TRALSE", 7
                 login: "@LOGIN", 1
                 logout: "@LOGOUT", 0
+                vname: "ANY ALPHANUMERIC" 
                 if: "IF", 20
                 elseif: "ELSEIF", 21
                 loop: "RT", 30
@@ -15,7 +16,7 @@
                 exit: "BLOCK", 33
                 exec: "FOLLOW", 34
                 read: "REPLY", 10
-                print: "TWEET", 11
+                printing: "TWEET", 11
                 return: "REPORT", 12
                 true: "YES", 13
                 false: "NO", 14
@@ -40,4 +41,4 @@
                 "==", 54
                 ">", 55
                 "<", 56
-		"EOF", -1
+		              "EOF", -1
