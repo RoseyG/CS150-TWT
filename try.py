@@ -75,7 +75,18 @@ def Exp():
         If()
     elif (nextToken == loop_state):
         Loop()
-    elif (nextToken ==     
+    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec):
+        Assignment()
+    elif (nextToken == VARIABLE):
+        Call()
+    elif (nextToken == print_state):
+        Printing()
+    elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
+        Control()
+    else:
+        print("Error: Unidentified expression")
+        
+def 
 
 ##MIKA
 def Print():
