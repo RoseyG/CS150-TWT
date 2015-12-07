@@ -1,7 +1,7 @@
 <Program> -> <FDefns><Main>
 <FDefns> -> Declaration | Lambda                 //declarations and block of text
 <Main> -> "LOGIN" <Block> "LOGOUT"
-<Block> -> <Exp><Newline> | <Exp><Newline><Block>
+<Block> -> <Exp><Newline> | <Exp><Newline><Block> | Lambda
 <Exp> -> <Loop> | <If> | <Assignment> | <Call> | <Print> | Control
 <Return> ->  "REPORT" <INT> |"REPORT" <CHAR> |"REPORT" <FLOAT> |"REPORT" <STRING> |"REPORT" <BOOL> | "REPORT" <Vname>
 <If> ->"IF(" <Boolean> ")FOLLOW{" <Block> "}" <Elseif><Else>
