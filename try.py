@@ -51,10 +51,10 @@ def FDefns():
     Declaration()
 def Main():
     lex()
-    if (nextToken == "login")
+    if (nextToken == login)
         Block()
         lex()
-        if (nextToken == "logout")
+        if (nextToken == logout)
             print("Exit Main")
             return
         else
@@ -65,8 +65,47 @@ def Main():
     
 def Block():
     Exp()
-    Newline()
-    if (nextToken == 
+    if (nextToken == hashSymbol)
+        Block()
+    return
+
+def Exp():
+    lex()
+    if (nextToken == if_state):
+        If()
+    elif (nextToken == loop_state):
+        Loop()
+    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec):
+        Assignment()
+    elif (nextToken == VARIABLE):
+        Call()
+    elif (nextToken == print_state):
+        Printing()
+    elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
+        Control()
+    else:
+        print("Error: Unidentified expression")
+        
+def Return():
+    lex()
+    if (nextToken == return_state):
+        lex()
+        if (nextToken == INT or nextToken == CHAR or nextToken = FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
+            return
+        else:
+            print("Error: Expected a variable literal")
+
+def If():
+    lex()
+    if (nextToken == if_state):
+        lex()
+        if (nextToken == openParen):
+            Boolean()
+            lex()
+            if (nextToken == closeParen):
+                lex()
+                if (nextToken == exec_state):
+                
 
 ##MIKA
 def Print():
