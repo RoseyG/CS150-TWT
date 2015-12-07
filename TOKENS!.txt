@@ -18,7 +18,8 @@
                 print: "TWEET", 11
                 return: "REPORT", 12
                 true: "YES", 13
-                no: "NO", 14
+                false: "NO", 14
+                not: "~", 15
                 INT: 71
                 FLOAT: 72
                 CHAR: 73

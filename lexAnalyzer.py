@@ -1,27 +1,28 @@
 int_dec = 3
 float_dec = 4
-char: "@CHIRP", 5
-string: "@MSG", 6
-bool: "@TRALSE", 7
-login: "@LOGIN", 1
-logout: "@LOGOUT", 0
-if: "IF", 20
-elseif: "ELSEIF", 21
-loop: "RT", 30
-break: "UNFOLLOW", 31
-continue: "LIKE", 32
-exit: "BLOCK", 33
-exec: "FOLLOW", 34
-read: "REPLY", 10
-print: "TWEET", 11
-return: "REPORT", 12
-true: "YES", 13
-no: "NO", 14
-INT: 71
-FLOAT: 72
-CHAR: 73
-STRING: 74
-BOOL: 75
+char_dec =  5
+string_dec = 6
+bool_dec = 7
+login = 1
+logout = 0
+if_state = 20
+elseif_state = 21
+else_state = 22
+loop_state = 30
+break_state = 31
+continue_state = 32
+exit_state = 33
+exec_state = 34
+read_state = 10
+print_state = 11
+return_state = 12
+TRUE = 13
+FALSE = 14
+not_val = 15
+INT = 71
+FLOAT = 72
+CHAR = 73
+STRING = 74
 "{", 41
 "}", 42
 "+", 43
@@ -38,6 +39,7 @@ BOOL: 75
 "==", 54
 ">", 55
 "<", 56
+varname = 100
 
 
 def lex(nextToken):
@@ -57,12 +59,40 @@ def lex(nextToken):
 		nextToken = string_dec
 	elif nextString == '@TRALSE':
 		nextToken = bool_dec
-	elif nextString == '':
-		nextToken =
+	elif nextString == 'IF':
+		nextToken = if_state
+    elif nextString == 'ELSEIF':
+    		nextToken = elseif_state
+    elif nextString == 'ELSE':
+    		nextToken = else_state
+    elif nextString == 'RT':
+    		nextToken = loop_state
+    elif nextString == 'UNFOLLOW':
+    		nextToken = brake_state
+    elif nextString == 'LIKE':
+    		nextToken = continue_state
+    elif nextString == 'BLOCK':
+    		nextToken = exit_state
+    elif nextString == 'FOLLOW':
+    		nextToken = exec_state
+    elif nextString == 'REPLY':
+    		nextToken = read_state
+    elif nextString == 'TWEET':
+    		nextToken = print_state
+    elif nextString == 'REPORT':
+    		nextToken = return_state
+    elif nextString == 'YES':
+    		nextToken = true_val
+    elif nextString == 'NO':
+    		nextToken = false_val
+    elif nextString == '~':
+    		nextToken = not_val
+    elif (nextString[0] == '\"') and (nextString[-1] == '\"'):
+    		nextToken = string_val
+    elif (nextString[0] == '\'') and (nextString[-1] == '\''):
+    		nextToken = char_val
     elif nextString == '':
     		nextToken =
-    elif nextString == '':
-    		nextToken =
-    elif nextString == '':
-    		nextToken =
-    return nextToken
+    else
+            nextToken = varname
+        return nextToken
