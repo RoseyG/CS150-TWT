@@ -19,7 +19,8 @@
                 | "@TRALSE" <Varname> "=" <BOOL>
 <Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Newline> -> "\n"<Newline> | "\n"
-<Boolean> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
+<Boolean> -> <BooleanCond> | "~" <BooleanCond>
+<BooleanCond> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
 <Declaration> -> <Dtype> <Vname> "(" <Args> "){" <Block> "}"
 <Call> -> <Vname> "(" <Args> ")"
 <Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args> | Lambda
