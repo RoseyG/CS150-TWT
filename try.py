@@ -51,10 +51,10 @@ def FDefns():
     Declaration()
 def Main():
     lex()
-    if (nextToken == "login")
+    if (nextToken == login)
         Block()
         lex()
-        if (nextToken == "logout")
+        if (nextToken == logout)
             print("Exit Main")
             return
         else
@@ -65,8 +65,17 @@ def Main():
     
 def Block():
     Exp()
-    Newline()
-    if (nextToken == 
+    if (nextToken == hashSymbol)
+        Block()
+    return
+
+def Exp():
+    lex()
+    if (nextToken == if_state):
+        If()
+    elif (nextToken == loop_state):
+        Loop()
+    elif (nextToken ==     
 
 ##MIKA
 def Print():
