@@ -27,7 +27,7 @@
               | "TWEET" <ID>
 <Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
 
-//This part is the one we made sa ME
+//This part is the one we made sa ME compy na lng natin
 
 <Exp> -> <Term> <ExpPrime>
 <ExpPrime> -> "+" <Term><EspPrime>
