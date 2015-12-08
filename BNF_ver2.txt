@@ -1,0 +1,52 @@
+<Program> -> <Declaration> <Main>
+            | <Main>
+<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> <Return>"}"
+                | <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
+<Main> -> "LOGIN" <Block> "LOGOUT"
+          | "LOGIN" "LOGOUT"
+<Block> -> <State>                    // Block is made up of statement <State> of the same level
+<State> -> <Loop> <NewLine> <State>
+        | <If> <NewLine> <State>
+        | <Assignment> <NewLine> <State>
+        | <Call> <NewLine> <State>
+        | <Printing> <NewLine> <State>
+        | <Control> <NewLine> <State>
+<Loop> -> "RT" "(" <Boolean> ")" "{" <Block> "}"
+<If> -> "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
+        | "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <Else>
+        | "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}"
+<ElseIf> -> "ELSEIF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <Elseif>
+<Else> -> "ELSE" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}"
+<Assignment> -> <DType> <Vname> "=" <Vname>
+                | <DType> <Vname> "=" "REPLY"
+                | <DType> <Vname> "=" <Exp>
+                | <DType> <Vname> "=" <ID>    // Si parser na bahala match yung data types
+<Call> -> <Vname> "(" <Args> ")"
+<Printing> -> "TWEET" <Vname>
+              | "TWEET" <EXP>
+              | "TWEET" <ID>
+<Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
+
+//This part is the one we made sa ME
+
+<Exp> -> <Term> <ExpPrime>
+<ExpPrime> -> "+" <Term><EspPrime>
+            | "-" <Term><ExpPrime>
+<Term> -> <Fact><TermPrime>
+<TermPrime> -> "*" <Fact><TermPrime>
+            | "/" <Fact><TermPrime>
+<Fact> -> <ID> | "(" <Exp> ")"
+<ID> -> <INT> | <CHAR> | <FLOAT> | <STRING> | <BOOL>
+
+<Newline> -> "\n" <Newline>
+<Boolean> -> "(" <BooleanCond> ")" | "~" <Boolean>
+<BooleanCond> -> <Vname> <BooleanOP> <Vname>
+          | <Vname> <BooleanOP> <Boolean>
+          | <Boolean> <BooleanOP> <Boolean>
+          | <Boolean> <BooleanOP> <VName>
+<BooleanOP> -> ">=" | "<=" | "==" | ">" | "<"
+
+<Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
+<Args> -> <Dtype> <Vname> "," <Args>
+<Newline> -> "\n"<Newline> | "\n"
+<Return> -> "REPORT" <INT> |"REPORT" <CHAR> |"REPORT" <FLOAT> |"REPORT" <STRING> |"REPORT" <BOOL> | "REPORT" <Vname>
