@@ -19,11 +19,11 @@
         | <Read> "#" <StatePrime>
         | <Control> "#" <StatePrime>
 <Loop> -> "RT" <Boolean> {" <Block> "}"
-<If> -> "IF" <Boolean> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
-        | "IF" <Boolean> "FOLLOW" "{" <Block> "}" <Else>
-        | "IF" <Boolean> "FOLLOW" "{" <Block> "}"
-<ElseIf> -> "ELSEIF" <Boolean> "FOLLOW" "{" <Block> "}" <Elseif>
-<Else> -> "ELSE" <Boolean> "FOLLOW" "{" <Block> "}"
+<If> -> "IF" <Logic> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
+        | "IF" <Logic> "FOLLOW" "{" <Block> "}" <Else>
+        | "IF" <Logic> "FOLLOW" "{" <Block> "}"
+<ElseIf> -> "ELSEIF" <Logic> "FOLLOW" "{" <Block> "}" <Elseif>
+<Else> -> "ELSE" <Logic> "FOLLOW" "{" <Block> "}"
 <Assignment> -> <DType> <Vname> "=" <Vname>
                 |<DType> <Vname> "=" <Reading>
                 |"@INT" <Vname> "=" <INT>
@@ -56,12 +56,13 @@
 <Fact> -> <INT> | <CHAR> | <FLOAT> | "(" <Exp> ")"
 
 <Newline> -> "\n" <Newline>
-<Boolean> -> "(" <BooleanCond> ")" | "~" <Boolean>
-<BooleanCond> -> <Vname> <BooleanOP> <Vname>
-          | <Vname> <BooleanOP> <Boolean>
-          | <Boolean> <BooleanOP> <Boolean>
-          | <Boolean> <BooleanOP> <VName>
-<BooleanOP> -> ">=" | "<=" | "==" | ">" | "<"
+<Logic> -> "(" <LogicCond> ")" | "~" <Logic>
+<LogicCond> -> <Vname> <LogicOP> <Vname>
+          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Logic>
+          | <Logic> <LogicOP> <Logic>
+          | <Logic> <LogicOP> <Vname | INT | CHAR | FLOAT >
+          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Vname | INT | CHAR | FLOAT >
+<LogicOP> -> ">=" | "<=" | "==" | ">" | "<"
 <Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Args> -> <Dtype> <Vname> "," <Args>
 <Newline> -> "\n"<Newline> | "\n"

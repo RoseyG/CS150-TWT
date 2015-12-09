@@ -285,7 +285,7 @@ def Loop():
     global nextToken
     print("Enter <Loop>")
     lex()
-    Boolean()
+    Logic()
     if(nextToken == openBrace):
         lex()
         Block()
@@ -307,7 +307,7 @@ def If():
     print("Enter <If>")
     if (nextToken == if_state):
         lex()
-        Boolean()
+        Logic()
         if (nextToken == exec_state):
             lex()
             if (nextToken == openBrace):
@@ -330,7 +330,7 @@ def Elseif():
     print("Enter <Elseif>")
     if (nextToken == elseif_state):
         lex()
-        Boolean()
+        Logic()
         if(nextToken == exec_state):
             lex()
             if(nextToken == openBrace):
@@ -540,21 +540,21 @@ def Fact():
     print "Exit <Factor>"
     return
 
-##<Boolean> -> "(" <BooleanCond> ")" | "~" <Boolean>
-def Boolean():
+##<Logic> -> "(" <LogicCond> ")" | "~" <Logic>
+def Logic():
     global nextToken
-    print("Enter <Boolean>")
+    print("Enter <Logic>")
     if(nextToken == NOT):
         lex()
-        Boolean()
-        print("Exit <Boolean>")
+        Logic()
+        print("Exit <Logic")
         return
     elif(nextToken == openParen):
         lex()
-        BooleanCond()
+        LogicCond()
         if(nextToken == closeParen):
             lex()
-            print("Exit <Boolean>")
+            print("Exit <Logic>")
             return
         else:
             print("Expected ')'")
@@ -563,39 +563,44 @@ def Boolean():
         print("Error: Expected is a ~ or a variable name -- basta bool expression")
         error()
 
-##<BooleanCond> -> <Vname> <BooleanOP> <Vname>
-#          | <Vname> <BooleanOP> <Boolean>
-#          | <Boolean> <BooleanOP> <Boolean>
-#          | <Boolean> <BooleanOP> <Vname>
-def BooleanCond():
+##<LogicCond> -> <Vname> <LogicOP> <Vname>
+#          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Logic>
+#          | <Logic> <LogicOP> <Logic>
+#          | <Logic> <LogicOP> <Vname | INT | CHAR | FLOAT >
+#          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Vname | INT | CHAR | FLOAT >
+def LogicCond():
     global nextToken
-    if (nextToken == VARIABLE):
+    print("Enter <LogicCond>")
+    if (nextToken == VARIABLE or nextToken == TRUE or nextToken == FALSE or nextToken == INT or nextToken == CHAR or nextToken == FLOAT):
         lex()
     elif (nextToken == openParen or nextToken == NOT):
-        Boolean()
+        Logic()
         lex()
     else:
         error()
-    BooleanOp()
-    if(nextToken == vname):
+    LogicOp()
+    if (nextToken == VARIABLE or nextToken == TRUE or nextToken == FALSE or nextToken == INT or nextToken == CHAR or nextToken == FLOAT):
         lex()
-        print("Exit <Assignment>")
+        print("Exit <LogicCond>")
         return
     elif (nextToken == openParen or nextToken == NOT):
-        Boolean()
+        Logic()
         lex()
-        print("Exit <Assignment>")
+        print("Exit <LogicCond>")
         return
     else:
         print("Expected nextToken is a variable name or '(' ")
         error()
-    print("Invalid Boolean expression")
+    print("Invalid Logical/Boolean expression")
     error()
 
-##<BooleanOP> -> ">=" | "<=" | "==" | ">" | "<"
-def BooleanOp():
+##<LogicOP> -> ">=" | "<=" | "==" | ">" | "<"
+def LogicOp():
+    global nextToken
+    print("Enter <LogicOp>")
     if (nextToken == greatEqSign or nextToken == lessEqSign or nextToken == eqSign or nextToken == lesserSign or nextToken == greaterSign):
         lex()
+        print("Exit <LogicOp>")
         return
     else:
         print("Expected boolean operator")
