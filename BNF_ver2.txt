@@ -5,18 +5,25 @@
 <Main> -> "LOGIN" <Block> "LOGOUT"
           | "LOGIN" "LOGOUT"
 <Block> -> <State>                    // Block is made up of statement <State> of the same level
-<State> -> <Loop> <NewLine> <State>
-        | <If> <NewLine> <State>
-        | <Assignment> <NewLine> <State>
-        | <Call> <NewLine> <State>
-        | <Printing> <NewLine> <State>
-        | <Control> <NewLine> <State>
-<Loop> -> "RT" "(" <Boolean> ")" "{" <Block> "}"
-<If> -> "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
-        | "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <Else>
-        | "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}"
-<ElseIf> -> "ELSEIF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <Elseif>
-<Else> -> "ELSE" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}"
+<State> -> <Loop> <NewLine> <StatePrime>
+        | <If> <NewLine> <StatePrime>
+        | <Assignment> <NewLine> <StatePrime>
+        | <Call> <NewLine> <StatePrime>
+        | <Printing> <NewLine> <StatePrime>
+        | <Control> <NewLine> <StatePrime>
+<StatePrime> -> <Loop> <NewLine> <StatePrime>
+        | <If> <NewLine> <StatePrime>
+        | <Assignment> <NewLine> <StatePrime>
+        | <Call> <NewLine> <StatePrime>
+        | <Printing> <NewLine> <StatePrime>
+        | <Read> <NewLine> <StatePrime>
+        | <Control> <NewLine> <StatePrime>
+<Loop> -> "RT" <Boolean> {" <Block> "}"
+<If> -> "IF" <Boolean> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
+        | "IF" <Boolean> "FOLLOW" "{" <Block> "}" <Else>
+        | "IF" <Boolean> "FOLLOW" "{" <Block> "}"
+<ElseIf> -> "ELSEIF" <Boolean> "FOLLOW" "{" <Block> "}" <Elseif>
+<Else> -> "ELSE" <Boolean> "FOLLOW" "{" <Block> "}"
 <Assignment> -> <DType> <Vname> "=" <Vname>
                 | <DType> <Vname> "=" "REPLY"
                 | <DType> <Vname> "=" <Exp>
@@ -25,6 +32,9 @@
 <Printing> -> "TWEET" <Vname>
               | "TWEET" <EXP>
               | "TWEET" <ID>
+<Reading> -> "REPLY" <Vname>
+              | "REPLY" <EXP>
+              | "REPLY" <ID>
 <Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
 
 //This part is the one we made sa ME compy na lng natin
@@ -45,8 +55,7 @@
           | <Boolean> <BooleanOP> <Boolean>
           | <Boolean> <BooleanOP> <VName>
 <BooleanOP> -> ">=" | "<=" | "==" | ">" | "<"
-
 <Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Args> -> <Dtype> <Vname> "," <Args>
 <Newline> -> "\n"<Newline> | "\n"
-<Return> -> "REPORT" <INT> |"REPORT" <CHAR> |"REPORT" <FLOAT> |"REPORT" <STRING> |"REPORT" <BOOL> | "REPORT" <Vname>
+<Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>

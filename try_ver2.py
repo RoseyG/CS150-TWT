@@ -43,36 +43,276 @@ greaterSign = 56
 VARIABLE = 100
 NEWLINE = 101
 
+nextToken = 0
+line = " "
+ctr = 0
 
+def isfloat(str):
+    try:
+        float(str)
+    except ValueError:
+        return False
+    return True
+
+def lex():
+    if ctr <= len(line):
+        nextString = line[ctr]
+    if nextString == 'EOF':
+        nextToken = -1
+    elif nextString == '@LOGIN':
+        nextToken = login
+    elif nextString == '@LOGOUT':
+        nextToken = logout
+    elif nextString == '@INT':
+        nextToken = int_dec
+    elif nextString == '@COKE':
+        nextToken = float_dec
+    elif nextString == '@CHIRP':
+        nextToken = char_dec
+    elif nextString == '@MSG':
+        nextToken = string_dec
+    elif nextString == '@TRALSE':
+        nextToken = bool_dec
+    elif nextString == 'IF':
+        nextToken = if_state
+    elif nextString == 'ELSEIF':
+        nextToken = elseif_state
+    elif nextString == 'ELSE':
+        nextToken = else_state
+    elif nextString == 'RT':
+        nextToken = loop_state
+    elif nextString == 'UNFOLLOW':
+        nextToken = brake_state
+    elif nextString == 'LIKE':
+        nextToken = continue_state
+    elif nextString == 'BLOCK':
+        nextToken = exit_state
+    elif nextString == 'FOLLOW':
+        nextToken = exec_state
+    elif nextString == 'REPLY':
+        nextToken = read_state
+    elif nextString == 'TWEET':
+        nextToken = print_state
+    elif nextString == 'REPORT':
+        nextToken = return_state
+    elif nextString == 'YES':
+        nextToken = TRUE
+    elif nextString == 'NO':
+        nextToken = FALSE
+    elif nextString == '~':
+        nextToken = NOT
+    elif nextString.isdigit():
+        nextToken = INT
+    elif nextString[0] == '-' and nextString[1:].isdigit():
+        nextToken = INT
+    elif isfloat(nextString):
+        nextToken = FLOAT
+    elif (nextString[0] == '\'') and (nextString[-1] == '\''):
+        nextToken = CHAR
+    elif (nextString[0] == '\"') and (nextString[-1] == '\"'):
+        nextToken = STRING
+    elif nextString == '{':
+        nextToken = openBrace
+    elif nextString == '}':
+        nextToken = closeBrace
+    elif nextString == '+':
+        nextToken = plusSign
+    elif nextString == '-':
+        nextToken = minusSign
+    elif nextString == '/':
+        nextToken = divSign
+    elif nextString == '*':
+        nextToken = mulSign
+    elif nextString == '=':
+        nextToken = asSign
+    elif nextString == '(':
+        nextToken = openParen
+    elif nextString == ')':
+        nextToken = closeParen
+    elif nextString == '#':
+        nextToken = hashSymbol
+    elif nextString == ',':
+        nextToken = commaSign
+    elif nextString == '>=':
+        nextToken = lessEqSign
+    elif nextString == '<=':
+        nextToken = greatEqSign
+    elif nextString == '==':
+        nextToken = eqSign
+    elif nextString == '>':
+        nextToken = lesserSign
+    elif nextString == '<':
+        nextToken = greaterSign
+    else:
+        nextToken = VARIABLE
+    ctr += 1;
+    print("Next token is: ", nextToken)
 
 
 ## <Program> -> <Declaration> <Main>
 #            | <Main>
-
+def Program():
+    if(nextToken == login):
+        Main()
+    else:
+        FDefns()
 
 ##<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> <Return>"}"
 #                | <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
 
+def Declaration()
+
 ##<Main> -> "LOGIN" <Block> "LOGOUT"
 #          | "LOGIN" "LOGOUT"
+def Main():
+    print("Enter <Main>")
+    if (nextToken == login):
+        lex()
+        Block()
+        if (nextToken == logout):
+            print("Exit <Main>")
+        else:
+            print("Error: Expected LOGOUT")
+            error = True
+    else:
+        print("Error: Expected LOGIN")
+        error = True
+    if(error)
+        exit()
+
 ##<Block> -> <State>                    // Block is made up of statement <State> of the same level
+def Block():
+    print("Enter <Block>")
+    State()
+    if (error)
+        exit()
+    print("Exit <Block>")
+    exit()
 
-##<State> -> <Loop> <NewLine> <State>
-#        | <If> <NewLine> <State>
-#        | <Assignment> <NewLine> <State>
-#        | <Call> <NewLine> <State>
-#        | <Printing> <NewLine> <State>
-#        | <Control> <NewLine> <State>
+##<State> -> <Loop> <NewLine> <StatePrime>
+#        | <If> <NewLine> <StatePrime>
+#        | <Assignment> <NewLine> <StatePrime>
+#        | <Call> <NewLine> <StatePrime>
+#        | <Printing> <NewLine> <StatePrime>
+#        | <Read> <NewLine> <StatePrime>
+#        | <Control> <NewLine> <StatePrime>
+# We need at tleast one stament inside a block then check for repetitions
+def State():
+    print("Enter <State>")
+    if (nextToken == if_state):
+        If()
+    elif (nextToken == loop_state):
+        Loop()
+    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
+        Assignment()
+    elif (nextToken == print_state):
+        Printing()
+    elif (nextToken == read_state):
+        Reading()
+    elif (nextToken == call_state):
+        Calling()
+    elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
+        Control()
+    else:
+        error = True
+    if (!error)
+        if(nextToken == hashSymbol)
+            lex()
+            StatePrime()
+        else:
+            error = True
+    if (error)
+        exit()
+    print("Exit <State>")
 
-##<Loop> -> "RT" "(" <Boolean> ")" "{" <Block> "}"
+##<StatePrime> -> <Loop> <NewLine> <StatePrime>
+#        | <If> <NewLine> <StatePrime>
+#        | <Assignment> <NewLine> <StatePrime>
+#        | <Call> <NewLine> <StatePrime>
+#        | <Printing> <NewLine> <StatePrime>
+#        | <Read> <NewLine> <StatePrime>
+#        | <Control> <NewLine> <StatePrime>
+# Basically, nagche-check lng kung may more than one statements
+def StatePrime():
+    if (nextToken == if_state):
+        If()
+    elif (nextToken == loop_state):
+        Loop()
+    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
+        Assignment()
+    elif (nextToken == print_state):
+        Printing()
+    elif (nextToken == read_state):
+        Reading()
+    elif (nextToken == call_state):
+        Calling()
+    elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
+        Control()
+    else
+        exit()  # Exit lng kung wala ng next statements after the last repitition,
+                # no need to lex cuz the nextToken will be checked for a match again outside the function
+    if(nextToken == hashSymbol)
+        lex()
+        StatePrime()
+    else
+        error = True
 
-##<If> -> "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
-#        | "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <Else>
-#        | "IF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}"
 
-##<ElseIf> -> "ELSEIF" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}" <Elseif>
+##<Loop> -> "RT" <Boolean> "{" <Block> "}"
+def Loop():
+    print("Enter <Loop>")
+    if (nextToken == loop_state):
+        lex()
+        Boolean()
+        if(nextToken == openBrace):
+            lex()
+            Block()
+            if(nextToken == closeBrace):
+                print("Exit <Loop>")
+            else
+                error = True
+        else:
+            error = True
+    else:
+        error = True
+    if(error)
+        print("Invalid loop statement")
+        exit()
+    lex()
 
-##<Else> -> "ELSE" "(" <Boolean> ")" "FOLLOW" "{" <Block> "}"
+##<If> -> "IF" <Boolean> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
+#        | "IF" <Boolean> "FOLLOW" "{" <Block> "}" <Else>
+#        | "IF" <Boolean> "FOLLOW" "{" <Block> "}"
+def If():
+    print("Enter <If>")
+    if (nextToken == if_state):
+        lex()
+        Boolean()
+        if (nextToken == exec_state):
+            lex()
+            if (nextToken == openBrace):
+                lex()
+                Block()
+                if (nextToken == closeBrace):
+                    lex()
+                    Elseif()
+                    Else()
+                else:
+                    error = True
+            else:
+                error = True
+        else:
+            error = True
+    else:
+        error = True
+    if(error)
+        print("Error: Invalid IF statement")
+        exit()
+    print("Exit <If>")
+
+##<ElseIf> -> "ELSEIF" <Boolean> "FOLLOW" "{" <Block> "}" <Elseif>
+
+##<Else> -> "ELSE" <Boolean> "FOLLOW" "{" <Block> "}"
 
 ##<Assignment> -> <DType> <Vname> "=" <Vname>
 #                | <DType> <Vname> "=" "REPLY"
@@ -121,66 +361,10 @@ NEWLINE = 101
 
 ##<Newline> -> "\n"<Newline> | "\n"
 
-##<Return> -> "REPORT" <INT>
-#               |"REPORT" <CHAR>
-#               |"REPORT" <FLOAT>
-#               |"REPORT" <STRING>
-#               |"REPORT" <BOOL>
-#               | "REPORT" <Vname>
+##<Return> -> <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
 
 
-##KELLY
-def Program():
-    FDefns()
-    Main()
 
-def FDefns():
-    Declaration()
-def Main():
-    print("Enter <Main>")
-    lex()
-    if (nextToken == login):
-        Block()
-        lex()
-        if (nextToken == logout):
-            print("Exit Main")
-            return
-        else:
-            print("Error: Expected LOGOUT ")
-            exit()
-    print("Error: Expected LOGIN")
-    exit()
-
-def Block():
-    print("Enter <Block>")
-    #if (nextToken == <some tokens that indicate a start of a new line>):
-        #return
-    Exp()
-
-    #Newline()
-    #Block()
-    if (nextToken == hashSymbol):
-        lex()
-        Block()
-
-def Exp():
-    print("Enter <Exp>")
-    lex()
-    if (nextToken == if_state):
-        If()
-    elif (nextToken == loop_state):
-        Loop()
-    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec):
-        Assignment()
-    elif (nextToken == VARIABLE):
-        Call()
-    elif (nextToken == print_state):
-        Printing()
-    elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
-        Control()
-    elif (nextToken == return_state):
-        Return()
-    print("Exit <Exp>")
 
 def Return():
     print("Enter <Return>")
@@ -191,25 +375,6 @@ def Return():
         else:
             print("Error: Expected a variable literal")
 
-def If():
-    print("Enter <If>")
-    if (nextToken == if_state):
-        lex()
-        if (nextToken == openParen):
-            lex()
-            Boolean()
-            if (nextToken == closeParen):
-                lex()
-                if (nextToken == exec_state):
-                    lex()
-                    if (nextToken == openBrace):
-                        lex()
-                        Block()
-                        if (nextToken == closeBrace):
-                            lex()
-                            Elseif()
-                            Else()
-    print("Exit <If>")
 def Elseif():
     print("Enter <Elseif>")
     if (nextToken == elseif_state):
@@ -308,7 +473,6 @@ def Assignment():
                 if (nextToken == CHAR or nextToken == varname or nextToken == read_state):
                     lex()
                     return
-
     elif(nextToken == string_dec):
         if(nextToken == varname):
             lex()
@@ -450,3 +614,17 @@ def Term(): #<Term> -> <Vname> "," <Term> | <ID> "," <Term> | <Vname> | <ID>
 
     print("Exit <Term>")
     exit()
+
+    ## Main Function
+    #
+    # This is the main function. It takes an input string from the commandline and removes all the whitespaces and then calls the function lex() to get the next token. It then passes it on to the function assign() along with the input string and the location of the token after. The algorithm for the functions that checks the rules were patterned after the ones found in the book Concepts of Programmng Languages. Various modifications have been done in translating from C to python.
+    def main():
+    	rawline = raw_input()
+    	line = rawline.split
+    	ctr = 0
+        error = False
+        lex()
+    	Block(line)
+
+    if __name__ == '__main__':
+    	main()
