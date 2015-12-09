@@ -1,4 +1,4 @@
-int_dec = 3 #  @INT
+t_dec = 3 #  @INT
 float_dec = 4 # @COKE
 char_dec =  5 # @CHIRP
 string_dec = 6 # @MSG

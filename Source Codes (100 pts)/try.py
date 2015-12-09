@@ -41,6 +41,7 @@ eqSign = 54
 lesserSign = 55
 greaterSign = 56
 VARIABLE = 100
+NEWLINE = 101
 
 def isfloat(str):
     try:
@@ -171,8 +172,8 @@ def Block():
     #Newline()
     #Block()
     if (nextToken == hashSymbol):
-        lex()                    
-        Block()                  
+        lex()
+        Block()
 
 def Exp():
     print("Enter <Exp>")
@@ -260,7 +261,7 @@ def Else():
         print("Invalid on else")
     #print("Exit <Else>")
 
-                            
+
 def Loop():
     print("Enter <Loop>")
     if (nextToken == loop_state):

@@ -1,0 +1,7 @@
+[] Working Codes/Language (Codes) WITH INLINE DOCUMENTATION
+[] Sample Programs (Codes)
+[] Language Design & Functionalities (PDF) 
+[] Legit source code docu (PDF)
+[] Language/User Manual (PDF)
+
+([] Peer Evaluation - Individual)

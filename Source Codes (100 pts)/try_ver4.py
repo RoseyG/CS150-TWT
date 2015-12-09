@@ -207,7 +207,7 @@ def Main():
 def Block():
     print("Enter <Block>")
     State()
-    if (error)
+    if (error):
         exit()
     print("Exit <Block>")
     exit()
@@ -238,13 +238,15 @@ def State():
         Control()
     else:
         error = True
-    if (!error)
-        if(nextToken == hashSymbol)
+
+    if (not error):
+        if(nextToken == hashSymbol):
             lex()
             StatePrime()
         else:
             error = True
-    if (error)
+
+    if (error):
         exit()
     print("Exit <State>")
 
@@ -277,7 +279,7 @@ def StatePrime():
     if(nextToken == hashSymbol):
         lex()
         StatePrime()
-    else
+    else:
         error = True
 
 ##<Loop> -> "RT" <Boolean> "{" <Block> "}"
@@ -291,13 +293,13 @@ def Loop():
             Block()
             if(nextToken == closeBrace):
                 print("Exit <Loop>")
-            else
+            else:
                 error = True
         else:
             error = True
     else:
         error = True
-    if(error)
+    if(error):
         print("Invalid loop statement")
         exit()
     lex()
@@ -579,13 +581,13 @@ def Args(): #<Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args>
 
 ##<Newline> -> "\n"<Newline> | "\n"
 
-##<Return> -> <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
+##<Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
 def Return():
-    if (nextToken == return_state):
+    if(nextToken == return_state):
         lex()
-        if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE) or nextToken == VARIABLE):
+        if ((nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE) or nextToken == VARIABLE):
             print("Enter <Return>")
-            exit()
+            return
     error = True
     print("Error: Expected return value")
     exit()
@@ -613,8 +615,8 @@ def Term(): #<Term> -> <Vname> "," <Term> | <ID> "," <Term> | <Vname> | <ID>
 def main():
 	rawline = raw_input()
 	line = rawline.split
-	ctr = 0
     error = False
+	ctr = 0
     lex()
 	State(line)
 
