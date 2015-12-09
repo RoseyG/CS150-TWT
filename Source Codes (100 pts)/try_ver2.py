@@ -34,7 +34,7 @@ mulSign = 46
 asSign = 47
 openParen = 48
 closeParen = 49
-hashSymbol = 50
+ENDOFSTATE = 50
 commaSign = 51
 lessEqSign = 52
 greatEqSign = 53
@@ -131,7 +131,7 @@ def lex():
     elif nextString == ')':
         nextToken = closeParen
     elif nextString == '#':
-        nextToken = hashSymbol
+        nextToken = ENDOFSTATE
     elif nextString == ',':
         nextToken = commaSign
     elif nextString == '>=':
@@ -184,7 +184,7 @@ def Declaration(): #<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> 
                     if(nextToken == closeBrace):
                         lex()
                         print("Exit <Declaration>")
-                        exit()
+                        return
     error = True
     print("Error: Invalid Function Declaration")
     exit()
@@ -198,7 +198,7 @@ def Main():
         Block()
         if (nextToken == logout):
             print("Exit <Main>")
-            exit()
+            return
     print("Error: Expected LOGIN")
     error = True
     exit()
@@ -207,18 +207,17 @@ def Main():
 def Block():
     print("Enter <Block>")
     State()
-    if (error):
+    if (error)
         exit()
     print("Exit <Block>")
-    exit()
+    return
 
-##<State> -> <Loop> <NewLine> <StatePrime>
-#        | <If> <NewLine> <StatePrime>
-#        | <Assignment> <NewLine> <StatePrime>
-#        | <Call> <NewLine> <StatePrime>
-#        | <Printing> <NewLine> <StatePrime>
-#        | <Read> <NewLine> <StatePrime>
-#        | <Control> <NewLine> <StatePrime>
+##<State> -> <Loop> "#" <StatePrime>
+#        | <If> "#" <StatePrime>
+#        | <Assignment> "#" <StatePrime>
+#        | <Call> "#" <StatePrime>
+#        | <Printing> "#" <StatePrime>
+#        | <Control> "#" <StatePrime>
 # We need at tleast one stament inside a block then check for repetitions
 def State():
     print("Enter <State>")
@@ -237,26 +236,22 @@ def State():
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
     else:
-        error = True
-
-    if (not error):
-        if(nextToken == hashSymbol):
-            lex()
-            StatePrime()
-        else:
-            error = True
-
-    if (error):
-        exit()
+        print("Expected statement")
+        error()
+    if(nextToken == ENDOFSTATE)
+        lex()
+        StatePrime()
+    else:
+        error()
     print("Exit <State>")
 
-##<StatePrime> -> <Loop> <NewLine> <StatePrime>
-#        | <If> <NewLine> <StatePrime>
-#        | <Assignment> <NewLine> <StatePrime>
-#        | <Call> <NewLine> <StatePrime>
-#        | <Printing> <NewLine> <StatePrime>
-#        | <Read> <NewLine> <StatePrime>
-#        | <Control> <NewLine> <StatePrime>
+##<StatePrime> -> <Loop> "#" <StatePrime>
+#        | <If> "#" <StatePrime>
+#        | <Assignment> "#" <StatePrime>
+#        | <Call> "#" <StatePrime>
+#        | <Printing> "#" <StatePrime>
+#        | <Read> "#" <StatePrime>
+#        | <Control> "#" <StatePrime>
 # Basically, nagche-check lng kung may more than one statements
 def StatePrime():
     if (nextToken == if_state):
@@ -276,33 +271,31 @@ def StatePrime():
     else:
         exit()  # Exit lng kung wala ng next statements after the last repitition,
                 # no need to lex cuz the nextToken will be checked for a match again outside the function
-    if(nextToken == hashSymbol):
+    if(nextToken == ENDOFSTATE):
         lex()
         StatePrime()
-    else:
-        error = True
+    else
+        print("Expeced '#' after statement.")
+        error()
+        exit()
 
 ##<Loop> -> "RT" <Boolean> "{" <Block> "}"
 def Loop():
     print("Enter <Loop>")
-    if (nextToken == loop_state):
-        lex()
-        Boolean()
-        if(nextToken == openBrace):
-            lex()
-            Block()
-            if(nextToken == closeBrace):
-                print("Exit <Loop>")
-            else:
-                error = True
-        else:
-            error = True
-    else:
-        error = True
-    if(error):
-        print("Invalid loop statement")
-        exit()
     lex()
+    Boolean()
+    if(nextToken == openBrace):
+        lex()
+        Block()
+        if(nextToken == closeBrace):
+            print("Exit <Loop>")
+            lex()
+        else:
+            print("Expectetd '}'")
+            error()
+    else:
+        print("Expectedt '{'")
+        error()
 
 ##<If> -> "IF" <Boolean> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
 #        | "IF" <Boolean> "FOLLOW" "{" <Block> "}" <Else>
@@ -324,11 +317,9 @@ def If():
                     if (nextToken == else_state):
                         Else()
                     print("Exit <If>")
-                    exit()
-    error = True
+                    return
     print("Error: Invalid IF statement")
-    exit()
-
+    error()
 
 ##<ElseIf> -> "ELSEIF" <Boolean> "FOLLOW" "{" <Block> "}" <Elseif>
 def Elseif():
@@ -346,10 +337,9 @@ def Elseif():
                     if (nextToken == elseif_state):
                         Elseif()
                     print("Exit <Elseif>")
-                    exit()
-    error = True
+                    return
     print("Error: Invalid ELSEIF statement")
-    exit()
+    error()
 
 ##<Else> -> "ELSE" <Boolean> "FOLLOW" "{" <Block> "}"
 def Else():
@@ -365,12 +355,12 @@ def Else():
                 if (nextToken == closeBrace):
                     lex()
                     print("Exit <Else>")
-                    exit()
+                    return
     print("Error: Invalid ELSE statement")
-    exit()
+    error()
 
 #<Assignment> -> <DType> <Vname> "=" <Vname>
-#                | <DType> <Vname> "=" "REPLY"
+#                | <DType> <Vname> "=" <Reading>
 #                | "@INT" <Vname> "=" <INT>
 #                | "@CHIRP" <Vname> "=" <CHAR>
 #                | "@COKE" <Vname> "=" <FLOAT>
@@ -387,6 +377,7 @@ def Assignment():
                 lex()
                 if (nextToken == INT or nextToken == VARIABLE or nextToken == read_state):
                     lex()
+                    return
     elif(nextToken == float_dec):
         lex()
         if(nextToken == VARIABLE):
@@ -395,6 +386,7 @@ def Assignment():
                 lex()
                 if (nextToken == FLOAT or nextToken == VARIABLE or nextToken == read_state):
                     lex()
+                    return
     elif(nextToken == char_dec):
         lex()
         if(nextToken == VARIABLE):
@@ -403,6 +395,7 @@ def Assignment():
                 lex()
                 if (nextToken == CHAR or nextToken == VARIABLE or nextToken == read_state):
                     lex()
+                    return
     elif(nextToken == string_dec):
         lex()
         if(nextToken == VARIABLE):
@@ -411,6 +404,7 @@ def Assignment():
                 lex()
                 if (nextToken == STRING or nextToken == VARIABLE or nextToken == read_state):
                     lex()
+                    return
     elif(nextToken == bool_dec):
         lex()
         if(nextToken == VARIABLE):
@@ -419,19 +413,18 @@ def Assignment():
                 lex()
                 if (nextToken == BOOL or nextToken == VARIABLE or nextToken == read_state):
                     lex()
+                    return
     elif(nextToken == openParen):
         lex()
         Exp()
         if(nextToken == closeParen):
             lex()
-    else:
-        error = True
-    if(error):
-        print("Error: Invald assignment statement")
-        exit()
-    else:
-        print("Exit <Assignment>")
-        return
+            return
+        else:
+            print("Expected ')'")
+            error()
+    print("Error: Invald assignment statement")
+    error()
 
 ##<Call> -> <Vname> "(" <Args> ")"
 def Call():
@@ -445,36 +438,69 @@ def Call():
                 lex()
                 print("Exit <Call>")
                 return
-    print("Invalid")
-    exit()
+    print("Invalid function call")
+    error()
 
 ##<Printing> -> "TWEET" <Vname>
-#              | "TWEET" <EXP>
+#              | "TWEET" "(" <EXP> ")"
 #              | "TWEET" <ID>
+def Printing():
+    print("Enter <Printing>")
+    lex()
+    if (nextToken == openParen):
+        lex()
+        Exp()
+        if(nextToken == closeParen):
+            lex()
+            print("Exit <Printing>")
+            return
+        else
+            print("Error: expected token is ')' ")
+            error()
+    elif (nextToken == INT or nextToken == FLOAT or nextToken == CHAR or nextToken == STRING or nextToken == BOOL)
+        lex()
+    else:
+        print("Expected expression, varable or literal")
+        error()
 
 ##<Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
 def Control():
+    print("Enter <Control>")
     if (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         lex()
+        print("Exit <Control>")
 
 ##This part is the one we made sa ME
 # Copy na lng natin
 
 ##<Exp> -> <Term> <ExpPrime>
 
-##<ExpPrime> -> "+" <Term><EspPrime>
+##<ExpPrime> -> "+" <Term><ExpPrime>
 #            | "-" <Term><ExpPrime>
 
 ##<Term> -> <Fact><TermPrime>
+def Term():
+    print("Enter <Term>")
+    if (nextToken == "*" or nextToken == "/":
+        lex()
+        if (nextToken == ","):
+            lex()
+            Term()
+        return
+    print("Exit <Term>")
+    return
 
 ##<TermPrime> -> "*" <Fact><TermPrime>
 #            | "/" <Fact><TermPrime>
+def TermPrime():
+    while (nextToken == "*" or nextToken == "/"):
+        lex()
+        Fact()
+    return
 
-##<Fact> -> <ID> | <CHAR> | <FLOAT> | "(" <Exp> ")"
+##<Fact> -> <INT> | <CHAR> | <FLOAT> | "(" <Exp> ")"
 
 ##<ID> -> <INT> | <CHAR> | <FLOAT> | <STRING> | <BOOL>
-
-##<Newline> -> "\n" <Newline>
 
 ##<Boolean> -> "(" <BooleanCond> ")" | "~" <Boolean>
 def Boolean():
@@ -492,72 +518,48 @@ def Boolean():
             print("Exit <Boolean>")
             return
         else:
-            error = True
+            print("Expected ')'")
+            error()
     else:
-        error = True
         print("Error: Expected is a ~ or a variable name -- basta bool expression")
-        exit()
+        error()
 
 ##<BooleanCond> -> <Vname> <BooleanOP> <Vname>
 #          | <Vname> <BooleanOP> <Boolean>
 #          | <Boolean> <BooleanOP> <Boolean>
-#          | <Boolean> <BooleanOP> <VName>
+#          | <Boolean> <BooleanOP> <Vname>
 def BooleanCond():
     if (nextToken == vname):
         lex()
-        if(nextToken == greatEqSign):
-            lex()
-            if(nextToken == vname):
-                lex()
-                return
-            else:
-                error = True
-                exit()
-        elif (nextToken == lessEqSign):
-            lex()
-            if(nextToken == vname):
-                lex()
-                return
-            else:
-                error = True
-                print("Expected nextToken is  a variable name")
-                exit()
-        elif (nextToken == eqSign):
-            lex()
-            if(nextToken == vname):
-                lex()
-                return
-            else:
-                error = True
-                print("Expected nextToken is  a variable name")
-                exit()
-        elif (nextToken == lesserSign):
-            lex()
-            if(nextToken == vname):
-                lex()
-                return
-            else:
-                error = True
-                print("Expected nextToken is  a variable name")
-                exit()
-        elif (nextToken == greaterSign):
-            lex()
-            if(nextToken == vname):
-                lex()
-                return
-            else:
-                error = True
-                print("Expected nextToken is  a variable name")
-                exit()
-        else:
-            error = True
-            print("Error: Expected nextToken is a Logical Operation/tor")
-            exit()
-    error = True
-    print("Error: Expected token is a variable name")
-    exit()
+    elif (nextToken == openParen or nextToken == NOT)
+        Boolean()
+        lex()
+    else:
+        error()
+    BooleanOp()
+    if(nextToken == vname):
+        lex()
+        print("Exit <Assignment>")
+        return
+    elif (nextToken == openParen or nextToken == NOT):
+        Boolean()
+        lex()
+        print("Exit <Assignment>")
+        return
+    else:
+        print("Expected nextToken is a variable name or '(')
+        error()
+    print("Invalid Boolean expression")
+    error()
 
 ##<BooleanOP> -> ">=" | "<=" | "==" | ">" | "<"
+def BooleanOp():
+    if (nextToken == greatEqSign or nextToken == lessEqSign or nextToken == eqSign or nextToken == lesserSign or nextToken == greaterSign):
+        lex()
+        return
+    else:
+        print("Expected boolean operator")
+        error()
 
 ##<Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
@@ -567,58 +569,54 @@ def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
         print("Exit <Dtype>")
         return
     print("Error: Expected Data type poeszh")
-    exit()
+    error()
 
 ##<Args> -> <Dtype> <Vname> "," <Args>
-def Args(): #<Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args>
+def Args():
+    print("Enter <Args>")
     Dtype()
     if (nextToken == VARIABLE):
         lex()
         if (nextToken == commaSign):
             lex()
             Args()
-    return
-
-##<Newline> -> "\n"<Newline> | "\n"
-
-##<Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
-def Return():
-    if(nextToken == return_state):
-        lex()
-        if ((nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE) or nextToken == VARIABLE):
-            print("Enter <Return>")
+            print("Exit <Args>")
             return
-    error = True
-    print("Error: Expected return value")
-    exit()
+    error()
 
-def Printing(): #<Printing> -> "TWEET" <Term> #Check this as well
-    if (nextToken == printing):
+##<Return> -> <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" "(" <Exp> ")"
+def Return():
+    if (nextToken == return_state):
         lex()
-        Term()
-    else:
-        print("Invalid")
-        exit()
-
-def Term(): #<Term> -> <Vname> "," <Term> | <ID> "," <Term> | <Vname> | <ID>
-    print("Enter <Term>")
-    if (nextToken == vname or nextToken == string):
-        lex()
-        if (nextToken == ","):
+        if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == VARIABLE):
             lex()
-            Term()
-        return
-    print("Exit <Term>")
-    exit()
+            print("Enter <Return>"):
+            return
+        elif (nextToken == openParen):
+            lex()
+            BooleanCond()
+            if (nextToken == ")"):
+                lex()
+                print("Enter <Return>"):
+                return
+    print("Error: Expected return value")
+    error()
 
-## Main Function
+##Error Function
+#
+def error():
+	print "Syntax Error"
+	quit()
+
+##Main Function
+#
 def main():
-    rawline = raw_input()
-    line = rawline.split
-    ctr = 0
+	rawline = raw_input()
+	line = rawline.split
+	ctr = 0
     error = False
     lex()
-    State(line)
+	State(line)
 
 if __name__ == '__main__':
 	main()

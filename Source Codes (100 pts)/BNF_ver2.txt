@@ -5,19 +5,19 @@
 <Main> -> "LOGIN" <Block> "LOGOUT"
           | "LOGIN" "LOGOUT"
 <Block> -> <State>                    // Block is made up of statement <State> of the same level
-<State> -> <Loop> <NewLine> <StatePrime>
-        | <If> <NewLine> <StatePrime>
-        | <Assignment> <NewLine> <StatePrime>
-        | <Call> <NewLine> <StatePrime>
-        | <Printing> <NewLine> <StatePrime>
-        | <Control> <NewLine> <StatePrime>
-<StatePrime> -> <Loop> <NewLine> <StatePrime>
-        | <If> <NewLine> <StatePrime>
-        | <Assignment> <NewLine> <StatePrime>
-        | <Call> <NewLine> <StatePrime>
-        | <Printing> <NewLine> <StatePrime>
-        | <Read> <NewLine> <StatePrime>
-        | <Control> <NewLine> <StatePrime>
+<State> -> <Loop> "#" <StatePrime>
+        | <If> "#" <StatePrime>
+        | <Assignment> "#" <StatePrime>
+        | <Call> "#" <StatePrime>
+        | <Printing> "#" <StatePrime>
+        | <Control> "#" <StatePrime>
+<StatePrime> -> <Loop> "#" <StatePrime>
+        | <If> "#" <StatePrime>
+        | <Assignment> "#" <StatePrime>
+        | <Call> "#" <StatePrime>
+        | <Printing> "#" <StatePrime>
+        | <Read> "#" <StatePrime>
+        | <Control> "#" <StatePrime>
 <Loop> -> "RT" <Boolean> {" <Block> "}"
 <If> -> "IF" <Boolean> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
         | "IF" <Boolean> "FOLLOW" "{" <Block> "}" <Else>
@@ -25,7 +25,7 @@
 <ElseIf> -> "ELSEIF" <Boolean> "FOLLOW" "{" <Block> "}" <Elseif>
 <Else> -> "ELSE" <Boolean> "FOLLOW" "{" <Block> "}"
 <Assignment> -> <DType> <Vname> "=" <Vname>
-                |<DType> <Vname> "=" "REPLY"
+                |<DType> <Vname> "=" <Reading>
                 |"@INT" <Vname> "=" <INT>
                 | "@CHIRP" <Vname> "=" <CHAR>
                 | "@COKE" <Vname> "=" <FLOAT>
@@ -49,7 +49,7 @@
 <Term> -> <Fact><TermPrime>
 <TermPrime> -> "*" <Fact><TermPrime>
             | "/" <Fact><TermPrime>
-<Fact> -> <ID> | <CHAR> | <FLOAT> | "(" <Exp> ")"
+<Fact> -> <INT> | <CHAR> | <FLOAT> | "(" <Exp> ")"
 <ID> -> <INT> | <CHAR> | <FLOAT> | <STRING> | <BOOL>
 
 <Newline> -> "\n" <Newline>
