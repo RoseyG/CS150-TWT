@@ -54,7 +54,7 @@ statement = line.split()
 for lexeme in statement:
     input.append(lexeme)
 input.append('EOF')
-
+orig = input
 def isfloat(str):
     try:
         float(str)
@@ -65,12 +65,13 @@ def isfloat(str):
 def lex():
     global nextToken
     nextString = input[0]
+    print "NextString: ", nextString
 
     if nextString == 'EOF':
         nextToken = -1
-    elif nextString == '@LOGIN':
+    elif nextString == 'LOGIN':
         nextToken = login
-    elif nextString == '@LOGOUT':
+    elif nextString == 'LOGOUT':
         nextToken = logout
     elif nextString == '@INT':
         nextToken = int_dec
@@ -154,7 +155,8 @@ def lex():
         nextToken = greaterSign
     else:
         nextToken = VARIABLE
-    print(nextToken)
+
+    print "NextToken: ", nextToken
 
     if(nextToken!= 100):
         print ("Next token is " + str(nextToken) + ". Next lexeme is " + nextString + ".")
@@ -166,12 +168,12 @@ def lex():
 ##KELLY
 def Program():
     print "ENTER <Program>"
-    Declaration()
+    FxnDeclaration()
     Main()
     print "EXIT <Program>"
 
-def Declaration(): #<Declaration> -> <Dtype> <VARIABLE> "(" <Args> ")" "{" <Block> "}"
-    print "ENTER <Declaration>"
+def FxnDeclaration(): #<FxnDeclaration> -> <Dtype> <VARIABLE> "(" <Args> ")" "{" <Block> "}"
+    print "ENTER <FxnDeclaration>"
     if Dtype():
         if(nextToken == VARIABLE):
             if (nextToken == openParen):
@@ -184,60 +186,63 @@ def Declaration(): #<Declaration> -> <Dtype> <VARIABLE> "(" <Args> ")" "{" <Bloc
                         Block()
                         if(nextToken == closeBrace):
                             lex()
-                            print("Exit <Call>")
+                            print("Exit <FxnDeclaration SUCCESS>")
                             return
-    print "EXIT <Declaration>"
+    input = orig
+    print "EXIT <FxnDeclaration>"
     return
 
 def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
     if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
         lex()
-        return
-    print("Expected: Data type poeszh")
+        return True
+    else:
+        return False
+        print("Expected: Data Type dapat")
     exit()
 
 
 def Assignment():
     print("Enter <Assignment>")
     if(nextToken == int_dec):
-        if(nextToken == varname):
+        if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == INT or nextToken == varname or nextToken == read_state):
+                if (nextToken == INT or nextToken == VARIABLE or nextToken == read_state):
                     lex()
                     return
     elif(nextToken == float_dec):
-        if(nextToken == varname):
+        if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == FLOAT or nextToken == varname or nextToken == read_state):
+                if (nextToken == FLOAT or nextToken == VARIABLE or nextToken == read_state):
                     lex()
                     return
     elif(nextToken == char_dec):
-        if(nextToken == varname):
+        if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == CHAR or nextToken == varname or nextToken == read_state):
+                if (nextToken == CHAR or nextToken == VARIABLE or nextToken == read_state):
                     lex()
                     return
 
     elif(nextToken == string_dec):
-        if(nextToken == varname):
+        if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == STRING or nextToken == varname or nextToken == read_state):
+                if (nextToken == STRING or nextToken == VARIABLE or nextToken == read_state):
                     lex()
                     return
     elif(nextToken == bool_dec):
-        if(nextToken == varname):
+        if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == BOOL or nextToken == varname or nextToken == read_state):
+                if (nextToken == BOOL or nextToken == VARIABLE or nextToken == read_state):
                     lex()
                     return
     print("ERROR. NOT THE RIGHT ASSIGNMENT")
@@ -245,7 +250,6 @@ def Assignment():
 
 def Main():
     print("Enter <Main>")
-    lex()
     if (nextToken == login):
         Block()
         lex()
@@ -382,13 +386,13 @@ def Control():
 
 ##MIKA
 
-#<Assignment> -> <DType> <Varname> "=" <Varname>
-#                |<DType> <Varname> "=" "REPLY"
-#                |"@INT" <Varname> "=" <INT>
-#                | "@CHIRP" <Varname> "=" <CHAR>
-#                | "@COKE" <Varname> "=" <FLOAT>
-#                | "@MSG" <Varname> "=" <STRING>
-#                | "@TRALSE" <Varname> "=" <BOOL>
+#<Assignment> -> <DType> <VARIABLE> "=" <VARIABLE>
+#                |<DType> <VARIABLE> "=" "REPLY"
+#                |"@INT" <VARIABLE> "=" <INT>
+#                | "@CHIRP" <VARIABLE> "=" <CHAR>
+#                | "@COKE" <VARIABLE> "=" <FLOAT>
+#                | "@MSG" <VARIABLE> "=" <STRING>
+#                | "@TRALSE" <VARIABLE> "=" <BOOL>
 
 def Boolean(): #<Boolean> -> <BooleanCond> | "~" <BooleanCond>
     if(nextToken == NOT):
