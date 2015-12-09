@@ -1,4 +1,5 @@
 ##ROSEY
+EOF = -1
 int_dec = 3
 float_dec = 4
 char_dec =  5
@@ -58,7 +59,7 @@ def lex():
     if ctr <= len(line):
         nextString = line[ctr]
     if nextString == 'EOF':
-        nextToken = -1
+        nextToken = EOF
     elif nextString == '@LOGIN':
         nextToken = login
     elif nextString == '@LOGOUT':
@@ -152,15 +153,41 @@ def lex():
 ## <Program> -> <Declaration> <Main>
 #            | <Main>
 def Program():
+    print("Enter <Program>")
     if(nextToken == login):
         Main()
     else:
-        FDefns()
+        Declaration()
+        if(nextToken == login):
+            Main()
+    if(nextToken == EOF):
+        print("Exit <Program>")
+
 
 ##<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> <Return>"}"
 #                | <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
-
-def Declaration()
+def Declaration(): #<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
+    print("Enter <Declaration>")
+    Dtype()
+    if(nextToken == vname):
+        if (nextToken == openParen):
+            lex()
+            Args()
+            if (nextToken == closeParen):
+                lex()
+                if(nextToken == openBrace):
+                    lex()
+                    Block()
+                    if (nextToken == return_state):
+                        lex()
+                        Return()
+                    if(nextToken == closeBrace):
+                        lex()
+                        print("Exit <Declaration>")
+                        exit()
+    error = True
+    print("Error: Invalid Function Declaration")
+    exit()
 
 ##<Main> -> "LOGIN" <Block> "LOGOUT"
 #          | "LOGIN" "LOGOUT"
@@ -171,14 +198,11 @@ def Main():
         Block()
         if (nextToken == logout):
             print("Exit <Main>")
-        else:
-            print("Error: Expected LOGOUT")
-            error = True
-    else:
-        print("Error: Expected LOGIN")
-        error = True
-    if(error)
-        exit()
+            exit()
+    print("Error: Expected LOGIN")
+    error = True
+    exit()
+
 
 ##<Block> -> <State>                    // Block is made up of statement <State> of the same level
 def Block():
@@ -295,24 +319,55 @@ def If():
                 Block()
                 if (nextToken == closeBrace):
                     lex()
-                    Elseif()
-                    Else()
-                else:
-                    error = True
-            else:
-                error = True
-        else:
-            error = True
-    else:
-        error = True
-    if(error)
-        print("Error: Invalid IF statement")
-        exit()
-    print("Exit <If>")
+                    if (nextToken == elseif_state):
+                        Elseif()
+                    if (nextToken == else_state):
+                        Else()
+                    print("Exit <If>")
+                    exit()
+    error = True
+    print("Error: Invalid IF statement")
+    exit()
+
 
 ##<ElseIf> -> "ELSEIF" <Boolean> "FOLLOW" "{" <Block> "}" <Elseif>
+def Elseif():
+    print("Enter <Elseif>")
+    if (nextToken == elseif_state):
+        lex()
+        Boolean()
+        if(nextToken == exec_state):
+            lex()
+            if(nextToken == openBrace):
+                lex()
+                Block()
+                if (nextToken == closeBrace):
+                    lex()
+                    if (nextToken == elseif_state):
+                        Elseif()
+                    print("Exit <Elseif>")
+                    exit()
+    error = True
+    print("Error: Invalid ELSEIF statement")
+    exit()
 
 ##<Else> -> "ELSE" <Boolean> "FOLLOW" "{" <Block> "}"
+def Else():
+    print("Enter <Else>")
+    if (nextToken == else_state):
+        lex()
+        Boolean()
+        if(nextToken == exec_state):
+            lex()
+            if(nextToken == openBrace):
+                lex()
+                Block()
+                if (nextToken == closeBrace):
+                    lex()
+                    print("Exit <Else>")
+                    exit()
+    print("Error: Invalid ELSE statement")
+    exit()
 
 ##<Assignment> -> <DType> <Vname> "=" <Vname>
 #                | <DType> <Vname> "=" "REPLY"
@@ -374,46 +429,6 @@ def Return():
             return
         else:
             print("Error: Expected a variable literal")
-
-def Elseif():
-    print("Enter <Elseif>")
-    if (nextToken == elseif_state):
-        lex()
-        if (nextToken == openParen):
-            lex()
-            Boolean()
-            if (nextToken == closeParen):
-                lex()
-                if(nextToken == exec_state):
-                    lex()
-                    if(nextToken == openBrace):
-                        lex()
-                        Block()
-                        if (nextToken == closeBrace):
-                            lex()
-                            Elseif()
-    print("Exit <Elseif>")
-
-def Else():
-    print("Enter <Else>")
-    if (nextToken == else_state):
-        lex()
-        if (nextToken == openParen): #won't delete yet, pero ELSE na to. i think we should delete this part - Rae
-            lex()
-            Boolean()
-            if (nextToken == closeParen):
-                lex()
-                if(nextToken == exec_state):
-                    lex()
-                    if(nextToken == openBrace):
-                        lex()
-                        Block()
-                        if (nextToken == closeBrace):
-                            lex()
-                            return
-        print("Invalid on else")
-    #print("Exit <Else>")
-
 
 def Loop():
     print("Enter <Loop>")
@@ -554,25 +569,6 @@ def BooleanCond(): #<BooleanCond> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname>
     print("Expected token is a variable name")
     exit()
 
-def Declaration(): #<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
-    Dtype()
-    if(nextToken == vname):
-        if (nextToken == openParen):
-            lex()
-            Args()
-            if (nextToken == closeParen):
-                lex()
-                if(nextToken == openBrace):
-                    lex()
-                    Block()
-                    if(nextToken == closeBrace):
-                        lex()
-                        print("Exit <Call>")
-                        return
-
-    print("Invalid")
-    exit()
-
 def Call(): #<Call> -> <Vname> "(" <Args> ")"
     if(nextToken == vname):
         lex()
@@ -624,7 +620,7 @@ def Term(): #<Term> -> <Vname> "," <Term> | <ID> "," <Term> | <Vname> | <ID>
     	ctr = 0
         error = False
         lex()
-    	Block(line)
+    	Program(line)
 
     if __name__ == '__main__':
     	main()
