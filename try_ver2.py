@@ -203,7 +203,6 @@ def Main():
     error = True
     exit()
 
-
 ##<Block> -> <State>                    // Block is made up of statement <State> of the same level
 def Block():
     print("Enter <Block>")
@@ -272,15 +271,14 @@ def StatePrime():
         Calling()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
-    else
+    else:
         exit()  # Exit lng kung wala ng next statements after the last repitition,
                 # no need to lex cuz the nextToken will be checked for a match again outside the function
-    if(nextToken == hashSymbol)
+    if(nextToken == hashSymbol):
         lex()
         StatePrime()
     else
         error = True
-
 
 ##<Loop> -> "RT" <Boolean> "{" <Block> "}"
 def Loop():
@@ -369,18 +367,93 @@ def Else():
     print("Error: Invalid ELSE statement")
     exit()
 
-##<Assignment> -> <DType> <Vname> "=" <Vname>
+#<Assignment> -> <DType> <Vname> "=" <Vname>
 #                | <DType> <Vname> "=" "REPLY"
-#                | <DType> <Vname> "=" <Exp>
-#                | <DType> <Vname> "=" <ID>    // Si parser na bahala match yung data types
+#                | "@INT" <Vname> "=" <INT>
+#                | "@CHIRP" <Vname> "=" <CHAR>
+#                | "@COKE" <Vname> "=" <FLOAT>
+#                | "@MSG" <Vname> "=" <STRING>
+#                | "@TRALSE" <Vname> "=" <BOOL>
+#                | <DType> <Vname> "=" "(" <Exp> ")"
+def Assignment():
+    print("Enter <Assignment>")
+    if(nextToken == int_dec):
+        lex()
+        if(nextToken == VARIABLE):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == INT or nextToken == VARIABLE or nextToken == read_state):
+                    lex()
+    elif(nextToken == float_dec):
+        lex()
+        if(nextToken == VARIABLE):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == FLOAT or nextToken == VARIABLE or nextToken == read_state):
+                    lex()
+    elif(nextToken == char_dec):
+        lex()
+        if(nextToken == VARIABLE):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == CHAR or nextToken == VARIABLE or nextToken == read_state):
+                    lex()
+    elif(nextToken == string_dec):
+        lex()
+        if(nextToken == VARIABLE):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == STRING or nextToken == VARIABLE or nextToken == read_state):
+                    lex()
+    elif(nextToken == bool_dec):
+        lex()
+        if(nextToken == VARIABLE):
+            lex()
+            if (nextToken == asSign):
+                lex()
+                if (nextToken == BOOL or nextToken == VARIABLE or nextToken == read_state):
+                    lex()
+    elif(nextToken == openParen):
+        lex()
+        Exp()
+        if(nextToken == closeParen):
+            lex()
+    else:
+        error = True
+    if(error):
+        print("Error: Invald assignment statement")
+        exit()
+    else:
+        print("Exit <Assignment>")
+        return
 
 ##<Call> -> <Vname> "(" <Args> ")"
+def Call():
+    print("Enter <Call>")
+    if(nextToken == vname):
+        lex()
+        if (nextToken == openParen):
+            lex()
+            Args()
+            if (nextToken == closeParen):
+                lex()
+                print("Exit <Call>")
+                return
+    print("Invalid")
+    exit()
 
 ##<Printing> -> "TWEET" <Vname>
 #              | "TWEET" <EXP>
 #              | "TWEET" <ID>
 
 ##<Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
+def Control():
+    if (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
+        lex()
 
 ##This part is the one we made sa ME
 # Copy na lng natin
@@ -395,137 +468,39 @@ def Else():
 ##<TermPrime> -> "*" <Fact><TermPrime>
 #            | "/" <Fact><TermPrime>
 
-##<Fact> -> <ID> | "(" <Exp> ")"
+##<Fact> -> <ID> | <CHAR> | <FLOAT> | "(" <Exp> ")"
 
 ##<ID> -> <INT> | <CHAR> | <FLOAT> | <STRING> | <BOOL>
 
 ##<Newline> -> "\n" <Newline>
 
 ##<Boolean> -> "(" <BooleanCond> ")" | "~" <Boolean>
+def Boolean():
+    print("Enter <Boolean>")
+    if(nextToken == NOT):
+        lex()
+        Boolean()
+        print("Exit <Boolean>")
+        return
+    elif(nextToken == openParen):
+        lex()
+        BooleanCond()
+        if(nextToken == closeParen):
+            lex()
+            print("Exit <Boolean>")
+            return
+        else:
+            error = True
+    else:
+        error = True
+        print("Error: Expected is a ~ or a variable name -- basta bool expression")
+        exit()
 
 ##<BooleanCond> -> <Vname> <BooleanOP> <Vname>
 #          | <Vname> <BooleanOP> <Boolean>
 #          | <Boolean> <BooleanOP> <Boolean>
 #          | <Boolean> <BooleanOP> <VName>
-
-##<BooleanOP> -> ">=" | "<=" | "==" | ">" | "<"
-
-##<Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
-
-##<Args> -> <Dtype> <Vname> "," <Args>
-
-##<Newline> -> "\n"<Newline> | "\n"
-
-##<Return> -> <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
-
-
-
-
-def Return():
-    print("Enter <Return>")
-    if (nextToken == return_state):
-        lex()
-        if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
-            return
-        else:
-            print("Error: Expected a variable literal")
-
-def Loop():
-    print("Enter <Loop>")
-    if (nextToken == loop_state):
-        lex()
-        if(nextToken == openParen):
-            lex()
-            Boolean()
-            if(nextToken == closeParen):
-                lex()
-                if(nextToken == openBrace):
-                    lex()
-                    Block()
-                    if(nextToken == closeBrace):
-                        #lex() <- madodoble si lex() since nabasa na yung closing brace - Rae
-                        print("Exit <Loop>")
-                        return
-        else:
-            print("Invalid on loop")
-
-def Control():
-    if (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
-        lex()
-
-##MIKA
-
-#<Assignment> -> <DType> <Varname> "=" <Varname>
-#                |<DType> <Varname> "=" "REPLY"
-#                |"@INT" <Varname> "=" <INT>
-#                | "@CHIRP" <Varname> "=" <CHAR>
-#                | "@COKE" <Varname> "=" <FLOAT>
-#                | "@MSG" <Varname> "=" <STRING>
-#                | "@TRALSE" <Varname> "=" <BOOL>
-def Assignment():
-    print("Enter <Assignment>")
-    if(nextToken == int_dec):
-        if(nextToken == varname):
-            lex()
-            if (nextToken == asSign):
-                lex()
-                if (nextToken == INT or nextToken == varname or nextToken == read_state):
-                    lex()
-                    return
-    elif(nextToken == float_dec):
-        if(nextToken == varname):
-            lex()
-            if (nextToken == asSign):
-                lex()
-                if (nextToken == FLOAT or nextToken == varname or nextToken == read_state):
-                    lex()
-                    return
-    elif(nextToken == char_dec):
-        if(nextToken == varname):
-            lex()
-            if (nextToken == asSign):
-                lex()
-                if (nextToken == CHAR or nextToken == varname or nextToken == read_state):
-                    lex()
-                    return
-    elif(nextToken == string_dec):
-        if(nextToken == varname):
-            lex()
-            if (nextToken == asSign):
-                lex()
-                if (nextToken == STRING or nextToken == varname or nextToken == read_state):
-                    lex()
-                    return
-    elif(nextToken == bool_dec):
-        if(nextToken == varname):
-            lex()
-            if (nextToken == asSign):
-                lex()
-                if (nextToken == BOOL or nextToken == varname or nextToken == read_state):
-                    lex()
-                    return
-    print("ERROR. NOT THE RIGHT ASSIGNMENT")
-    exit()
-
-def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
-    if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
-        lex()
-        return;
-    print("Expected: Data type poeszh")
-    exit()
-
-def Boolean(): #<Boolean> -> <BooleanCond> | "~" <BooleanCond>
-    if(nextToken == NOT):
-        lex()
-        BooleanCond()
-    elif(nextToken == vname):
-        BooleanCond()
-    else:
-        print("Expected is a ~ or a variable name -- basta bool expression")
-        exit()
-    return
-
-def BooleanCond(): #<BooleanCond> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname> | <Vname> "==" <Vname> | <Vname> ">" <Vname> | <Vname> "<" <Vname>
+def BooleanCond():
     if (nextToken == vname):
         lex()
         if(nextToken == greatEqSign):
@@ -534,62 +509,86 @@ def BooleanCond(): #<BooleanCond> -> <VName> ">=" <Vname> | <Vname> "<=" <Vname>
                 lex()
                 return
             else:
-                print("Expected nextToken is  a variable name")
+                error = True
+                exit()
         elif (nextToken == lessEqSign):
-                lex()
-                if(nextToken == vname):
-                    lex()
-                    return
-                else:
-                    print("Expected nextToken is  a variable name")
-        elif (nextToken == eqSign):
-                lex()
-                if(nextToken == vname):
-                    lex()
-                    return
-                else:
-                    print("Expected nextToken is  a variable name")
-        elif (nextToken == lesserSign):
-                lex()
-                if(nextToken == vname):
-                    lex()
-                    return
-                else:
-                    print("Expected nextToken is  a variable name")
-        elif (nextToken == greaterSign):
-                lex()
-                #LAGAY EXPECTED
-                if(nextToken == vname):
-                    lex()
-                    return
-                else:
-                    print("Expected nextToken is  a variable name")
-        else:
-            print("Expected nextToken is a Logical Operation/tor")
-    print("Expected token is a variable name")
-    exit()
-
-def Call(): #<Call> -> <Vname> "(" <Args> ")"
-    if(nextToken == vname):
-        lex()
-        if (nextToken == openParen):
             lex()
-            Args()
-            if (nextToken == closeParen):
+            if(nextToken == vname):
                 lex()
-                print("Exit <Call>")
                 return
-    print("Invalid")
+            else:
+                error = True
+                print("Expected nextToken is  a variable name")
+                exit()
+        elif (nextToken == eqSign):
+            lex()
+            if(nextToken == vname):
+                lex()
+                return
+            else:
+                error = True
+                print("Expected nextToken is  a variable name")
+                exit()
+        elif (nextToken == lesserSign):
+            lex()
+            if(nextToken == vname):
+                lex()
+                return
+            else:
+                error = True
+                print("Expected nextToken is  a variable name")
+                exit()
+        elif (nextToken == greaterSign):
+            lex()
+            if(nextToken == vname):
+                lex()
+                return
+            else:
+                error = True
+                print("Expected nextToken is  a variable name")
+                exit()
+        else:
+            error = True
+            print("Error: Expected nextToken is a Logical Operation/tor")
+            exit()
+    error = True
+    print("Error: Expected token is a variable name")
     exit()
 
-def Args(): #<Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args> | Lambda
+##<BooleanOP> -> ">=" | "<=" | "==" | ">" | "<"
+
+##<Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
+def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
+    print("Enter <Dtype>")
+    if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
+        lex()
+        print("Exit <Dtype>")
+        return
+    print("Error: Expected Data type poeszh")
+    exit()
+
+##<Args> -> <Dtype> <Vname> "," <Args>
+def Args(): #<Args> -> <Dtype> <Vname> | <Dtype> <Vname>  ", " <Args>
     Dtype()
-    if (nextToken == vname):
+    if (nextToken == VARIABLE):
         lex()
         if (nextToken == commaSign):
             lex()
             Args()
     return
+
+##<Newline> -> "\n"<Newline> | "\n"
+
+##<Return> -> <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
+def Return():
+    if (nextToken == return_state):
+        lex()
+        if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == TRUE or nextToken == FALSE) or nextToken == VARIABLE):
+            print("Enter <Return>")
+            exit()
+    error = True
+    print("Error: Expected return value")
+    exit()
 
 def Printing(): #<Printing> -> "TWEET" <Term> #Check this as well
     if (nextToken == printing):
@@ -607,20 +606,17 @@ def Term(): #<Term> -> <Vname> "," <Term> | <ID> "," <Term> | <Vname> | <ID>
             lex()
             Term()
         return
-
     print("Exit <Term>")
     exit()
 
-    ## Main Function
-    #
-    # This is the main function. It takes an input string from the commandline and removes all the whitespaces and then calls the function lex() to get the next token. It then passes it on to the function assign() along with the input string and the location of the token after. The algorithm for the functions that checks the rules were patterned after the ones found in the book Concepts of Programmng Languages. Various modifications have been done in translating from C to python.
-    def main():
-    	rawline = raw_input()
-    	line = rawline.split
-    	ctr = 0
-        error = False
-        lex()
-    	Program(line)
+## Main Function
+def main():
+	rawline = raw_input()
+	line = rawline.split
+	ctr = 0
+    error = False
+    lex()
+	State(line)
 
-    if __name__ == '__main__':
-    	main()
+if __name__ == '__main__':
+	main()
