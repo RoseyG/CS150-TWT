@@ -35,7 +35,11 @@
 <Call> -> <Vname> "(" <Args> ")"
 <Printing> -> "TWEET" <Vname>
               | "TWEET" <EXP>
-              | "TWEET" <ID>
+              | "TWEET" <INT>
+              | "TWEET" <FLOAT>
+              | "TWEET" <CHAR>
+              | "TWEET" <STRING>
+              | "TWEET" <BOOL>
 <Reading> -> "REPLY" <Vname>
               | "REPLY" <EXP>
               | "REPLY" <ID>
@@ -50,7 +54,6 @@
 <TermPrime> -> "*" <Fact><TermPrime>
             | "/" <Fact><TermPrime>
 <Fact> -> <INT> | <CHAR> | <FLOAT> | "(" <Exp> ")"
-<ID> -> <INT> | <CHAR> | <FLOAT> | <STRING> | <BOOL>
 
 <Newline> -> "\n" <Newline>
 <Boolean> -> "(" <BooleanCond> ")" | "~" <Boolean>
