@@ -569,7 +569,7 @@ def Boolean():
 #          | <Boolean> <BooleanOP> <Vname>
 def BooleanCond():
     global nextToken
-    if (nextToken == vname):
+    if (nextToken == VARIABLE):
         lex()
     elif (nextToken == openParen or nextToken == NOT):
         Boolean()
