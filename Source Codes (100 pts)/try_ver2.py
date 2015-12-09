@@ -156,7 +156,6 @@ def lex():
 def Program():
     global nextToken
     print("Enter <Program>")
-    print(nextToken)
     if(nextToken == login):
         Main()
     else:
