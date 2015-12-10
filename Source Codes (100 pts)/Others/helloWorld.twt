@@ -4,13 +4,12 @@
 
 
 LOGIN
-@INT X = 3 #
-TWEET "Kaya mo yan" #
+@INT X = 0 #
 
-RT ( X > 4 ) { 
-                @INT X = 3 # 
-                @INT Y = REPLY
- } 
+RT ( X < 4 ) { 
+                X = ( X + 1 ) #
+ } #
 
+TWEET X #
 
 LOGOUT

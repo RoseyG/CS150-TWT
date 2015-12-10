@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 ##ROSEY
 EOF = -1
 int_dec = 3
@@ -12,6 +13,7 @@ logout = 0
 if_state = 20
 elseif_state = 21
 else_state = 22
+fxncall = 23
 loop_state = 30
 break_state = 31
 continue_state = 32
@@ -74,6 +76,8 @@ def lex():
         nextToken = string_dec
     elif nextString == '@TRALSE':
         nextToken = bool_dec
+    elif nextString == 'HOOT':
+        nextToken == fxncall
     elif nextString == 'IF':
         outfile.write('if ')
         nextToken = if_state
@@ -264,13 +268,14 @@ def State():
         If()
     elif (nextToken == loop_state):
         Loop()
-    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec):
+    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
         Assignment()
     elif (nextToken == print_state):
         Printing()
     elif (nextToken == read_state):
         lex()
-    elif (nextToken == VARIABLE):
+    elif (nextToken == fxncall):
+        lex()
         Call()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
@@ -298,13 +303,14 @@ def StatePrime():
         If()
     elif (nextToken == loop_state):
         Loop()
-    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec):
+    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
         Assignment()
     elif (nextToken == print_state):
         Printing()
     elif (nextToken == read_state):
         lex()
-    elif (nextToken == VARIABLE):
+    elif (nextToken == fxncall):
+        lex()
         Call()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
@@ -425,8 +431,14 @@ def Assignment():
                     lex()
                     return
                 elif(nextToken == read_state):
-                    Reading()
+                    lex()
                     return
+                elif(nextToken == openParen):
+                    lex()
+                    Exp()
+                    if(nextToken == closeParen):
+                        lex()
+                        return
     elif(nextToken == float_dec):
         lex()
         if(nextToken == VARIABLE):
@@ -437,8 +449,14 @@ def Assignment():
                     lex()
                     return
                 elif(nextToken == read_state):
-                    Reading()
+                    lex()
                     return
+                elif(nextToken == openParen):
+                    lex()
+                    Exp()
+                    if(nextToken == closeParen):
+                        lex()
+                        return
     elif(nextToken == char_dec):
         lex()
         if(nextToken == VARIABLE):
@@ -449,8 +467,14 @@ def Assignment():
                     lex()
                     return
                 elif(nextToken == read_state):
-                    Reading()
+                    lex()
                     return
+                elif(nextToken == openParen):
+                    lex()
+                    Exp()
+                    if(nextToken == closeParen):
+                        lex()
+                        return
     elif(nextToken == string_dec):
         lex()
         if(nextToken == VARIABLE):
@@ -461,8 +485,14 @@ def Assignment():
                     lex()
                     return
                 elif(nextToken == read_state):
-                    Reading()
+                    lex()
                     return
+                elif(nextToken == openParen):
+                    lex()
+                    Exp()
+                    if(nextToken == closeParen):
+                        lex()
+                        return
     elif(nextToken == bool_dec):
         lex()
         if(nextToken == VARIABLE):
@@ -473,14 +503,28 @@ def Assignment():
                     lex()
                     return
                 elif(nextToken == read_state):
-                    Reading()
+                    lex()
                     return
-    elif(nextToken == openParen):
+                elif(nextToken == openParen):
+                    lex()
+                    Exp()
+                    if(nextToken == closeParen):
+                        lex()
+                        return
+    
+    elif (nextToken == VARIABLE):
         lex()
-        Exp()
-        if(nextToken == closeParen):
+        if (nextToken == asSign):
             lex()
-            return
+            if (nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE or nextToken == read_state):
+                lex()
+                return
+            elif(nextToken == openParen):
+                    lex()
+                    Exp()
+                    if(nextToken == closeParen):
+                        lex()
+                        return
         else:
             print("Expected ')'")
             error()
@@ -727,6 +771,7 @@ def main():
     except OSError:
         pass
     outfile = open('outputfile.py', 'w')
+    outfile.write('import time\n\n\n')
     global outfile
     try:
         file = open( str(sys.argv[1]) + '.twt' , 'r')
@@ -752,7 +797,7 @@ def main():
     input.append('EOF')
     lex()
     Program()
-    outfile.write('\ninput()')
+    outfile.write('\n\nprint "Program exiting in 10s.."\ntime.sleep(10)')
     os.system('start python outputfile.py')
 
 if __name__ == '__main__':
