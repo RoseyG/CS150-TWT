@@ -239,8 +239,6 @@ def State():
         Assignment()
     elif (nextToken == print_state):
         Printing()
-    elif (nextToken == read_state):
-        Reading()
     elif (nextToken == call_state):
         Calling()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
@@ -273,8 +271,6 @@ def StatePrime():
         Assignment()
     elif (nextToken == print_state):
         Printing()
-    elif (nextToken == read_state):
-        Reading()
     elif (nextToken == call_state):
         Calling()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
@@ -371,7 +367,7 @@ def Else():
     error()
 
 #<Assignment> -> <DType> <Vname> "=" <Vname>
-#                | <DType> <Vname> "=" "REPLY"
+#                | <DType> <Vname> "=" <Reading>
 #                | "@INT" <Vname> "=" <INT>
 #                | "@CHIRP" <Vname> "=" <CHAR>
 #                | "@COKE" <Vname> "=" <FLOAT>
@@ -387,8 +383,11 @@ def Assignment():
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == INT or nextToken == VARIABLE or nextToken == read_state):
+                if (nextToken == INT or nextToken == VARIABLE):
                     lex()
+                    return
+                elif(nextToken == read_state):
+                    Reading()
                     return
     elif(nextToken == float_dec):
         lex()
@@ -396,8 +395,11 @@ def Assignment():
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == FLOAT or nextToken == VARIABLE or nextToken == read_state):
+                if (nextToken == FLOAT or nextToken == VARIABLE):
                     lex()
+                    return
+                elif(nextToken == read_state):
+                    Reading()
                     return
     elif(nextToken == char_dec):
         lex()
@@ -405,8 +407,11 @@ def Assignment():
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == CHAR or nextToken == VARIABLE or nextToken == read_state):
+                if (nextToken == CHAR or nextToken == VARIABLE):
                     lex()
+                    return
+                elif(nextToken == read_state):
+                    Reading()
                     return
     elif(nextToken == string_dec):
         lex()
@@ -414,8 +419,11 @@ def Assignment():
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == STRING or nextToken == VARIABLE or nextToken == read_state):
+                if (nextToken == STRING or nextToken == VARIABLE):
                     lex()
+                    return
+                elif(nextToken == read_state):
+                    Reading()
                     return
     elif(nextToken == bool_dec):
         lex()
@@ -423,8 +431,11 @@ def Assignment():
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE or nextToken == read_state):
+                if (nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE:
                     lex()
+                    return
+                elif(nextToken == read_state):
+                    Reading()
                     return
     elif(nextToken == openParen):
         lex()
@@ -482,26 +493,12 @@ def Printing():
     else:
         print("Expected expression, varable or literal")
         error()
-##<Reading> - > "REPLY" <Vname>
+##<Reading> - > "REPLY"
 def Reading():
-    global nextToken
     print("Enter <Reading>")
     lex()
-    if (nextToken == VARIABLE):
-        lex()
-        print("Exit <Reading>")
-        return
-    else:
-        print("Expected variable name")
-        error()
-
-##<Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
-def Control():
-    global nextToken
-    print("Enter <Control>")
-    if (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
-        lex()
-        print("Exit <Control>")
+    print("Exit <Reading")
+    return
 
 ##This part is the one we made sa ME
 # Copy na lng natin
