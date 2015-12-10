@@ -666,6 +666,7 @@ def error():
 def main():
     global input
     input = []
+    tempLexeme = " "
 
     print("Reading: " + str(sys.argv[1]) + '.twt')
 
@@ -678,6 +679,16 @@ def main():
     for rawline in file:
         line = rawline.split()
         for lexeme in line:
+            if (lexeme[0] == '"' and lexeme[-1] != lexeme[0]):
+                tempLexeme = lexeme
+                continue
+            if (tempLexeme[0] == '"' and tempLexeme[-1] != '"'):
+                tempLexeme = tempLexeme + ' ' + lexeme
+                if (tempLexeme[0] == tempLexeme[-1]):
+                    input.append(tempLexeme)
+                    tempLexeme = " "
+                    continue
+                continue
             input.append(lexeme)
 
     input.append('EOF')

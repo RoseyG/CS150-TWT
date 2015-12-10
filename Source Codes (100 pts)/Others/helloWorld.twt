@@ -1,3 +1,4 @@
 LOGIN
-TWEET HELLO #
+TWEET "HELLO WORLD" #
+TWEET "Kaya mo yan" #
 LOGOUT
