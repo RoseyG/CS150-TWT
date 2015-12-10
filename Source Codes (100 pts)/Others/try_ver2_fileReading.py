@@ -206,23 +206,24 @@ def Program():
 def Declaration(): #<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
     global nextToken
     print("Enter <Declaration>")
+    outfile.write('def ')
     Dtype()
-    if(nextToken == vname):
+    if(nextToken == VARIABLE):
+        lex()
         if (nextToken == openParen):
             lex()
             Args()
-            if (nextToken == closeParen):
+            if(nextToken == openBrace):
+                outfile.write(':\n\t')
                 lex()
-                if(nextToken == openBrace):
+                Block()
+                if (nextToken == return_state):
                     lex()
-                    Block()
-                    if (nextToken == return_state):
-                        lex()
-                        Return()
-                    if(nextToken == closeBrace):
-                        lex()
-                        print("Exit <Declaration>")
-                        return
+                    Return()
+                if(nextToken == closeBrace):
+                    lex()
+                    print("Exit <Declaration>")
+                    return
     print("Error: Invalid Function Declaration")
     error()
 
@@ -665,8 +666,13 @@ def Args():
         if (nextToken == commaSign):
             lex()
             Args()
+        if (nextToken == closeParen):
+            lex()
             print("Exit <Args>")
             return
+        else:
+            print "Expected ')' " 
+            error()
     error()
 
 ##<Return> -> <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" "(" <Exp> ")"

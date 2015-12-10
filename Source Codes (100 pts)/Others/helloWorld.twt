@@ -1,3 +1,8 @@
+@INT HAHAHA ( @INT X ) {
+    TWEET "Kaya mo yan" #
+}
+
+
 LOGIN
 @INT X = 3 #
 TWEET "Kaya mo yan" #
