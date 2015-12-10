@@ -2,6 +2,8 @@ import sys
 import os
 import time
 ##ROSEY
+## Lexemes and Tokens
+
 EOF = -1
 tabs = 0
 int_dec = 3
@@ -50,6 +52,7 @@ VARIABLE = 100
 
 nextToken = 0
 
+#Checks if input is floar
 def isfloat(str):
     try:
         float(str)
@@ -57,6 +60,7 @@ def isfloat(str):
         return False
     return True
 
+#LEX PROPER and at the same time, we translate our language to python language and write the code in another py file to be run at the end of the program if no error is found
 def lex():
     global input
     global nextToken
@@ -186,6 +190,7 @@ def lex():
     del input[0]
 
 
+### RD PROPER
 
 ## <Program> -> <Declaration> <Main>
 #            | <Main>
@@ -377,7 +382,7 @@ def Loop():
     if(nextToken == openBrace):
         lex()
         Block()
-        if(nextToken == closeBrace):
+        if(nextToken == closeBrace and 'IF' not in orig):
             print("Exit <Loop>")
             tabs-=1
             lex()
@@ -392,29 +397,30 @@ def Loop():
 #        | "IF" <Condition> "FOLLOW" "{" <Block> "}" <Else>
 #        | "IF" <Condition> "FOLLOW" "{" <Block> "}"
 def If():
-    global nextToken
-    print("Enter <If>")
-    if (nextToken == if_state):
-        lex()
-        Condition()
-        outfile.write(':')
-        tabs+=1
-        if (nextToken == exec_state):
-            lex()
-            if (nextToken == openBrace):
-                lex()
-                Block()
-                if (nextToken == closeBrace):
-                    lex()
-                    if (nextToken == elseif_state):
-                        Elseif()
-                    if (nextToken == else_state):
-                        Else()
-                    print("Exit <If>")
-                    tabs-=2
-                    return
-    print("Error: Invalid IF statement")
-    error()
+	global nextToken
+	global tabs
+	print("Enter <If>")
+	if (nextToken == if_state):
+		lex()
+		Condition()
+		outfile.write(':')
+		tabs+=1
+		if (nextToken == exec_state):
+			lex()
+			if (nextToken == openBrace):
+				lex()
+				Block()
+				if (nextToken == closeBrace):
+					lex()
+					if (nextToken == elseif_state):
+						Elseif()
+					if (nextToken == else_state):
+						Else()
+					print("Exit <If>")
+					tabs-=2
+					return
+		print("Error: Invalid IF statement")
+		error()
 
 ##<ElseIf> -> "ELSEIF" <Condition> "FOLLOW" "{" <Block> "}" <Elseif>
 def Elseif():
@@ -813,43 +819,48 @@ def error():
 ##Main Function
 #
 def main():
-    global input
-    input = []
-    tempLexeme = " "
-    print("Reading: " + str(sys.argv[1]) + '.twt')
-    try:
-        os.remove('outputfile.py')
-    except OSError:
-        pass
-    outfile = open('outputfile.py', 'w')
-    outfile.write('import time\n\n\n')
-    global outfile
-    try:
-        file = open( str(sys.argv[1]) + '.twt' , 'r')
-    except:
-        print("No such *.twt file exist")
-        quit()
+	global input
+	global orig
 
-    for rawline in file:
-        line = rawline.split()
-        for lexeme in line:
-            if (lexeme[0] == '"' and lexeme[-1] != lexeme[0]):
-                tempLexeme = lexeme
-                continue
-            if (tempLexeme[0] == '"' and tempLexeme[-1] != '"'):
-                tempLexeme = tempLexeme + ' ' + lexeme
-                if (tempLexeme[0] == tempLexeme[-1]):
-                    input.append(tempLexeme)
-                    tempLexeme = " "
-                    continue
-                continue
-            input.append(lexeme)
+	input = []
+	tempLexeme = " "
+	print("Reading: " + str(sys.argv[1]) + '.twt')
+	try:
+		os.remove('outputfile.py')
+	except OSError:
+		pass
+	outfile = open('outputfile.py', 'w')
+	outfile.write('import time\n\n\n')
+	global outfile
+	try:
+		file = open( str(sys.argv[1]) + '.twt' , 'r')
+	except:
+		print("No such *.twt file exist")
+		quit()
 
-    input.append('EOF')
-    lex()
-    Program()
-    outfile.write('\n\nprint "Program exiting in 10s.."\ntime.sleep(10)')
-    os.system('start python outputfile.py')
+	for rawline in file:
+		line = rawline.split()
+		for lexeme in line:
+			if (lexeme[0] == '"' and lexeme[-1] != lexeme[0]):
+				tempLexeme = lexeme
+				continue
+			if (tempLexeme[0] == '"' and tempLexeme[-1] != '"'):
+				tempLexeme = tempLexeme + ' ' + lexeme
+				if (tempLexeme[0] == tempLexeme[-1]):
+					input.append(tempLexeme)
+					tempLexeme = " "
+					continue
+				continue
+			input.append(lexeme)
+
+	input.append('EOF')
+	orig = input
+	print "\n\nORIG: ", orig, "\n"
+	lex()
+	
+	Program()
+	outfile.write('\n\nprint "Program exiting in 10s.."\ntime.sleep(10)')
+	os.system('start python outputfile.py')
 
 if __name__ == '__main__':
 	main()

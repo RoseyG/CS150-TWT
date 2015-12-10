@@ -9,9 +9,10 @@ LOGIN
 @INT X = 0 #
 @INT Y = 32 #
 RT ( X < 4 ) { 
-                X = ( X + 1 ) #
-                Y = ( Y + 2 ) #
-                TWEET X #
+
+		X = ( X + 1 ) #
+		Y = ( Y + 2 ) #
+		TWEET X #
  } #
 
 TWEET X #
