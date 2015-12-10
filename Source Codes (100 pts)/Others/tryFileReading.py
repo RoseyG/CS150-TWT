@@ -1,5 +1,5 @@
 import sys
-
+import os
 ##ROSEY
 EOF = -1
 int_dec = 3
@@ -17,7 +17,6 @@ break_state = 31
 continue_state = 32
 exit_state = 33
 exec_state = 34
-call_state = 35
 read_state = 10
 print_state = 11
 return_state = 12
@@ -76,24 +75,32 @@ def lex():
     elif nextString == '@TRALSE':
         nextToken = bool_dec
     elif nextString == 'IF':
+        outfile.write('if ')
         nextToken = if_state
     elif nextString == 'ELSEIF':
+        outfile.write('elif ')
         nextToken = elseif_state
     elif nextString == 'ELSE':
+        outfile.write('else ')
         nextToken = else_state
     elif nextString == 'RT':
+        outfile.write('while ')
         nextToken = loop_state
     elif nextString == 'UNFOLLOW':
-        nextToken = brake_state
+        outfile.write('break')
+        nextToken = break_state
     elif nextString == 'LIKE':
+        outfile.write('continue')
         nextToken = continue_state
     elif nextString == 'BLOCK':
+        outfile.write('exit')
         nextToken = exit_state
     elif nextString == 'FOLLOW':
         nextToken = exec_state
     elif nextString == 'REPLY':
         nextToken = read_state
     elif nextString == 'TWEET':
+        outfile.write('print ')
         nextToken = print_state
     elif nextString == 'REPORT':
         nextToken = return_state
@@ -104,52 +111,73 @@ def lex():
     elif nextString == '~':
         nextToken = NOT
     elif nextString.isdigit():
+        outfile.write(nextString)
         nextToken = INT
     elif nextString[0] == '-' and nextString[1:].isdigit():
+        outfile.write(nextString)
         nextToken = INT
     elif isfloat(nextString):
+        outfile.write(nextString)
         nextToken = FLOAT
-    elif (nextString[0] == '\'') and (nextString[-1] == '\''):
+    elif (nextString[0] == '\'') and (nextString[-1] == '\'') and (nextString.len() == 1):
+        outfile.write(nextString)
         nextToken = CHAR
     elif (nextString[0] == '\"') and (nextString[-1] == '\"'):
+        outfile.write(nextString)
         nextToken = STRING
     elif nextString == '{':
         nextToken = openBrace
     elif nextString == '}':
         nextToken = closeBrace
     elif nextString == '+':
+        outfile.write(nextString)
         nextToken = plusSign
     elif nextString == '-':
+        outfile.write(nextString)
         nextToken = minusSign
     elif nextString == '/':
+        outfile.write(nextString)
         nextToken = divSign
     elif nextString == '*':
+        outfile.write(nextString)
         nextToken = mulSign
     elif nextString == '=':
+        outfile.write(nextString)
         nextToken = asSign
     elif nextString == '(':
+        outfile.write(nextString)
         nextToken = openParen
     elif nextString == ')':
+        outfile.write(nextString)
         nextToken = closeParen
     elif nextString == '#':
+        outfile.write('\n')
         nextToken = ENDOFSTATE
     elif nextString == ',':
+        outfile.write(nextString)
         nextToken = commaSign
     elif nextString == '>=':
+        outfile.write(nextString)
         nextToken = lessEqSign
     elif nextString == '<=':
+        outfile.write(nextString)
         nextToken = greatEqSign
     elif nextString == '==':
+        outfile.write(nextString)
         nextToken = eqSign
     elif nextString == '>':
+        outfile.write(nextString)
         nextToken = lesserSign
     elif nextString == '<':
+        outfile.write(nextString)
         nextToken = greaterSign
     else:
+        outfile.write(nextString)
         nextToken = VARIABLE
-    del input[0]
     print("Next token is: " + str(nextToken))
     print("Next string is: " + nextString)
+    del input[0]
+
 
 
 ## <Program> -> <Declaration> <Main>
@@ -169,9 +197,8 @@ def Program():
         if(nextToken == EOF):
             print("Exit <Program>")
 
-
-##<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> <Return>"}"
-#                | <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
+##<Declaration> -> <Dtype> VARIABLE "(" <Args> ")" "{" <Block> <Return>"}"
+#                | <Dtype> VARIABLE "(" <Args> ")" "{" <Block> "}"
 def Declaration(): #<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
     global nextToken
     print("Enter <Declaration>")
@@ -235,12 +262,15 @@ def State():
         If()
     elif (nextToken == loop_state):
         Loop()
-    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
+    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec):
         Assignment()
     elif (nextToken == print_state):
         Printing()
-    elif (nextToken == call_state):
-        Calling()
+    elif (nextToken == read_state):
+        outfile.write('input()')
+        lex()
+    elif (nextToken == VARIABLE):
+        Call()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
     else:
@@ -267,12 +297,15 @@ def StatePrime():
         If()
     elif (nextToken == loop_state):
         Loop()
-    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
+    elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec):
         Assignment()
     elif (nextToken == print_state):
         Printing()
-    elif (nextToken == call_state):
-        Calling()
+    elif (nextToken == read_state):
+        outfile.write('input()')
+        lex()
+    elif (nextToken == VARIABLE):
+        Call()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
     else:
@@ -282,12 +315,13 @@ def StatePrime():
         lex()
         StatePrime()
 
-##<Loop> -> "RT" <Boolean> "{" <Block> "}"
+##<Loop> -> "RT" <Condition> "{" <Block> "}"
 def Loop():
     global nextToken
     print("Enter <Loop>")
     lex()
-    Logic()
+    Condition()
+    outfile.write(':\n\t')
     if(nextToken == openBrace):
         lex()
         Block()
@@ -301,15 +335,16 @@ def Loop():
         print("Expectedt '{'")
         error()
 
-##<If> -> "IF" <Boolean> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
-#        | "IF" <Boolean> "FOLLOW" "{" <Block> "}" <Else>
-#        | "IF" <Boolean> "FOLLOW" "{" <Block> "}"
+##<If> -> "IF" <Condition> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
+#        | "IF" <Condition> "FOLLOW" "{" <Block> "}" <Else>
+#        | "IF" <Condition> "FOLLOW" "{" <Block> "}"
 def If():
     global nextToken
     print("Enter <If>")
     if (nextToken == if_state):
         lex()
-        Logic()
+        Condition()
+        outfile.write(':\n\t')
         if (nextToken == exec_state):
             lex()
             if (nextToken == openBrace):
@@ -326,13 +361,14 @@ def If():
     print("Error: Invalid IF statement")
     error()
 
-##<ElseIf> -> "ELSEIF" <Boolean> "FOLLOW" "{" <Block> "}" <Elseif>
+##<ElseIf> -> "ELSEIF" <Condition> "FOLLOW" "{" <Block> "}" <Elseif>
 def Elseif():
     global nextToken
     print("Enter <Elseif>")
     if (nextToken == elseif_state):
         lex()
-        Logic()
+        Condition()
+        outfile.write(':\n\t')
         if(nextToken == exec_state):
             lex()
             if(nextToken == openBrace):
@@ -347,13 +383,14 @@ def Elseif():
     print("Error: Invalid ELSEIF statement")
     error()
 
-##<Else> -> "ELSE" <Boolean> "FOLLOW" "{" <Block> "}"
+##<Else> -> "ELSE" <Condition> "FOLLOW" "{" <Block> "}"
 def Else():
     global nextToken
     print("Enter <Else>")
     if (nextToken == else_state):
         lex()
-        Boolean()
+        Condition() #Nawala to sa file, binalik ko
+        outfile.write(':\n\t')
         if(nextToken == exec_state):
             lex()
             if(nextToken == openBrace):
@@ -366,14 +403,15 @@ def Else():
     print("Error: Invalid ELSE statement")
     error()
 
-#<Assignment> -> <DType> <Vname> "=" <Vname>
-#                | <DType> <Vname> "=" <Reading>
-#                | "@INT" <Vname> "=" <INT>
-#                | "@CHIRP" <Vname> "=" <CHAR>
-#                | "@COKE" <Vname> "=" <FLOAT>
-#                | "@MSG" <Vname> "=" <STRING>
-#                | "@TRALSE" <Vname> "=" <BOOL>
-#                | <DType> <Vname> "=" "(" <Exp> ")"
+#<Assignment> -> <DType> VARIABLE "=" VARIABLE
+#                | <DType>  VARIABLE "=" <Reading> # May function na to
+#                | "@INT"  VARIABLE "=" INT
+#                | "@CHIRP"  VARIABLE "=" CHAR
+#                | "@COKE"  VARIABLE "=" FLOAT
+#                | "@MSG"  VARIABLE "=" STRING
+#                | "@TRALSE"  VARIABLE "=" "YES"
+#                | "@TRALSE"  VARIABLE "=" "NO"
+#                | <DType>  VARIABLE "=" "(" <Exp> ")"
 def Assignment():
     global nextToken
     print("Enter <Assignment>")
@@ -431,7 +469,7 @@ def Assignment():
             lex()
             if (nextToken == asSign):
                 lex()
-                if (nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE:
+                if (nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
                     lex()
                     return
                 elif(nextToken == read_state):
@@ -449,29 +487,30 @@ def Assignment():
     print("Error: Invald assignment statement")
     error()
 
-##<Call> -> <Vname> "(" <Args> ")"
+
+##<Call> ->  VARIABLE "(" <Args> ")"
 def Call():
     global nextToken
     print("Enter <Call>")
-    if(nextToken == vname):
+    lex()
+    if (nextToken == openParen):
         lex()
-        if (nextToken == openParen):
+        Args()
+        if (nextToken == closeParen):
             lex()
-            Args()
-            if (nextToken == closeParen):
-                lex()
-                print("Exit <Call>")
-                return
+            print("Exit <Call>")
+            return
     print("Invalid function call")
     error()
 
-##<Printing> -> "TWEET" <Vname>
+##<Printing> -> "TWEET"  VARIABLE
 #              | "TWEET" "(" <EXP> ")"
-#              | "TWEET" <INT>
-#              | "TWEET" <FLOAT>
-#              | "TWEET" <CHAR>
-#              | "TWEET" <STRING>
-#              | "TWEET" <BOOL>
+#              | "TWEET" INT
+#              | "TWEET" FLOAT
+#              | "TWEET" CHAR
+#              | "TWEET" STRING
+#              | "TWEET" "YESY"
+#              | "TWEET" "NO"
 def Printing():
     global nextToken
     print("Enter <Printing>")
@@ -486,19 +525,25 @@ def Printing():
         else:
             print("Error: expected token is ')' ")
             error()
-    elif (nextToken == INT or nextToken == FLOAT or nextToken == CHAR or nextToken == STRING or  nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
+    elif (nextToken == INT or nextToken == FLOAT or nextToken == CHAR or nextToken == STRING or nextToken == TRUE or nextToken == FALSE or nextToken == VARIABLE):
         lex()
         print("Exit <Printing>")
         return
-    else:
-        print("Expected expression, varable or literal")
-        error()
+    print("Expected expression, varable or literal")
+    error()
+
 ##<Reading> - > "REPLY"
 def Reading():
     print("Enter <Reading>")
     lex()
     print("Exit <Reading")
-    return
+
+##<Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
+def Control():
+    global nextToken
+    print("Enter <Control>")
+    lex()
+    print("Exit <Control>")
 
 ##This part is the one we made sa ME
 # Copy na lng natin
@@ -509,35 +554,31 @@ def Exp():
     Term()
     ExpPrime()
     print "Exit <Exp>"
-    return
 
-##<ExpPrime> -> "+" <Term><ExpPrime>
-#            | "-" <Term><ExpPrime>
+##<ExpPrime> -> "+" <Term> <ExpPrime>
+#            | "-" <Term> <ExpPrime>
 def ExpPrime():
     global nextToken
     while (nextToken == plusSign or nextToken == minusSign):
 		lex()
 		Term() # No need to call ExpPrime since we can just loop it
-    return
 
-##<Term> -> <Fact><TermPrime>
+##<Term> -> <Fact> <TermPrime>
 def Term():
 	print "Enter <Term>"
 	Fact()
 	TermPrime()
 	print "Exit <Term>"
-	return
 
-##<TermPrime> -> "*" <Fact><TermPrime>
-#            | "/" <Fact><TermPrime>
+##<TermPrime> -> "*" <Fact> <TermPrime>
+#            | "/" <Fact> <TermPrime>
 def TermPrime():
     global nextToken
     while (nextToken == divSign or nextToken == mulSign):
         lex()
         Fact()
-    return
 
-##<Fact> -> <INT> | <CHAR> | <FLOAT> | "(" <Exp> ")"
+##<Fact> -> INT | CHAR | FLOAT | VARIABLE | "(" <Exp> ")"
 def Fact():
     global nextToken
     print "Enter <Factor>"
@@ -553,76 +594,74 @@ def Fact():
     else:
         error()
     print "Exit <Factor>"
-    return
 
-##<Logic> -> "(" <LogicCond> ")" | "~" <Logic>
-def Logic():
+##<Condition> -> "(" <Conditional> ")" | "~" <Condition>
+def Condition():
     global nextToken
-    print("Enter <Logic>")
+    print("Enter <Condition>")
     if(nextToken == NOT):
         lex()
-        Logic()
-        print("Exit <Logic")
+        Condition()
+        print("Exit <Condition>")
         return
     elif(nextToken == openParen):
         lex()
-        LogicCond()
+        Conditional()
         if(nextToken == closeParen):
             lex()
-            print("Exit <Logic>")
+            print("Exit <Condition>")
             return
         else:
             print("Expected ')'")
             error()
-    else:
-        print("Error: Expected is a ~ or a variable name -- basta bool expression")
-        error()
+    print("Error: Expected is a ~ or a variable name -- basta bool expression")
+    error()
 
-##<LogicCond> -> <Vname> <LogicOP> <Vname>
-#          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Logic>
-#          | <Logic> <LogicOP> <Logic>
-#          | <Logic> <LogicOP> <Vname | INT | CHAR | FLOAT >
-#          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Vname | INT | CHAR | FLOAT >
-def LogicCond():
+##<Conditional> -> VARIABLE <Conditional> VARIABLE
+#          | { VARIABLE | INT | CHAR | FLOAT } <CondOp> <Logic>
+#          | <Conditional> <CondOp> <Conditional>
+#          | <Condition> <CondOp> {VARIABLE | INT | CHAR | FLOAT }
+#          | { VARIABLE | INT | CHAR | FLOAT } <CondOp> { VARIABLE | INT | CHAR | FLOAT }
+def Conditional():
     global nextToken
-    print("Enter <LogicCond>")
-    if (nextToken == VARIABLE or nextToken == TRUE or nextToken == FALSE or nextToken == INT or nextToken == CHAR or nextToken == FLOAT):
+    print("Enter <Conditional>")
+    if (nextToken == VARIABLE or nextToken == INT or nextToken == CHAR or nextToken == FLOAT):
         lex()
     elif (nextToken == openParen or nextToken == NOT):
-        Logic()
+        Condition()
         lex()
     else:
         error()
-    LogicOp()
-    if (nextToken == VARIABLE or nextToken == TRUE or nextToken == FALSE or nextToken == INT or nextToken == CHAR or nextToken == FLOAT):
+    CondOp()
+    if (nextToken == VARIABLE or nextToken == INT or nextToken == CHAR or nextToken == FLOAT):
         lex()
-        print("Exit <LogicCond>")
+        print("Exit <Conditional>")
         return
     elif (nextToken == openParen or nextToken == NOT):
-        Logic()
+        Condition()
         lex()
-        print("Exit <LogicCond>")
+        print("Exit <Conditional>")
         return
     else:
         print("Expected nextToken is a variable name or '(' ")
         error()
-    print("Invalid Logical/Boolean expression")
+    print("Invalid  expression")
     error()
 
-##<LogicOP> -> ">=" | "<=" | "==" | ">" | "<"
-def LogicOp():
+##<CondOP> -> ">=" | "<=" | "==" | ">" | "<"
+def CondOp():
     global nextToken
-    print("Enter <LogicOp>")
+    print("Enter <CondOp>")
     if (nextToken == greatEqSign or nextToken == lessEqSign or nextToken == eqSign or nextToken == lesserSign or nextToken == greaterSign):
         lex()
-        print("Exit <LogicOp>")
+        print("Exit <CondOp>")
         return
     else:
-        print("Expected boolean operator")
+        print("Expected conditional operator")
         error()
 
 ##<Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
-def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
+def Dtype():
     global nextToken
     print("Enter <Dtype>")
     if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
@@ -646,22 +685,22 @@ def Args():
             return
     error()
 
-##<Return> -> <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" "(" <Exp> ")"
+##<Return> -> "REPORT" { INT | CHAR | FLOAT | STRING | VARIABLE } | "REPORT" "(" <Exp> ")"
 def Return():
     global nextToken
-    if (nextToken == return_state):
+    print("Enter <Return>")
+    lex()
+    if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == VARIABLE):
         lex()
-        if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == STRING or nextToken == VARIABLE):
+        print("Exit <Return>")
+        return
+    elif (nextToken == openParen):
+        lex()
+        Exp()
+        if (nextToken == ")"):
             lex()
-            print("Enter <Return>")
+            print("Exit <Return>")
             return
-        elif (nextToken == openParen):
-            lex()
-            BooleanCond()
-            if (nextToken == ")"):
-                lex()
-                print("Enter <Return>")
-                return
     print("Error: Expected return value")
     error()
 
@@ -677,9 +716,13 @@ def main():
     global input
     input = []
     tempLexeme = " "
-
     print("Reading: " + str(sys.argv[1]) + '.twt')
-
+    try:
+        os.remove('outputfile.py')
+    except OSError:
+        pass
+    outfile = open('outputfile.py', 'w')
+    global outfile
     try:
         file = open( str(sys.argv[1]) + '.twt' , 'r')
     except:
@@ -704,6 +747,8 @@ def main():
     input.append('EOF')
     lex()
     Program()
+    outfile.write('\ninput()')
+    os.system('start python outputfile.py')
 
 if __name__ == '__main__':
 	main()

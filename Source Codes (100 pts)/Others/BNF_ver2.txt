@@ -1,7 +1,7 @@
 <Program> -> <Declaration> <Main>
             | <Main>
-<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> <Return>"}"
-                | <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
+<Declaration> -> <Dtype> VARIABLE "(" <Args> ")" "{" <Block> <Return>"}"
+                | <Dtype> VARIABLE "(" <Args> ")" "{" <Block> "}"
 <Main> -> "LOGIN" <Block> "LOGOUT"
           | "LOGIN" "LOGOUT"
 <Block> -> <State>                    // Block is made up of statement <State> of the same level
@@ -24,22 +24,24 @@
         | "IF" <Logic> "FOLLOW" "{" <Block> "}"
 <ElseIf> -> "ELSEIF" <Logic> "FOLLOW" "{" <Block> "}" <Elseif>
 <Else> -> "ELSE" <Logic> "FOLLOW" "{" <Block> "}"
-<Assignment> -> <DType> <Vname> "=" <Vname>
-                |<DType> <Vname> "=" "REPLY"
-                |"@INT" <Vname> "=" <INT>
-                | "@CHIRP" <Vname> "=" <CHAR>
-                | "@COKE" <Vname> "=" <FLOAT>
-                | "@MSG" <Vname> "=" <STRING>
-                | "@TRALSE" <Vname> "=" <BOOL>
-                | <DType> <Vname> "=" "(" <Exp> ")"
+#<Assignment> -> <DType> <Vname> "=" VARIABLE
+#                | <DType> <Vname> "=" <Reading> # May function na to
+#                | "@INT" <Vname> "=" INT
+#                | "@CHIRP" <Vname> "=" CHAR
+#                | "@COKE" <Vname> "=" FLOAT
+#                | "@MSG" <Vname> "=" STRING
+#                | "@TRALSE" <Vname> "=" "YES"
+#                | "@TRALSE" <Vname> "=" "NO"
+#                | <DType> <Vname> "=" "(" <Exp> ")"
 <Call> -> <Vname> "(" <Args> ")"
-<Printing> -> "TWEET" <Vname>
-              | "TWEET" <EXP>
-              | "TWEET" <INT>
-              | "TWEET" <FLOAT>
-              | "TWEET" <CHAR>
-              | "TWEET" <STRING>
-              | "TWEET" <BOOL>
+##<Printing> -> "TWEET" <Vname>
+#              | "TWEET" "(" <EXP> ")"
+#              | "TWEET" <INT>
+#              | "TWEET" <FLOAT>
+#              | "TWEET" <CHAR>
+#              | "TWEET" <STRING>
+#              | "TWEET" TRUE
+#              | "TWEET" FALSE
 <Reading> -> "REPLY" <Vname>
 <Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
 
@@ -51,15 +53,15 @@
 <Term> -> <Fact><TermPrime>
 <TermPrime> -> "*" <Fact><TermPrime>
             | "/" <Fact><TermPrime>
-<Fact> -> <INT> | <CHAR> | <FLOAT> | "(" <Exp> ")"
+##<Fact> -> INT | CHAR | FLOAT | VARIABLE | "(" <Exp> ")"
 
-<Logic> -> "(" <LogicCond> ")" | "~" <Logic>
-<LogicCond> -> <Vname> <LogicOP> <Vname>
-          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Logic>
-          | <Logic> <LogicOP> <Logic>
-          | <Logic> <LogicOP> <Vname | INT | CHAR | FLOAT >
-          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Vname | INT | CHAR | FLOAT >
-<LogicOP> -> ">=" | "<=" | "==" | ">" | "<"
+##<Condition> -> "(" <Conditional> ")" | "~" <Condition>
+##<Conditional> -> <Vname> <Conditional> <Vname>
+#          | <Vname | INT | CHAR | FLOAT > <CondOp> <Logic>
+#          | <Conditional> <CondPp> <Conditional>
+#          | <Logic> <LogicOP> <Vname | INT | CHAR | FLOAT >
+#          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Vname | INT | CHAR | FLOAT >
+<CondOp> -> ">=" | "<=" | "==" | ">" | "<"
 <Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Args> -> <Dtype> <Vname> "," <Args>
 <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
