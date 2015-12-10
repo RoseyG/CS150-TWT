@@ -526,7 +526,7 @@ def TermPrime():
 def Fact():
     global nextToken
     print "Enter <Factor>"
-    if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT ):
+    if (nextToken == INT or nextToken == CHAR or nextToken == FLOAT or nextToken == VARIABLE ):
 		lex()
     elif (nextToken == openParen):
         lex()

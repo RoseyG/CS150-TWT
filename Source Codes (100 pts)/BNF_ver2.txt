@@ -55,7 +55,6 @@
             | "/" <Fact><TermPrime>
 <Fact> -> <INT> | <CHAR> | <FLOAT> | "(" <Exp> ")"
 
-<Newline> -> "\n" <Newline>
 <Logic> -> "(" <LogicCond> ")" | "~" <Logic>
 <LogicCond> -> <Vname> <LogicOP> <Vname>
           | <Vname | INT | CHAR | FLOAT > <LogicOP> <Logic>
@@ -65,5 +64,4 @@
 <LogicOP> -> ">=" | "<=" | "==" | ">" | "<"
 <Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Args> -> <Dtype> <Vname> "," <Args>
-<Newline> -> "\n"<Newline> | "\n"
 <Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
