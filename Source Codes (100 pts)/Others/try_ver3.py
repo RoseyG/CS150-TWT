@@ -204,7 +204,9 @@ def Dtype(): #<Dtype> = "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 
 def Assignment():
     print("Enter <Assignment>")
+    print(int_dec)
     if(nextToken == int_dec):
+        lex()
         if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
@@ -213,6 +215,7 @@ def Assignment():
                     lex()
                     return
     elif(nextToken == float_dec):
+        lex()
         if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
@@ -221,6 +224,7 @@ def Assignment():
                     lex()
                     return
     elif(nextToken == char_dec):
+        lex()
         if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
@@ -230,6 +234,7 @@ def Assignment():
                     return
 
     elif(nextToken == string_dec):
+        lex()
         if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
@@ -238,6 +243,7 @@ def Assignment():
                     lex()
                     return
     elif(nextToken == bool_dec):
+        lex()
         if(nextToken == VARIABLE):
             lex()
             if (nextToken == asSign):
@@ -270,9 +276,6 @@ def Block():
 
     #Newline()
     #Block()
-    if (nextToken == hashSymbol):
-        lex()
-        Block()
 
 def Exp():
     print("Enter <Exp>")
@@ -289,9 +292,12 @@ def Exp():
         Printing()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
-    elif (nextToken == return_state):
-        Return()
-    print("Exit <Exp>")
+    else:
+        print("Exit <Exp>")
+        return
+    if (nextToken == hashSymbol):
+        print("Exit <Exp>")
+        return
 
 def Return():
     print("Enter <Return>")
