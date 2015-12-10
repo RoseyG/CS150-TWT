@@ -18,50 +18,50 @@
         | <Printing> "#" <StatePrime>
         | <Read> "#" <StatePrime>
         | <Control> "#" <StatePrime>
-<Loop> -> "RT" <Boolean> {" <Block> "}"
-<If> -> "IF" <Logic> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
-        | "IF" <Logic> "FOLLOW" "{" <Block> "}" <Else>
-        | "IF" <Logic> "FOLLOW" "{" <Block> "}"
-<ElseIf> -> "ELSEIF" <Logic> "FOLLOW" "{" <Block> "}" <Elseif>
-<Else> -> "ELSE" <Logic> "FOLLOW" "{" <Block> "}"
-#<Assignment> -> <DType> <Vname> "=" VARIABLE
-#                | <DType> <Vname> "=" <Reading> # May function na to
-#                | "@INT" <Vname> "=" INT
-#                | "@CHIRP" <Vname> "=" CHAR
-#                | "@COKE" <Vname> "=" FLOAT
-#                | "@MSG" <Vname> "=" STRING
-#                | "@TRALSE" <Vname> "=" "YES"
-#                | "@TRALSE" <Vname> "=" "NO"
-#                | <DType> <Vname> "=" "(" <Exp> ")"
-<Call> -> <Vname> "(" <Args> ")"
-##<Printing> -> "TWEET" <Vname>
+<Loop> -> "RT" <Condition> {" <Block> "}"
+<If> -> "IF" <Condition> "FOLLOW" "{" <Block> "}" <ElseIf> <Else>
+        | "IF" <Condition> "FOLLOW" "{" <Block> "}" <Else>
+        | "IF" <Condition> "FOLLOW" "{" <Block> "}"
+<ElseIf> -> "ELSEIF" <Condition> "FOLLOW" "{" <Block> "}" <Elseif>
+<Else> -> "ELSE" <Condition> "FOLLOW" "{" <Block> "}"
+#<Assignment> -> <DType> VARIABLE "=" VARIABLE
+#                | <DType> VARIABLE "=" <Reading> # May function na to
+#                | "@INT" VARIABLE "=" INT
+#                | "@CHIRP" VARIABLE "=" CHAR
+#                | "@COKE" VARIABLE "=" FLOAT
+#                | "@MSG" VARIABLE "=" STRING
+#                | "@TRALSE" VARIABLE "=" "YES"
+#                | "@TRALSE" VARIABLE "=" "NO"
+#                | <DType> VARIABLE "=" "(" <Exp> ")"
+<Call> -> VARIABLE "(" <Args> ")"
+##<Printing> -> "TWEET" VARIABLE
 #              | "TWEET" "(" <EXP> ")"
-#              | "TWEET" <INT>
-#              | "TWEET" <FLOAT>
-#              | "TWEET" <CHAR>
-#              | "TWEET" <STRING>
+#              | "TWEET" INT
+#              | "TWEET" FLOAT
+#              | "TWEET" CHAR
+#              | "TWEET" STRING
 #              | "TWEET" TRUE
 #              | "TWEET" FALSE
-<Reading> -> "REPLY" <Vname>
+<Reading> -> "REPLY" VARIABLE
 <Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
 
 //This part is the one we made sa ME compy na lng natin
 
 <Exp> -> <Term> <ExpPrime>
-<ExpPrime> -> "+" <Term><EspPrime>
-            | "-" <Term><ExpPrime>
+<ExpPrime> -> "+" <Term> <EspPrime>
+            | "-" <Term> <ExpPrime>
 <Term> -> <Fact><TermPrime>
-<TermPrime> -> "*" <Fact><TermPrime>
-            | "/" <Fact><TermPrime>
+<TermPrime> -> "*" <Fact> <TermPrime>
+            | "/" <Fact> <TermPrime>
 ##<Fact> -> INT | CHAR | FLOAT | VARIABLE | "(" <Exp> ")"
 
 ##<Condition> -> "(" <Conditional> ")" | "~" <Condition>
-##<Conditional> -> <Vname> <Conditional> <Vname>
-#          | <Vname | INT | CHAR | FLOAT > <CondOp> <Logic>
-#          | <Conditional> <CondPp> <Conditional>
-#          | <Logic> <LogicOP> <Vname | INT | CHAR | FLOAT >
-#          | <Vname | INT | CHAR | FLOAT > <LogicOP> <Vname | INT | CHAR | FLOAT >
+##<Conditional> -> VARIABLE <Conditional> VARIABLE
+#          | { VARIABLE | INT | CHAR | FLOAT } <CondOp> <Condition>
+#          | <Conditional> <CondOp> <Conditional>
+#          | <Condition> <CondOp> { VARIABLE | INT | CHAR | FLOAT }
+#          | { VARIABLE | INT | CHAR | FLOAT } <LogicOP> { VARIABLE | INT | CHAR | FLOAT }
 <CondOp> -> ">=" | "<=" | "==" | ">" | "<"
 <Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
 <Args> -> <Dtype> <Vname> "," <Args>
-<Return> -> "REPORT" <ID> | "REPORT" <Vname> | "REPORT" <Exp>
+<Return> -> "REPORT" { INT | CHAR | FLOAT | STRING | VARIABLE } | "REPORT" <Exp>
