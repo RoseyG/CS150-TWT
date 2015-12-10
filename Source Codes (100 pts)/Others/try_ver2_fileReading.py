@@ -1,3 +1,5 @@
+import sys
+
 ##ROSEY
 EOF = -1
 int_dec = 3
@@ -155,15 +157,18 @@ def lex():
 #            | <Main>
 def Program():
     global nextToken
-    print("Enter <Program>")
-    if(nextToken == login):
-        Main()
+    if(nextToken == EOF):
+        print("Empty File")
     else:
-        Declaration()
+        print("Enter <Program>")
         if(nextToken == login):
             Main()
-    if(nextToken == EOF):
-        print("Exit <Program>")
+        else:
+            Declaration()
+            if(nextToken == login):
+                Main()
+        if(nextToken == EOF):
+            print("Exit <Program>")
 
 
 ##<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> <Return>"}"
@@ -661,10 +666,20 @@ def error():
 def main():
     global input
     input = []
-    rawline = raw_input()
-    line = rawline.split()
-    for lexeme in line:
-        input.append(lexeme)
+
+    print("Reading: " + str(sys.argv[1]) + '.twt')
+
+    try:
+        file = open( str(sys.argv[1]) + '.twt' , 'r')
+    except:
+        print("No such *.twt file exist")
+        quit()
+
+    for rawline in file:
+        line = rawline.split()
+        for lexeme in line:
+            input.append(lexeme)
+
     input.append('EOF')
     lex()
     Program()
