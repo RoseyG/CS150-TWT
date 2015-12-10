@@ -77,7 +77,7 @@ def lex():
     elif nextString == '@TRALSE':
         nextToken = bool_dec
     elif nextString == 'HOOT':
-        nextToken == fxncall
+        nextToken = fxncall
     elif nextString == 'IF':
         outfile.write('if ')
         nextToken = if_state
@@ -165,6 +165,7 @@ def lex():
         outfile.write(nextString)
         nextToken = lessEqSign
     elif nextString == '<=':
+        outfile.write(nextString)
         outfile.write(nextString)
         nextToken = greatEqSign
     elif nextString == '==':
@@ -540,10 +541,8 @@ def Call():
     if (nextToken == openParen):
         lex()
         Args()
-        if (nextToken == closeParen):
-            lex()
-            print("Exit <Call>")
-            return
+        print("Exit <Call>")
+        return
     print("Invalid function call")
     error()
 

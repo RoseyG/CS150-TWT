@@ -8,6 +8,7 @@ while (X<4):
 	X=(X+1)
 
 print X
+HAHAHA(X)
 
 
 print "Program exiting in 10s.."
