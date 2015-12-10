@@ -371,7 +371,7 @@ def Else():
     error()
 
 #<Assignment> -> <DType> <Vname> "=" <Vname>
-#                | <DType> <Vname> "=" <Reading>
+#                | <DType> <Vname> "=" "REPLY"
 #                | "@INT" <Vname> "=" <INT>
 #                | "@CHIRP" <Vname> "=" <CHAR>
 #                | "@COKE" <Vname> "=" <FLOAT>
@@ -481,6 +481,18 @@ def Printing():
         return
     else:
         print("Expected expression, varable or literal")
+        error()
+##<Reading> - > "REPLY" <Vname>
+def Reading():
+    global nextToken
+    print("Enter <Reading>")
+    lex()
+    if (nextToken == VARIABLE):
+        lex()
+        print("Exit <Reading>")
+        return
+    else:
+        print("Expected variable name")
         error()
 
 ##<Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"

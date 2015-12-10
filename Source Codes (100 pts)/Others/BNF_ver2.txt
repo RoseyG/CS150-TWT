@@ -25,7 +25,7 @@
 <ElseIf> -> "ELSEIF" <Logic> "FOLLOW" "{" <Block> "}" <Elseif>
 <Else> -> "ELSE" <Logic> "FOLLOW" "{" <Block> "}"
 <Assignment> -> <DType> <Vname> "=" <Vname>
-                |<DType> <Vname> "=" <Reading>
+                |<DType> <Vname> "=" "REPLY"
                 |"@INT" <Vname> "=" <INT>
                 | "@CHIRP" <Vname> "=" <CHAR>
                 | "@COKE" <Vname> "=" <FLOAT>
@@ -41,8 +41,6 @@
               | "TWEET" <STRING>
               | "TWEET" <BOOL>
 <Reading> -> "REPLY" <Vname>
-              | "REPLY" <EXP>
-              | "REPLY" <ID>
 <Control> -> "UNFOLLOW" | "LIKE" | "BLOCK"
 
 //This part is the one we made sa ME compy na lng natin

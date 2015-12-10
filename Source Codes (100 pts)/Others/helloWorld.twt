@@ -1,4 +1,6 @@
 LOGIN
+@TRALSE hellu = REPLY #
 TWEET "HELLO WORLD" #
 TWEET "Kaya mo yan" #
+REPLY hihi #
 LOGOUT
