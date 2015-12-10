@@ -3,6 +3,7 @@ import os
 import time
 ##ROSEY
 EOF = -1
+tabs = 0
 int_dec = 3
 float_dec = 4
 char_dec =  5
@@ -207,6 +208,7 @@ def Program():
 #                | <Dtype> VARIABLE "(" <Args> ")" "{" <Block> "}"
 def Declaration(): #<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> "}"
     global nextToken
+    global tabs
     print("Enter <Declaration>")
     outfile.write('def ')
     Dtype()
@@ -216,13 +218,17 @@ def Declaration(): #<Declaration> -> <Dtype> <Vname> "(" <Args> ")" "{" <Block> 
             lex()
             Args()
             if(nextToken == openBrace):
-                outfile.write(':\n\t')
+                outfile.write(':\n\t')              
                 lex()
+                tabs+=1
+                print tabs
                 Block()
                 if (nextToken == return_state):
                     lex()
                     Return()
                 if(nextToken == closeBrace):
+                    tabs-=1
+                    outfile.write( '\n' )
                     lex()
                     print("Exit <Declaration>")
                     return
@@ -264,20 +270,39 @@ def Block():
 # We need at tleast one stament inside a block then check for repetitions
 def State():
     global nextToken
+    print tabs , "haha"
     print("Enter <State>")
     if (nextToken == if_state):
         If()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == loop_state):
         Loop()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
         Assignment()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == print_state):
         Printing()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == read_state):
         lex()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == fxncall):
         lex()
         Call()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
     else:
@@ -302,17 +327,35 @@ def StatePrime():
     global nextToken
     if (nextToken == if_state):
         If()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == loop_state):
         Loop()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
         Assignment()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == print_state):
         Printing()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == read_state):
         lex()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == fxncall):
         lex()
         Call()
+        outfile.write('\n')
+        for i in range(tabs):
+            outfile.write('\t')
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
     else:
@@ -324,16 +367,19 @@ def StatePrime():
 
 ##<Loop> -> "RT" <Condition> "{" <Block> "}"
 def Loop():
+    global tabs
     global nextToken
     print("Enter <Loop>")
     lex()
     Condition()
-    outfile.write(':\n\t')
+    outfile.write(':\n\t')    
+    tabs += 1
     if(nextToken == openBrace):
         lex()
         Block()
         if(nextToken == closeBrace):
             print("Exit <Loop>")
+            tabs-=1
             lex()
         else:
             print("Expectetd '}'")
@@ -351,7 +397,8 @@ def If():
     if (nextToken == if_state):
         lex()
         Condition()
-        outfile.write(':\n\t')
+        outfile.write(':')
+        tabs+=1
         if (nextToken == exec_state):
             lex()
             if (nextToken == openBrace):
@@ -364,6 +411,7 @@ def If():
                     if (nextToken == else_state):
                         Else()
                     print("Exit <If>")
+                    tabs-=2
                     return
     print("Error: Invalid IF statement")
     error()
@@ -375,7 +423,8 @@ def Elseif():
     if (nextToken == elseif_state):
         lex()
         Condition()
-        outfile.write(':\n\t')
+        outfile.write(':')
+        tabs+=1
         if(nextToken == exec_state):
             lex()
             if(nextToken == openBrace):
@@ -386,6 +435,7 @@ def Elseif():
                     if (nextToken == elseif_state):
                         Elseif()
                     print("Exit <Elseif>")
+                    tabs-=1
                     return
     print("Error: Invalid ELSEIF statement")
     error()
@@ -397,7 +447,8 @@ def Else():
     if (nextToken == else_state):
         lex()
         Condition() #Nawala to sa file, binalik ko
-        outfile.write(':\n\t')
+        outfile.write(':')
+        tabs+=1
         if(nextToken == exec_state):
             lex()
             if(nextToken == openBrace):
@@ -406,6 +457,7 @@ def Else():
                 if (nextToken == closeBrace):
                     lex()
                     print("Exit <Else>")
+                    tabs-=1
                     return
     print("Error: Invalid ELSE statement")
     error()
