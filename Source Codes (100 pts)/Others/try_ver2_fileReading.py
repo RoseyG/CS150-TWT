@@ -100,6 +100,7 @@ def lex():
     elif nextString == 'FOLLOW':
         nextToken = exec_state
     elif nextString == 'REPLY':
+        outfile.write('input() ')
         nextToken = read_state
     elif nextString == 'TWEET':
         outfile.write('print ')
@@ -268,7 +269,6 @@ def State():
     elif (nextToken == print_state):
         Printing()
     elif (nextToken == read_state):
-        outfile.write('input()')
         lex()
     elif (nextToken == call_state):
         Calling()
@@ -303,7 +303,6 @@ def StatePrime():
     elif (nextToken == print_state):
         Printing()
     elif (nextToken == read_state):
-        outfile.write('input()')
         lex()
     elif (nextToken == call_state):
         Calling()

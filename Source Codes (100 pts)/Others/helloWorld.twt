@@ -3,6 +3,7 @@ LOGIN
 TWEET "Kaya mo yan" #
 RT ( X > 4 ) { 
                 @INT X = 3 # 
+                @INT Y = REPLY
  } 
 
 LOGOUT
