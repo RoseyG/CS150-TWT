@@ -1,5 +1,5 @@
 import sys
-
+import os
 ##ROSEY
 EOF = -1
 int_dec = 3
@@ -77,24 +77,32 @@ def lex():
     elif nextString == '@TRALSE':
         nextToken = bool_dec
     elif nextString == 'IF':
+        outfile.write('if ')
         nextToken = if_state
     elif nextString == 'ELSEIF':
+        outfile.write('elif ')
         nextToken = elseif_state
     elif nextString == 'ELSE':
+        outfile.write('else ')
         nextToken = else_state
     elif nextString == 'RT':
+        outfile.write('while ')
         nextToken = loop_state
     elif nextString == 'UNFOLLOW':
-        nextToken = brake_state
+        outfile.write('break')
+        nextToken = break_state
     elif nextString == 'LIKE':
+        outfile.write('continue')
         nextToken = continue_state
     elif nextString == 'BLOCK':
+        outfile.write('exit')
         nextToken = exit_state
     elif nextString == 'FOLLOW':
         nextToken = exec_state
     elif nextString == 'REPLY':
         nextToken = read_state
     elif nextString == 'TWEET':
+        outfile.write('print ')
         nextToken = print_state
     elif nextString == 'REPORT':
         nextToken = return_state
@@ -105,52 +113,73 @@ def lex():
     elif nextString == '~':
         nextToken = NOT
     elif nextString.isdigit():
+        outfile.write(nextString)
         nextToken = INT
     elif nextString[0] == '-' and nextString[1:].isdigit():
+        outfile.write(nextString)
         nextToken = INT
     elif isfloat(nextString):
+        outfile.write(nextString)
         nextToken = FLOAT
-    elif (nextString[0] == '\'') and (nextString[-1] == '\''):
+    elif (nextString[0] == '\'') and (nextString[-1] == '\'') and (nextString.len() == 1):
+        outfile.write(nextString)
         nextToken = CHAR
     elif (nextString[0] == '\"') and (nextString[-1] == '\"'):
+        outfile.write(nextString)
         nextToken = STRING
     elif nextString == '{':
         nextToken = openBrace
     elif nextString == '}':
         nextToken = closeBrace
     elif nextString == '+':
+        outfile.write(nextString)
         nextToken = plusSign
     elif nextString == '-':
+        outfile.write(nextString)
         nextToken = minusSign
     elif nextString == '/':
+        outfile.write(nextString)
         nextToken = divSign
     elif nextString == '*':
+        outfile.write(nextString)
         nextToken = mulSign
     elif nextString == '=':
+        outfile.write(nextString)
         nextToken = asSign
     elif nextString == '(':
+        outfile.write(nextString)
         nextToken = openParen
     elif nextString == ')':
+        outfile.write(nextString)
         nextToken = closeParen
     elif nextString == '#':
+        outfile.write('\n')
         nextToken = ENDOFSTATE
     elif nextString == ',':
+        outfile.write(nextString)
         nextToken = commaSign
     elif nextString == '>=':
+        outfile.write(nextString)
         nextToken = lessEqSign
     elif nextString == '<=':
+        outfile.write(nextString)
         nextToken = greatEqSign
     elif nextString == '==':
+        outfile.write(nextString)
         nextToken = eqSign
     elif nextString == '>':
+        outfile.write(nextString)
         nextToken = lesserSign
     elif nextString == '<':
+        outfile.write(nextString)
         nextToken = greaterSign
     else:
+        outfile.write(nextString)
         nextToken = VARIABLE
-    del input[0]
     print("Next token is: " + str(nextToken))
     print("Next string is:" + nextString)
+    del input[0]
+
 
 
 ## <Program> -> <Declaration> <Main>
@@ -239,7 +268,8 @@ def State():
     elif (nextToken == print_state):
         Printing()
     elif (nextToken == read_state):
-        Reading()
+        outfile.write('input()')
+        lex()
     elif (nextToken == call_state):
         Calling()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
@@ -273,7 +303,8 @@ def StatePrime():
     elif (nextToken == print_state):
         Printing()
     elif (nextToken == read_state):
-        Reading()
+        outfile.write('input()')
+        lex()
     elif (nextToken == call_state):
         Calling()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
@@ -291,6 +322,7 @@ def Loop():
     print("Enter <Loop>")
     lex()
     Logic()
+    outfile.write(':\n\t')
     if(nextToken == openBrace):
         lex()
         Block()
@@ -313,6 +345,7 @@ def If():
     if (nextToken == if_state):
         lex()
         Logic()
+        outfile.write(':\n\t')
         if (nextToken == exec_state):
             lex()
             if (nextToken == openBrace):
@@ -336,6 +369,7 @@ def Elseif():
     if (nextToken == elseif_state):
         lex()
         Logic()
+        outfile.write(':\n\t')
         if(nextToken == exec_state):
             lex()
             if(nextToken == openBrace):
@@ -356,7 +390,7 @@ def Else():
     print("Enter <Else>")
     if (nextToken == else_state):
         lex()
-        Boolean()
+        outfile.write(':\n\t')
         if(nextToken == exec_state):
             lex()
             if(nextToken == openBrace):
@@ -667,9 +701,13 @@ def main():
     global input
     input = []
     tempLexeme = " "
-
     print("Reading: " + str(sys.argv[1]) + '.twt')
-
+    try:
+        os.remove('outputfile.py')
+    except OSError:
+        pass
+    outfile = open('outputfile.py', 'w')
+    global outfile
     try:
         file = open( str(sys.argv[1]) + '.twt' , 'r')
     except:
@@ -694,6 +732,8 @@ def main():
     input.append('EOF')
     lex()
     Program()
+    outfile.write('\ninput()')
+    os.system('start python outputfile.py')
 
 if __name__ == '__main__':
 	main()

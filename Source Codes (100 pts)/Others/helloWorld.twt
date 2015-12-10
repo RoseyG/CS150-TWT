@@ -1,6 +1,8 @@
 LOGIN
-@TRALSE hellu = REPLY #
-TWEET "HELLO WORLD" #
+@INT X = 3 #
 TWEET "Kaya mo yan" #
-REPLY hihi #
+RT ( X > 4 ) {
+                @INT X = 3 #
+ }
+
 LOGOUT
