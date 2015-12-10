@@ -1,4 +1,6 @@
 ##ROSEY
+import sys
+import os
 EOF = -1
 int_dec = 3
 float_dec = 4
@@ -60,9 +62,9 @@ def lex():
     nextString = input[0]
     if nextString == 'EOF':
         nextToken = EOF
-    elif nextString == 'LOGIN':
+    elif nextString == '@LOGIN':
         nextToken = login
-    elif nextString == 'LOGOUT':
+    elif nextString == '@LOGOUT':
         nextToken = logout
     elif nextString == '@INT':
         nextToken = int_dec
@@ -660,6 +662,11 @@ def error():
 #
 def main():
     global input
+    try:
+        os.remove('outputfile.py')
+    except OSError:
+        pass
+    outfile = open('outputfile.py', 'w')
     input = []
     rawline = raw_input()
     line = rawline.split()

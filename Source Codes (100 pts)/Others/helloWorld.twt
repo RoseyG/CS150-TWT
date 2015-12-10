@@ -1,4 +1,8 @@
 LOGIN
-TWEET "HELLO WORLD" #
+@INT X = 3 #
 TWEET "Kaya mo yan" #
+RT ( X > 4 ) { 
+                @INT X = 3 # 
+ } 
+
 LOGOUT
