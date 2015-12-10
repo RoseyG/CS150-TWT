@@ -268,7 +268,8 @@ def State():
     elif (nextToken == print_state):
         Printing()
     elif (nextToken == read_state):
-        Reading()
+        outfile.write('input()')
+        lex()
     elif (nextToken == call_state):
         Calling()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
@@ -302,7 +303,8 @@ def StatePrime():
     elif (nextToken == print_state):
         Printing()
     elif (nextToken == read_state):
-        Reading()
+        outfile.write('input()')
+        lex()
     elif (nextToken == call_state):
         Calling()
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
