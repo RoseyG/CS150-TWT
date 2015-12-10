@@ -428,6 +428,13 @@ def Assignment():
         if(nextToken == closeParen):
             lex()
             return
+    elif (nextToken == VARIABLE):
+        lex()
+        if (nextToken == asSign):
+            lex()
+            if (nextToken == BOOL or nextToken == VARIABLE or nextToken == read_state):
+                lex()
+                return
         else:
             print("Expected ')'")
             error()
