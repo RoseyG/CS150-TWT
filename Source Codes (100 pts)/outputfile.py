@@ -12,31 +12,8 @@ def HIHIHI():
 X=0
 Y=32
 while (X<4):
-	X=(X+1)
-	Y=(Y+2)
+	X=input() 
 	print X
-	if (X>=Y):
-		print "Ahihi"
-		
-	else :
-		Y=X
-		HAHAHA(X)
-		
-
-	while (X<4):
-		X=(X+1)
-		Y=(Y+2)
-		print X
-		if (X>=Y):
-			print "Ahihi"
-			
-		else :
-			Y=X
-			Z=1
-			HIHIHI()
-			
-
-		
 	
 print X
 HAHAHA(X)

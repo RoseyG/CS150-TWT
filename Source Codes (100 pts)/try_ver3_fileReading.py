@@ -288,8 +288,6 @@ def State():
         Assignment()
     elif (nextToken == print_state):
         Printing()
-    elif (nextToken == read_state):
-        lex()
     elif (nextToken == fxncall):
         lex()
         Call()
@@ -312,7 +310,6 @@ def State():
 #        | <Assignment> "#" <StatePrime>
 #        | <Call> "#" <StatePrime>
 #        | <Printing> "#" <StatePrime>
-#        | <Read> "#" <StatePrime>
 #        | <Control> "#" <StatePrime>
 # Basically, nagche-check lng kung may more than one statements
 def StatePrime():
@@ -566,9 +563,12 @@ def Assignment():
                     if(nextToken == closeParen):
                         lex()
                         return
-        else:
-            print("Expected ')'")
-            error()
+                    else:
+                        print("Expected ')'")
+                        error()
+            elif(nextToken == read_state):
+                Reading()
+                return
     print("Error: Invald assignment statement")
     error()
 
@@ -816,6 +816,7 @@ def main():
 	outfile = open('outputfile.py', 'w')
 	outfile.write('import time\n\n\n')
 	global outfile
+
 	try:
 		file = open( str(sys.argv[1]) + '.twt' , 'r')
 	except:
