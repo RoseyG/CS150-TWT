@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
@@ -26,12 +25,13 @@ class MyHighlighter( QSyntaxHighlighter ):
       keyword.setForeground( brush )
       keyword.setFontWeight( QFont.Bold )
       keywords = QStringList(["LIKE", "BLOCK", "FOLLOW", "REPLY",
-                                "TWEET", "UNFOLLOW", "ELSE", "IF", "RT", "ELSEIF"] )
+                                "TWEET", "UNFOLLOW", "ELSE", "IF", "RT", "ELSEIF", "HOOT"] )
       for word in keywords:
         pattern = QRegExp("\\b" + word + "\\b")
         rule = HighlightingRule( pattern, keyword )
         self.highlightingRules.append( rule )
 
+      # assignmentOperator
       brush = QBrush( Qt.yellow, Qt.SolidPattern )
       pattern = QRegExp( "(<){1,2}-" )
       assignmentOperator.setForeground( brush )
@@ -39,12 +39,14 @@ class MyHighlighter( QSyntaxHighlighter ):
       rule = HighlightingRule( pattern, assignmentOperator )
       self.highlightingRules.append( rule )
 
+      # delimiter
       pattern = QRegExp( "[\)\(]+|[\{\}]+|[][]+" )
       delimiter.setForeground( brush )
       delimiter.setFontWeight( QFont.Bold )
       rule = HighlightingRule( pattern, delimiter )
       self.highlightingRules.append( rule )
 
+      # specialConstant
       brush = QBrush( Qt.green, Qt.SolidPattern )
       specialConstant.setForeground( brush )
       keywords = QStringList( [ "INT", "TRALSE", "COKE", "CHIRP", "MSG", "LOGIN", "LOGOUT" ] )
@@ -125,7 +127,7 @@ class TestApp( QMainWindow ):
     newAction.setShortcut('Ctrl+N')
     newAction.triggered.connect(self.newFile)
 
-    saveAction = QAction('New', self)
+    saveAction = QAction('Save', self)
     saveAction.setShortcut('Ctrl+S')
     saveAction.triggered.connect(self.saveFile)
 
@@ -165,56 +167,3 @@ if __name__ == "__main__":
   window = TestApp()
   window.show()
   sys.exit( app.exec_() )
-=======
-from tkinter import *
-from tkinter.filedialog import *
-
-filename = None
-
-def newFile():
-	global filename
-	filename = "Untitled"
-	text.delete(0.0, END)
-
-def saveFile():
-	global filename
-	t = text.get(0.0, END)
-	f = open(filename, 'w')
-	f.write(t)
-	f.close()
-
-def saveAs():
-	f = asksaveasfile(mode='w', defaultextension='.twt')
-	t = text.fet(0.0, END)
-	try:
-		f.write(t.rstrip())
-	except:
-
-		showerror(title="Error!", message="File can not be saved.")
-def openFile():
-	f = askopenfile(mode='r')
-	t = f.read()
-	text.delete(0.0, END)
-	text.insert(0.0, t)
-
-root = Tk()
-root.title("Text Editor for CS 150")
-root.minsize(width=400, height=400)
-root.maxsize(width=1280, height=720)
-
-text = Text(root, width=400, height=400)
-text.pack()
-
-menubar = Menu(root)
-filemenu = Menu(menubar)
-filemenu.add_command(label="New", command=newFile)
-filemenu.add_command(label="Open", command=openFile)
-filemenu.add_command(label="Save", command=saveFile)
-filemenu.add_command(label="Save as...", command=saveAs)
-filemenu.add_separator()
-filemenu.add_command(label="Quit", command=root.quit)
-menubar.add_cascade(label="File", menu=filemenu)
-
-root.config(menu=menubar)
-root.mainloop()
->>>>>>> 18952a32d51f2ca1ae493b0ac475a60938fd08c6
