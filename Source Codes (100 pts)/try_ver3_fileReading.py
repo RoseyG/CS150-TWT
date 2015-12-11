@@ -208,8 +208,8 @@ def Program():
         if(nextToken == EOF):
             print("Exit <Program>")
 
-##<Declaration> -> <Dtype> VARIABLE "(" <Args> ")" "{" <Block> <Return>"}"
-#                | <Dtype> VARIABLE "(" <Args> ")" "{" <Block> "}"
+##<Declaration> -> <Dtype> VARIABLE "(" <Args> ")" "{" <Block> <Return>"}" <DeclarationPrime>
+#                | <Dtype> VARIABLE "(" <Args> ")" "{" <Block> "}" <DeclarationPrime>
 def Declaration():
     global nextToken
     global tabs
@@ -235,10 +235,41 @@ def Declaration():
                     tabs-=1
                     outfile.write('\n')
                     lex()
+                    DeclarationPrime()
                     print("Exit <Declaration>")
                     return
     print("Error: Invalid Function Declaration")
     error()
+
+##<DeclarationPrime> -> <Dtype> VARIABLE "(" <Args> ")" "{" <Block> <Return>"}" <DeclarationPrime>
+#                | <Dtype> VARIABLE "(" <Args> ")" "{" <Block> "}" <DeclarationPrime>
+def DeclarationPrime():
+    global nextToken
+    global tabs
+    outfile.write('def ')
+    if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
+        Dtype()
+        if(nextToken == VARIABLE):
+            lex()
+            if (nextToken == openParen):
+                lex()
+                Args()
+                if(nextToken == openBrace):
+                    outfile.write(':\n')
+                    tabs+=1
+                    for i in range(tabs):
+                        outfile.write('\t')
+                    lex()
+                    Block()
+                    if (nextToken == return_state):
+                        lex()
+                        Return()
+                    if(nextToken == closeBrace):
+                        tabs-=1
+                        outfile.write('\n')
+                        lex()
+    else:
+        return
 
 ##<Main> -> "LOGIN" <Block> "LOGOUT"
 #          | "LOGIN" "LOGOUT"

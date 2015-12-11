@@ -6,6 +6,11 @@ def HAHAHA(X):
 	print "Oo Kaya mo yan"
 	X=0
 	
+def HIHIHI(Y):
+	print "Kaya mo yan"
+	print "Oo Kaya mo yan"
+	Y=0
+	
 X=0
 Y=32
 while (X<4):
@@ -36,6 +41,7 @@ while (X<4):
 	
 print X
 HAHAHA(X)
+HIHIHI(X)
 
 
 print "Program exiting in 10s.."
