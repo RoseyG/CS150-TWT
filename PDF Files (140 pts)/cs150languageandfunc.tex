@@ -6,6 +6,8 @@
 \setlength{\parskip}{1em}
 \usepackage{graphicx}
 \usepackage{titlepic}
+\usepackage{index}
+\makeindex
 \usepackage{listings}
 \usepackage{color}
 
@@ -39,12 +41,14 @@ Rosario Gueco\\ Marbille Juntado\\~\\~\\ CS 150 HTWX}
 
 \maketitle
 
+\tableofcontents
+
 \chapter{Introduction}
 
 \section{The TWT programming language}
 
-TWT is simply a programming language designed out of curiosity. There were
-really many challenges of deciding on which fits best on the category of a
+\index*{TWT} is simply a programming language designed out of curiosity. There
+were really many challenges of deciding on which fits best on the category of a
 usable language, which the designers took so much time for considering and
 creating such.
 
@@ -68,8 +72,8 @@ language used to create the new language.
 
 \subsection{Inspiration}
 
-Twitter, a social networking site, was the main inspiration on creating the
-language. As seen on the next chapter, the keywords and reserved words of the
+\index*{Twitter}, a social networking site, was the main inspiration on creating
+the language. As seen on the next chapter, the keywords and reserved words of the
 language mostly came from the jargons seen on the website. \par
 
 Other than Twitter, the programmers also made the intricacy of programming an
@@ -85,7 +89,7 @@ like on encoding.
 
 \section{Identifiers}
 
-The following conventions apply to variables and values entered in the
+The following conventions apply to \index*{variables} and values entered in the
 programming language:
 
 \begin{lstlisting}
@@ -138,7 +142,7 @@ mechanism.
 
 \section{Expressions and Assignment Statements}
 
-The following rules apply to expressions and assignments:
+The following rules apply to \index*{expressions} and \index*{assignments}:
 \begin{lstlisting}
 <Assignment> -> 	<DType> VARIABLE "=" VARIABLE
                 	| <DType> VARIABLE "=" <Reading>
@@ -255,13 +259,14 @@ This is how functions or subprograms are declared in the language:
 
 \section{Parser}
 
-The parser for the language uses LR parsing, so no parse tables were used to
-parse the strings for the language. By that, it is obvious in the grammar that
+The \index*{parser} for the language uses LR parsing, so no parse tables were
+used to parse the strings for the language. By that, it is obvious in the grammar that
 revisions for left recursion were done, so that no conflict will happen on the
 parsing process. \par
 
-On the next lines of code is the Python code for the lexical analyzer, together
-with the token numbers assigned to them.
+On the next lines of code is the Python code for the lexical
+analyzer\index{lexical analyzer}, together with the token numbers
+assigned to them.
 
 \begin{lstlisting}
 EOF = -1
@@ -468,13 +473,13 @@ The following is a list of the reserved words in the language:
 
 \section{Name form}
 
-By convention, as explained in the grammar, the names must be alphabetic at the
-start of each string, for variables. The language follows C-style rules.
+By convention, as explained in the grammar, the \index*{names} must be
+alphabetic at the start of each string, for variables. The language follows C-style rules.
 
 \section{Binding}
 
-The language follows Python-based binding, but on the programming language
-scope, it was designed to be statically bound. As noticed, Python does dynamic
+The language follows Python-based \index*{binding}, but on the programming
+language scope, it was designed to be statically bound. As noticed, Python does dynamic
 binding, however, the programmers chose to require having types specified before
 each run.
 
@@ -503,8 +508,8 @@ The example above is a loop. It has the three statements "X = ( X + 1 ) \#", "Y
 
 \section{Primitive data types}
 
-As referenced to the grammar in Chapter 2, these are the data types available in
-the language:
+As referenced to the grammar in Chapter 2, these are the data types\index{data
+types} available in the language:
 
 \begin{itemize}
   \item \textbf{@INT:} integer
@@ -516,16 +521,17 @@ the language:
 
 \section{Strings}
 
-The programming language supports strings, and is a primitive data type. Like C,
-the strings are determined by double quotation marks.\par
+The programming language supports \index*{strings}, and is a primitive data
+type.
+Like C, the strings are determined by double quotation marks.\par
 
 There are no limitations on string declarations, and everything that applies to
 every other language also applies to TWT.
 
 \section{Note on user-defined types and type-checking}
 
-As of writing, user-defined typing is not available in the language. The user
-must strictly use the available data types.\par
+As of writing, \index*{user-defined typing} is not available in the language.
+The user must strictly use the available data types.\par
 
 On type-checking and coercion, Python conventions are used, that is, the
 features that Python has are used in the language.
@@ -534,7 +540,8 @@ features that Python has are used in the language.
 
 \section{Arithmetic expressions and overloading}
 
-This is the list of mathematical symbols used in the language.
+This is the list of \index{mathematical symbols}mathematical symbols used in the
+language.
 
 \begin{center}
 \begin{tabular}{ c c c c }
@@ -563,7 +570,7 @@ represent.
 
 \section{Boolean expressions}
 
-This is the list of boolean symbols used in the language.
+This is the list of \index{boolean symbols}boolean symbols used in the language.
 
 \begin{center}
 \begin{tabular}{ c c c c }
@@ -590,5 +597,126 @@ This is the list of boolean symbols used in the language.
 As what applies in most languages on boolean statements, the conventional
 approach to boolean expressions apply to TWT, specifically the operator
 precedence.
+
+\chapter{Statement-Level Control Structures}
+
+On the sections to this chapter, these lines of code will be referred to.
+
+\begin{lstlisting}
+RT ( X < 4 ) {
+		X = ( X + 1 ) #
+		Y = ( Y + 2 ) #
+		TWEET X #
+    IF ( X >= Y ) FOLLOW {
+      TWEET "Ahihi" #
+    }
+    ELSE {
+      Y = X #
+      HOOT HAHAHA ( @INT X ) #
+    } #
+    RT ( X < 4 ) {
+    		X = ( X + 1 ) #
+    		Y = ( Y + 2 ) #
+    		TWEET X #
+        IF ( X >= Y ) FOLLOW {
+          TWEET "Ahihi" #
+        }
+        ELSE {
+          Y = X #
+          HOOT HAHAHA ( @INT X ) #
+        } #
+     } #
+ } #
+\end{lstlisting}
+
+\section{Selection statements}
+
+As seen on the code before this section, IF and ELSE blocks are available as
+selection statements\index{selection statements}. Also some features, like the
+ELSEIF block, is also available.
+
+For ELSEIF usage, refer to this code (an edited version of the code at the
+beginning of the chapter):
+
+\begin{lstlisting}
+IF ( X >= Y ) FOLLOW {
+  TWEET "Ahihi" #
+}
+ELSEIF ( X <= Y - 5 ) FOLLOW {
+  TWEET "Huhuhu" #
+}
+ELSE {
+  Y = X #
+  HOOT HAHAHA ( @INT X ) #
+} #
+\end{lstlisting}
+
+\section{Iterative statements}
+
+Only one kind of iterative statement is available in TWT, which is RT. As seen
+on the beginning of this chapter, the statement can have its condition. This
+feature is equivalent to the while loop of other languages.
+
+\chapter{Subprograms}
+
+In reference to Chapter 2, this is how \index*{subprograms} are declared in TWT.
+
+\begin{lstlisting}
+<Dtype> NAME ( <Args> ) {
+	<Block>
+	<Return>
+}
+
+or
+
+<Dtype> NAME ( <Args> ) {
+	<Block>
+}
+\end{lstlisting}
+
+The first variation recognizes a return statement at the end of the function.
+Note that it must be on the last part of the block. This is considered good
+programming practice.\par
+
+The second variation is the same version but without the return statement. In
+essence, you can create a subprogram without return values. Note too that even
+if \textless Dtype\textgreater\ is on the grammar rules, the only data type
+associated with subprograms which have no return value are the void subprogram return types.
+
+\section{Parameter passing and function calling}
+
+The keyword HOOT is used to call subprograms. A code sample is shown on the next
+page to see how it works.
+
+\begin{lstlisting}
+@INT HAHAHA ( @INT X ) {
+    TWEET "Kaya mo yan" #
+    TWEET "Oo Kaya mo yan" #
+    @INT X = 0 #
+}
+
+@INT HIHIHI ( @INT Y ) {
+    TWEET "Kaya mo yan" #
+    TWEET "Oo Kaya mo yan" #
+    @INT Y = 0 #
+}
+
+/...statements here.../
+HOOT HAHAHA ( @INT X ) #
+HOOT HIHIHI ( @INT X ) #
+/...statements here.../
+\end{lstlisting}
+
+As seen on the code example, HOOT is entered before a function name. That is to
+signal the interpreter that a function call is being done. Also, parameters are
+inserted inside the parentheses. They can be separated by commas if they are
+multiple.
+
+\section{Recursion}
+
+Recursion can be also executed through HOOT. A HOOT call inside a function
+commences \index*{recursion}.
+
+\printindex
 
 \end{document}
