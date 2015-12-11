@@ -1,0 +1,319 @@
+\documentclass[11pt,a4paper]{report}
+%\renewcommand{\rmdefault}{phv} % Arial
+%\renewcommand{\sfdefault}{phv} % Arial
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\setlength{\parskip}{1em}
+\usepackage{graphicx}
+\usepackage{titlepic}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{\includegraphics[scale=1.5]{twt}\\~\\~\\ \LARGE{\textbf{TWT Programming
+Language}}\\~\\ \large{(Talagang Walang Tulog)}\\~\\ \large{Language Design and Functionalities}}
+\date{~\\ December 2015}
+\author{Jahziel Rae Arceo\\ Gabriel Kelly Navarro\\ Mikaela Jun Lenon\\ Maria
+Rosario Gueco\\ Marbille Juntado\\~\\~\\ CS 150 HTWX}
+
+\begin{document}
+
+\maketitle
+
+\chapter{Introduction}
+
+\section{The TWT programming language}
+
+TWT is simply a programming language designed out of curiosity. There were
+really many challenges of deciding on which fits best on the category of a
+usable language, which the designers took so much time for considering and
+creating such.
+
+\subsection{Language Name}
+
+Halfway before the appropriate parser was created for the
+language, there was no appropriate meaning that the programmers can imply on
+the initials TWT, except that it was Twitter-inspired.
+However, since they were inspired by the countless nights that they weren't of
+good sleep, they made a way for the meaning of the name. TWT refers to "Talagang Walang Tulog",
+or "really no sleep", the phenomenon that happened to them during the creation
+of the language.
+
+\subsection{Paradigm}
+
+The TWT programming language is imperative and functional. The programming
+language works in a fashion nearly similar to C, Python, and Pascal. Function
+declarations are C-styled. Also, keywords that begin and end a program are used
+in the language, which seems to be like Pascal. The language also borrows features from Python, which was the
+language used to create the new language.
+
+\subsection{Inspiration}
+
+Twitter, a social networking site, was the main inspiration on creating the
+language. As seen on the next chapter, the keywords and reserved words of the
+language mostly came from the jargons seen on the website. \par
+
+Other than Twitter, the programmers also made the intricacy of programming an
+inspiration to create the language. Syntaxes on the language are simpler
+compared to other languages, which makes new programmers learn the language
+easily.
+
+\chapter{Grammar Definition}
+
+In this chapter, we get to learn about the grammar of the language using its
+Backus-Naur form (BNF). By this, we can get a hint of what the language looks
+like on encoding.
+
+\section{Identifiers}
+
+The following conventions apply to variables and values entered in the
+programming language:
+
+\begin{lstlisting}
+<INT> ->				<Digit><INT> | <Digit>
+<Digit> ->			"0" | "1" | "2" | "3" | "4" | "5" | "6"
+						| "7" | "8" | "9"
+
+<CHAR> ->			"'"<ASCII>"'"
+
+<FLOAT> ->			<Digit>"."<Digit>
+						(Note: Strictly followed)
+
+<STRING> -> 		"""<STRINGEXT>"""
+
+<STRINGEXT> -> 	<CHAR><STRINGEXT> | <CHAR> | EPSILON
+
+<VARIABLE> -> 		<ALPHABET><VARIABLEEXT>
+
+<VARIABLEEXT> -> <ALPHANUMERIC><VARIABLEEXT>
+						| <ALPHANUMERIC> | EPSILON
+\end{lstlisting}
+
+Note that the grammar for float type values is strict in the programming
+language, so it will not accept an integer as float. The data must explicitly
+indicate that it is indeed a floating-point value.
+
+\section{Data Types}
+
+The TWT language is statically-typed. The programmer should explicitly state the
+data type he is to use.
+
+Data types were defined in the language grammar as follows:
+
+\begin{lstlisting}
+<Dtype> -> "@INT" | "@CHIRP" | "@COKE" | "@MSG" | "@TRALSE"
+\end{lstlisting}
+
+Data types are as follows:
+\begin{itemize}
+  \item \textbf{@INT:} integer
+  \item \textbf{@CHIRP:} character (ASCII)
+  \item \textbf{@COKE:} float
+  \item \textbf{@MSG:} string
+  \item \textbf{@TRALSE:} boolean
+\end{itemize}
+
+The '@' symbol is used to easily identify words as types. By inspiration, it
+takes the @-mention paradigm of Twitter as its data type recognition
+mechanism.
+
+\section{Expressions and Assignment Statements}
+
+The following rules apply to expressions and assignments:
+\begin{lstlisting}
+<Assignment> -> 	<DType> VARIABLE "=" VARIABLE
+                	| <DType> VARIABLE "=" <Reading>
+                	| "@INT" VARIABLE "=" INT
+                	| "@CHIRP" VARIABLE "=" CHAR
+                	| "@COKE" VARIABLE "=" FLOAT
+                	| "@MSG" VARIABLE "=" STRING
+                	| "@TRALSE" VARIABLE "=" "YES"
+                	| "@TRALSE" VARIABLE "=" "NO"
+                	| <DType> VARIABLE "=" "(" <Exp> ")"
+
+<Reading> -> 		"REPLY" VARIABLE
+
+<Exp> -> 			<Term> <ExpPrime>
+
+<ExpPrime> ->		"+" <Term> <EspPrime>
+            		| "-" <Term> <ExpPrime>
+            
+<Term> -> 			<Fact> <TermPrime>
+
+<TermPrime> ->		"*" <Fact> <TermPrime>
+            		| "/" <Fact> <TermPrime>
+            
+<Fact> -> 			INT | CHAR | FLOAT | VARIABLE | "(" <Exp> ")"
+
+\end{lstlisting}
+
+\section{Statement Level Control Structures}
+
+The following rules apply to control structures available in the language:
+\begin{lstlisting}
+<State> ->			<Loop> "#" <StatePrime>
+        				| <If> "#" <StatePrime>
+        				| <Assignment> "#" <StatePrime>
+        				| <Call> "#" <StatePrime>
+        				| <Printing> "#" <StatePrime>
+        				| <Control> "#" <StatePrime>
+        			
+<StatePrime> -> 	<Loop> "#" <StatePrime>
+        				| <If> "#" <StatePrime>
+        				| <Assignment> "#" <StatePrime>
+        				| <Call> "#" <StatePrime>
+        				| <Printing> "#" <StatePrime>
+        				| <Read> "#" <StatePrime>
+        				| <Control> "#" <StatePrime>
+        			
+<Loop> -> 			"RT" <Condition> {" <Block> "}"
+
+<If> -> 				"IF" <Condition> "FOLLOW" "{" <Block> "}"
+						<ElseIf>
+						<Else>
+        				| "IF" <Condition> "FOLLOW" "{" <Block> "}"
+        				<Else>
+        				| "IF" <Condition> "FOLLOW" "{" <Block> "}"
+        			
+<ElseIf> ->			"ELSEIF" <Condition> "FOLLOW" "{" <Block> "}"
+						<Elseif>
+
+<Else> -> 			"ELSE" <Condition> "FOLLOW" "{" <Block> "}"
+\end{lstlisting}
+
+\section{Subprograms}
+
+This is how functions or subprograms are declared in the language:
+\begin{lstlisting}
+<Declaration> ->	<Dtype> VARIABLE "(" <Args> ")"
+						"{" <Block> <Return> "}"
+						| <Dtype> VARIABLE "(" <Args> ")" "{" <Block> "}"
+\end{lstlisting}
+
+\section{Other syntaxes not listed on previous sections}
+
+\begin{lstlisting}
+<Program> ->		<Declaration> <Main>
+            		| <Main>
+            
+<Main> ->			"LOGIN" <Block> "LOGOUT"
+          			| "LOGIN" "LOGOUT"
+          			
+<Block> ->			<State>
+
+<Call> ->			"HOOT "VARIABLE "(" <Args> ")"
+
+<Printing> -> 		"TWEET" VARIABLE
+              		| "TWEET" "(" <EXP> ")"
+              		| "TWEET" INT
+              		| "TWEET" FLOAT
+              		| "TWEET" CHAR
+              		| "TWEET" STRING
+              		| "TWEET" TRUE
+              		| "TWEET" FALSE
+<Reading> ->		"REPLY" VARIABLE
+
+<Control> ->		"UNFOLLOW" | "LIKE" | "BLOCK"
+
+<Condition> ->		"(" <Conditional> ")" | "~" <Condition>
+
+<Conditional> ->	VARIABLE <Conditional> VARIABLE
+          			| { VARIABLE | INT | CHAR | FLOAT } <CondOp> <Condition>
+          			| <Conditional> <CondOp> <Conditional>
+          			| <Condition> <CondOp> { VARIABLE | INT | CHAR | FLOAT }
+          			| { VARIABLE | INT | CHAR | FLOAT } <CondOp>
+          			{ VARIABLE | INT | CHAR | FLOAT }
+          			
+<CondOp> ->			">=" | "<=" | "==" | ">" | "<"
+
+<Args> ->			<Dtype> <Vname> "," <Args>
+
+<Return> ->			"REPORT" { INT | CHAR | FLOAT | STRING | VARIABLE }
+						| "REPORT" <Exp>
+\end{lstlisting}
+
+\chapter{Lexical and Syntax Analysis}
+
+\section{Parser}
+
+The parser for the language uses LR parsing, so no parse tables were used to
+parse the strings for the language. By that, it is obvious in the grammar that
+revisions for left recursion were done, so that no conflict will happen on the
+parsing process.
+
+\chapter{Names, Binding, and Scoping}
+
+\section{Case sensitivity}
+
+The TWT programming language was designed in a way that the user must
+exactly write the language in whichever case it is. By that, TWT is
+case-sensitive. For example, \textbf{@int} is not the same with \textbf{@INT}.
+
+\section{Reserved words}
+
+The following is a list of the reserved words in the language:
+
+\begin{center}
+\begin{tabular}{ c c c c c }
+ LOGIN & LOGOUT & REPORT & TWEET & IF \\ 
+ ELSEIF & ELSE & HOOT & REPLY & UNFOLLOW \\  
+ @INT & @CHIRP & @COKE & @MSG & @TRALSE \\
+ LIKE & BLOCK & YES & NO
+\end{tabular}
+\end{center}
+
+\section{Name form}
+
+By convention, as explained in the grammar, the names must be alphabetic at the
+start of each string, for variables. The language follows C-style rules.
+
+\section{Binding}
+
+The language follows Python-based binding, but on the programming language
+scope, it was designed to be statically bound. As noticed, Python does dynamic
+binding, however, the programmers chose to require having types specified before
+each run.
+
+\section{Lifetime and scope}
+
+Conventions were also followed on variable lifetime and scope. That is, what
+Python generally has on variable lifetime and scope applies to TWT as well.
+
+\section{Blocks}
+
+In TWT, blocks can be determined by curly braces, as what C has. Note the
+following code example:
+
+\begin{lstlisting}
+RT ( X < 4 ) { 
+		X = ( X + 1 ) #
+		Y = ( Y + 2 ) #
+		TWEET X #
+ } #
+\end{lstlisting}
+
+The example above is a loop. It has the three statements "X = ( X + 1 ) \#", "Y
+= ( Y + 2 ) \#", and "TWEET X \#" in the block example.
+
+\section{}
+
+\end{document}
