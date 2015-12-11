@@ -221,6 +221,8 @@ def Declaration():
         if (nextToken == openParen):
             lex()
             Args()
+            if (nextToken == closeParen):
+                lex()
             if(nextToken == openBrace):
                 outfile.write(':\n')
                 tabs+=1
@@ -581,8 +583,10 @@ def Call():
     if (nextToken == openParen):
         lex()
         Args()
-        print("Exit <Call>")
-        return
+        if (nextToken == closeParen):
+            print("Exit <Call>")
+            lex()
+            return
     print("Invalid function call")
     error()
 
@@ -764,13 +768,11 @@ def Args():
         if (nextToken == commaSign):
             lex()
             Args()
-        if (nextToken == closeParen):
-            lex()
-            print("Exit <Args>")
-            return
         else:
-            print "Expected ')' "
-            error()
+            print("Exit <Args>")
+            print("Hellu")
+        return
+    print("Expected Variable")
     error()
 
 ##<Return> -> "REPORT" { INT | CHAR | FLOAT | STRING | VARIABLE } | "REPORT" "(" <Exp> ")"
