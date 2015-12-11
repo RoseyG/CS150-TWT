@@ -171,7 +171,6 @@ def lex():
         nextToken = lessEqSign
     elif nextString == '<=':
         outfile.write(nextString)
-        outfile.write(nextString)
         nextToken = greatEqSign
     elif nextString == '==':
         outfile.write(nextString)
