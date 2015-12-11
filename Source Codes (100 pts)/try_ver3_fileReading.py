@@ -751,10 +751,9 @@ def CondOp():
 def Dtype():
     global nextToken
     print("Enter <Dtype>")
-    if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
-        lex()
-        print("Exit <Dtype>")
-        return
+    lex()
+    print("Exit <Dtype>")
+    return
     print("Error: Expected Data type poeszh")
     error()
 
@@ -762,18 +761,22 @@ def Dtype():
 def Args():
     global nextToken
     print("Enter <Args>")
-    Dtype()
-    if (nextToken == VARIABLE):
-        lex()
-        if (nextToken == commaSign):
+    if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
+        Dtype()
+        if (nextToken == VARIABLE):
             lex()
-            Args()
-        else:
-            print("Exit <Args>")
-            print("Hellu")
+            if (nextToken == commaSign):
+                lex()
+                Args()
+            else:
+                print("Exit <Args>")
+                print("Hellu")
+            return
+        print("Expected Variable")
+        error()
+    else:
+        print("Exit <Args>")
         return
-    print("Expected Variable")
-    error()
 
 ##<Return> -> "REPORT" { INT | CHAR | FLOAT | STRING | VARIABLE } | "REPORT" "(" <Exp> ")"
 def Return():
