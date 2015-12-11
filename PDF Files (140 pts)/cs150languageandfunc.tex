@@ -258,7 +258,192 @@ This is how functions or subprograms are declared in the language:
 The parser for the language uses LR parsing, so no parse tables were used to
 parse the strings for the language. By that, it is obvious in the grammar that
 revisions for left recursion were done, so that no conflict will happen on the
-parsing process.
+parsing process. \par
+
+On the next lines of code is the Python code for the lexical analyzer, together
+with the token numbers assigned to them.
+
+\begin{lstlisting}
+EOF = -1
+int_dec = 3
+float_dec = 4
+char_dec =  5
+string_dec = 6
+bool_dec = 7
+login = 1
+logout = 0
+if_state = 20
+elseif_state = 21
+else_state = 22
+loop_state = 30
+break_state = 31
+continue_state = 32
+exit_state = 33
+exec_state = 34
+read_state = 10
+print_state = 11
+return_state = 12
+TRUE = 13
+FALSE = 14
+NOT = 15
+INT = 71
+FLOAT = 72
+CHAR = 73
+STRING = 74
+openBrace = 41
+closeBrace = 42
+plusSign = 43
+minusSign = 44
+divSign = 45
+mulSign = 46
+asSign = 47
+openParen = 48
+closeParen = 49
+ENDOFSTATE = 50
+commaSign = 51
+lessEqSign = 52
+greatEqSign = 53
+eqSign = 54
+lesserSign = 55
+greaterSign = 56
+VARIABLE = 100
+
+nextToken = 0
+
+def isfloat(str):
+    try:
+        float(str)
+    except ValueError:
+        return False
+    return True
+
+def lex():
+    global input
+    global nextToken
+    nextString = input[0]
+    if nextString == 'EOF':
+        nextToken = EOF
+    elif nextString == 'LOGIN':
+        nextToken = login
+    elif nextString == 'LOGOUT':
+        nextToken = logout
+    elif nextString == '@INT':
+        nextToken = int_dec
+    elif nextString == '@COKE':
+        nextToken = float_dec
+    elif nextString == '@CHIRP':
+        nextToken = char_dec
+    elif nextString == '@MSG':
+        nextToken = string_dec
+    elif nextString == '@TRALSE':
+        nextToken = bool_dec
+    elif nextString == 'IF':
+        outfile.write('if ')
+        nextToken = if_state
+    elif nextString == 'ELSEIF':
+        outfile.write('elif ')
+        nextToken = elseif_state
+    elif nextString == 'ELSE':
+        outfile.write('else ')
+        nextToken = else_state
+    elif nextString == 'RT':
+        outfile.write('while ')
+        nextToken = loop_state
+    elif nextString == 'UNFOLLOW':
+        outfile.write('break')
+        nextToken = break_state
+    elif nextString == 'LIKE':
+        outfile.write('continue')
+        nextToken = continue_state
+    elif nextString == 'BLOCK':
+        outfile.write('exit')
+        nextToken = exit_state
+    elif nextString == 'FOLLOW':
+        nextToken = exec_state
+    elif nextString == 'REPLY':
+        nextToken = read_state
+    elif nextString == 'TWEET':
+        outfile.write('print ')
+        nextToken = print_state
+    elif nextString == 'REPORT':
+        nextToken = return_state
+    elif nextString == 'YES':
+        nextToken = TRUE
+    elif nextString == 'NO':
+        nextToken = FALSE
+    elif nextString == '~':
+        nextToken = NOT
+    elif nextString.isdigit():
+        outfile.write(nextString)
+        nextToken = INT
+    elif nextString[0] == '-' and nextString[1:].isdigit():
+        outfile.write(nextString)
+        nextToken = INT
+    elif isfloat(nextString):
+        outfile.write(nextString)
+        nextToken = FLOAT
+    elif (nextString[0] == '\'') and (nextString[-1] == '\'') and (nextString.len() == 1):
+        outfile.write(nextString)
+        nextToken = CHAR
+    elif (nextString[0] == '\"') and (nextString[-1] == '\"'):
+        outfile.write(nextString)
+        nextToken = STRING
+    elif nextString == '{':
+        nextToken = openBrace
+    elif nextString == '}':
+        nextToken = closeBrace
+    elif nextString == '+':
+        outfile.write(nextString)
+        nextToken = plusSign
+    elif nextString == '-':
+        outfile.write(nextString)
+        nextToken = minusSign
+    elif nextString == '/':
+        outfile.write(nextString)
+        nextToken = divSign
+    elif nextString == '*':
+        outfile.write(nextString)
+        nextToken = mulSign
+    elif nextString == '=':
+        outfile.write(nextString)
+        nextToken = asSign
+    elif nextString == '(':
+        outfile.write(nextString)
+        nextToken = openParen
+    elif nextString == ')':
+        outfile.write(nextString)
+        nextToken = closeParen
+    elif nextString == '#':
+        outfile.write('\n')
+        nextToken = ENDOFSTATE
+    elif nextString == ',':
+        outfile.write(nextString)
+        nextToken = commaSign
+    elif nextString == '>=':
+        outfile.write(nextString)
+        nextToken = lessEqSign
+    elif nextString == '<=':
+        outfile.write(nextString)
+        nextToken = greatEqSign
+    elif nextString == '==':
+        outfile.write(nextString)
+        nextToken = eqSign
+    elif nextString == '>':
+        outfile.write(nextString)
+        nextToken = lesserSign
+    elif nextString == '<':
+        outfile.write(nextString)
+        nextToken = greaterSign
+    else:
+        outfile.write(nextString)
+        nextToken = VARIABLE
+    print("Next token is: " + str(nextToken))
+    print("Next string is: " + nextString)
+    del input[0]
+
+\end{lstlisting} 
+
+All reserved words are explicitly stated in the analyzer.
 
 \chapter{Names, Binding, and Scoping}
 
@@ -346,5 +531,64 @@ On type-checking and coercion, Python conventions are used, that is, the
 features that Python has are used in the language.
 
 \chapter{Expression and Assignment Statements}
+
+\section{Arithmetic expressions and overloading}
+
+This is the list of mathematical symbols used in the language.
+
+\begin{center}
+\begin{tabular}{ c c c c }
+ + & - & * & / \\
+ = & ( & )
+\end{tabular}
+\end{center}
+
+\noindent Listed are its functions:
+
+\begin{center}
+\begin{tabular}{ c l }
+  \textbf{+} & addition\\
+  \textbf{-} & subtraction\\
+  \textbf{*} & multiplication\\
+  \textbf{/} & division\\
+  \textbf{=} & assignment\\
+  \textbf{(} & grouping (opening)\\
+  \textbf{)} & grouping (closing)
+\end{tabular}
+\end{center}
+
+Also the language is using the infix notation for expressions. For the
+operators, there is no overloading. Operations are defined as to what they
+represent.
+
+\section{Boolean expressions}
+
+This is the list of boolean symbols used in the language.
+
+\begin{center}
+\begin{tabular}{ c c c c }
+ YES & NO & == & \textless = \\
+ \textgreater = & \textless & \textgreater & \textasciitilde
+\end{tabular}
+\end{center}
+
+\noindent Listed are its functions:
+
+\begin{center}
+\begin{tabular}{ c l }
+  \textbf{YES} & TRUE\\
+  \textbf{NO} & FALSE\\
+  \textbf{==} & equal\\
+  \textbf{\textless}= & less than or equal\\
+  \textbf{\textgreater}= & greater than or equal\\
+  \textbf{\textless} & less than\\
+  \textbf{\textgreater} & greater than\\
+  \textbf{\textasciitilde} & NOT
+\end{tabular}
+\end{center}
+
+As what applies in most languages on boolean statements, the conventional
+approach to boolean expressions apply to TWT, specifically the operator
+precedence.
 
 \end{document}
