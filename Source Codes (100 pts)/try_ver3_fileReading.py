@@ -237,7 +237,6 @@ def Declaration():
                     tabs-=1
                     outfile.write('\n')
                     lex()
-                    print("woohoo" , nextToken)
                     if (nextToken == int_dec or nextToken == float_dec or nextToken == char_dec or nextToken == string_dec or nextToken == bool_dec):
                         Declaration()
                     print("Exit <Declaration>")
@@ -280,7 +279,6 @@ def Block():
 # We need at tleast one stament inside a block then check for repetitions
 def State():
     global nextToken
-    print tabs , "haha"
     print("Enter <State>")
     if (nextToken == if_state):
         If()
@@ -770,7 +768,6 @@ def Args():
                 Args()
             else:
                 print("Exit <Args>")
-                print("Hellu")
             return
         print("Expected Variable")
         error()
