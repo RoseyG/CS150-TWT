@@ -14,11 +14,25 @@ while (X<4):
 	print X
 	if (X>=Y):
 		print "Ahihi"
-			else :
+		
+	else :
 		Y=X
 		HAHAHA(X)
 		
 
+	while (X<4):
+		X=(X+1)
+		Y=(Y+2)
+		print X
+		if (X>=Y):
+			print "Ahihi"
+			
+		else :
+			Y=X
+			HAHAHA(X)
+			
+
+		
 	
 print X
 HAHAHA(X)

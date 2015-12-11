@@ -295,7 +295,6 @@ def State():
     else:
         print("Expected statement")
         error()
-    ##outfile.write('\n')
     for i in range(tabs):
         outfile.write('\t')
     if(nextToken == ENDOFSTATE):
@@ -333,7 +332,6 @@ def StatePrime():
     else:
         return  # Exit lng kung wala ng next statements after the last repitition,
                 # no need to lex cuz the nextToken will be checked for a match again outside the function
-##    outfile.write('\n')
     for i in range(tabs):
         outfile.write('\t')
     if(nextToken == ENDOFSTATE):
