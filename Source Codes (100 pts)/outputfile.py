@@ -20,6 +20,18 @@ while (X<4):
 
 	print X
 
+	if (X==Y):
+		print "Ahihi"
+
+		
+	else :
+		Y=X
+
+		HAHAHA(X)
+
+		
+
+
 	
 
 print X

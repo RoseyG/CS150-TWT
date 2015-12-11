@@ -33,7 +33,7 @@
 #                | "@TRALSE" VARIABLE "=" "YES"
 #                | "@TRALSE" VARIABLE "=" "NO"
 #                | <DType> VARIABLE "=" "(" <Exp> ")"
-<Call> -> VARIABLE "(" <Args> ")"
+<Call> -> "HOOT" VARIABLE "(" <Args> ")"
 ##<Printing> -> "TWEET" VARIABLE
 #              | "TWEET" "(" <EXP> ")"
 #              | "TWEET" INT

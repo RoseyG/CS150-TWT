@@ -8,11 +8,18 @@
 LOGIN
 @INT X = 0 #
 @INT Y = 32 #
-RT ( X < 4 ) { 
+RT ( X < 4 ) {
 
 		X = ( X + 1 ) #
 		Y = ( Y + 2 ) #
 		TWEET X #
+    IF ( X == Y ) FOLLOW {
+      TWEET "Ahihi" #
+    }
+    ELSE {
+      Y = X #
+      HOOT HAHAHA ( @INT X ) #
+    } #
  } #
 
 TWEET X #
