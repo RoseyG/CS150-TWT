@@ -314,6 +314,37 @@ RT ( X < 4 ) {
 The example above is a loop. It has the three statements "X = ( X + 1 ) \#", "Y
 = ( Y + 2 ) \#", and "TWEET X \#" in the block example.
 
-\section{}
+\chapter{Data types}
+
+\section{Primitive data types}
+
+As referenced to the grammar in Chapter 2, these are the data types available in
+the language:
+
+\begin{itemize}
+  \item \textbf{@INT:} integer
+  \item \textbf{@CHIRP:} character (ASCII)
+  \item \textbf{@COKE:} float
+  \item \textbf{@MSG:} string
+  \item \textbf{@TRALSE:} boolean
+\end{itemize}
+
+\section{Strings}
+
+The programming language supports strings, and is a primitive data type. Like C,
+the strings are determined by double quotation marks.\par
+
+There are no limitations on string declarations, and everything that applies to
+every other language also applies to TWT.
+
+\section{Note on user-defined types and type-checking}
+
+As of writing, user-defined typing is not available in the language. The user
+must strictly use the available data types.\par
+
+On type-checking and coercion, Python conventions are used, that is, the
+features that Python has are used in the language.
+
+\chapter{Expression and Assignment Statements}
 
 \end{document}
