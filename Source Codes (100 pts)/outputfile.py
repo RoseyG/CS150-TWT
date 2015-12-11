@@ -6,10 +6,8 @@ def HAHAHA(X):
 	print "Oo Kaya mo yan"
 	X=0
 	
-def HIHIHI(Y):
-	print "Kaya mo yan"
-	print "Oo Kaya mo yan"
-	Y=0
+def HIHIHI(X,Y,Z):
+	print Z
 	
 X=0
 Y=32
@@ -34,14 +32,14 @@ while (X<4):
 			
 		else :
 			Y=X
-			HAHAHA(X)
+			Z=1
+			HIHIHI(X,Y,Z)
 			
 
 		
 	
 print X
 HAHAHA(X)
-HIHIHI(X)
 
 
 print "Program exiting in 10s.."

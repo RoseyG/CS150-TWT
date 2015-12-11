@@ -4,10 +4,8 @@
     @INT X = 0 #
 }
 
-@INT HIHIHI ( @INT Y ) {
-    TWEET "Kaya mo yan" #
-    TWEET "Oo Kaya mo yan" #
-    @INT Y = 0 #
+@INT HIHIHI ( @INT X , @INT Y , @TRALSE Z ) {
+    TWEET Z #
 }
 
 LOGIN
@@ -33,12 +31,12 @@ RT ( X < 4 ) {
         }
         ELSE {
           Y = X #
-          HOOT HAHAHA ( @INT X ) #
+          Z = 1 #
+          HOOT HIHIHI ( @INT X , @INT Y , @TRALSE Z ) #
         } #
      } #
  } #
 
 TWEET X #
 HOOT HAHAHA ( @INT X ) #
-HOOT HIHIHI ( @INT X ) #
 LOGOUT
