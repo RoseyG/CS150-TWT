@@ -171,7 +171,6 @@ def lex():
         nextToken = lessEqSign
     elif nextString == '<=':
         outfile.write(nextString)
-        outfile.write(nextString)
         nextToken = greatEqSign
     elif nextString == '==':
         outfile.write(nextString)
@@ -234,7 +233,7 @@ def Declaration():
                     Return()
                 if(nextToken == closeBrace):
                     tabs-=1
-                    outfile.write( '\n' )
+                    outfile.write('\n')
                     lex()
                     print("Exit <Declaration>")
                     return
@@ -280,40 +279,25 @@ def State():
     print("Enter <State>")
     if (nextToken == if_state):
         If()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == loop_state):
         Loop()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
         Assignment()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == print_state):
         Printing()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == read_state):
         lex()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == fxncall):
         lex()
         Call()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
     else:
         print("Expected statement")
         error()
+    ##outfile.write('\n')
+    for i in range(tabs):
+        outfile.write('\t')
     if(nextToken == ENDOFSTATE):
         lex()
         StatePrime()
@@ -333,40 +317,25 @@ def StatePrime():
     global nextToken
     if (nextToken == if_state):
         If()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == loop_state):
         Loop()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == int_dec or nextToken == char_dec or nextToken == float_dec or nextToken == string_dec or nextToken == bool_dec or nextToken == VARIABLE):
         Assignment()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == print_state):
         Printing()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == read_state):
         lex()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == fxncall):
         lex()
         Call()
-        outfile.write('\n')
-        for i in range(tabs):
-            outfile.write('\t')
     elif (nextToken == break_state or nextToken == continue_state or nextToken == exit_state):
         Control()
     else:
         return  # Exit lng kung wala ng next statements after the last repitition,
                 # no need to lex cuz the nextToken will be checked for a match again outside the function
+##    outfile.write('\n')
+    for i in range(tabs):
+        outfile.write('\t')
     if(nextToken == ENDOFSTATE):
         lex()
         StatePrime()
