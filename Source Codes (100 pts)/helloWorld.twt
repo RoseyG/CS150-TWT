@@ -4,8 +4,8 @@
     @INT X = 0 #
 }
 
-@INT HIHIHI ( @INT X , @INT Y , @TRALSE Z ) {
-    TWEET Z #
+@INT HIHIHI ( ) {
+    TWEET "Hello World" #
 }
 
 LOGIN
@@ -32,7 +32,7 @@ RT ( X < 4 ) {
         ELSE {
           Y = X #
           Z = 1 #
-          HOOT HIHIHI ( @INT X , @INT Y , @TRALSE Z ) #
+          HOOT HIHIHI ( ) #
         } #
      } #
  } #
